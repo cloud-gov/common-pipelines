@@ -1,0 +1,85 @@
+jobs:
+# - name: set-self
+#   plan:
+#     - get: common-pipelines
+#       trigger: true
+#     - set_pipeline: self
+#       file: common-pipelines/go/pipeline.yml
+
+- name: pull-request
+  plan:
+  - get: pull-request
+    version: every
+    trigger: true
+  - get: common-pipelines
+  - put: pull-request
+    params:
+      path: pull-request
+      status: pending
+  - task: go-build
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          aws_access_key_id: ((ecr_aws_key))
+          aws_secret_access_key: ((ecr_aws_secret))
+          repository: harden-concourse-task
+          aws_region: us-gov-west-1
+          tag: ((harden-concourse-task-tag))
+      inputs:
+      - name: pull-request
+      run:
+        path: common-pipelines/go/hello.sh
+    on_failure:
+      put: pull-request
+      params:
+        path: pull-request
+        status: failure
+
+# resources:
+# - name: src
+#   type: git
+#   source:
+#     uri: git@github.com:cloud-gov/s3-broker.git
+#     branch: main
+#     private_key: ((cg-ci-bot-sshkey.private_key))
+#     commit_verification_keys: ((cloud-gov-pgp-keys))
+
+# - name: pipeline-tasks
+#   type: git
+#   source:
+#     uri: ((pipeline-tasks-git-url))
+#     branch: ((pipeline-tasks-git-branch))
+# #     commit_verification_keys: ((cloud-gov-pgp-keys))
+
+# - name: slack
+#   type: slack-notification
+#   source:
+#     url: ((slack-webhook-url))
+resources:
+- name: pull-request
+  type: pull-request
+  check_every: 1m
+  source:
+    repository: ((src-repo))
+    access_token: ((cg-ci-bot-ghtoken))
+    disable_forks: true
+    base_branch: main
+- name: common-pipelines
+  type: git
+  source:
+    uri: ((pipeline-tasks-git-url))
+    branch: ((pipeline-tasks-git-branch))
+    commit_verification_keys: ((cloud-gov-pgp-keys))
+
+resource_types:
+- name: slack-notification
+  type: docker-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+
+- name: pull-request
+  type: docker-image
+  source:
+    repository: teliaoss/github-pr-resource

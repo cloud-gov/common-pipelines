@@ -17,4 +17,4 @@ inputs:
 run:
   dir: src
   path: go
-  args: ((ARGS))
+  args: [((ARGS))]

@@ -10,54 +10,54 @@ jobs:
 
 - name: pull-request
   plan:
-  - get: pull-request
-    version: every
-    trigger: true
-  - get: common-pipelines
-    passed: [set-self]
-  - put: pull-request
-    params:
-      path: pull-request
-      status: pending
+    - get: pull-request
+      version: every
+      trigger: true
+    - get: common-pipelines
+      passed: [set-self]
+    - put: pull-request
+      params:
+        path: pull-request
+        status: pending
 
-  # code quality and style checks
-  - task: go-fmt
-    file: common-pipelines/go/go-fmt.yml
-    input_mapping:
-      src: pull-request
+    # code quality and style checks
+    - task: go-fmt
+      file: common-pipelines/go/go-fmt.yml
+      input_mapping:
+        src: pull-request
 
-  - task: go-vet
-    file: common-pipelines/go/go-vet.yml
-    input_mapping:
-      src: pull-request
+    - task: go-vet
+      file: common-pipelines/go/go-vet.yml
+      input_mapping:
+        src: pull-request
 
-  # dependency checks
-  - task: go-mod-tidy
-    file: common-pipelines/go/go-mod-tidy.yml
-    input_mapping:
-      src: pull-request
+    # dependency checks
+    - task: go-mod-tidy
+      file: common-pipelines/go/go-mod-tidy.yml
+      input_mapping:
+        src: pull-request
 
-  - task: go-mod-verify
-    file: common-pipelines/go/go-mod-verify.yml
-    input_mapping:
-      src: pull-request
+    - task: go-mod-verify
+      file: common-pipelines/go/go-mod-verify.yml
+      input_mapping:
+        src: pull-request
 
-  - task: govulncheck
-    file: common-pipelines/go/govulncheck.yml
-    input_mapping:
-      src: pull-request
+    # build steps
+    - task: go-generate
+      file: common-pipelines/go/go-generate.yml
+      input_mapping:
+        src: pull-request
 
-  # build steps
-  - task: go-generate
-    file: common-pipelines/go/go-generate.yml
-    input_mapping:
-      src: pull-request
+    - task: go-build
+      file: common-pipelines/go/go-build.yml
+      input_mapping:
+        src: pull-request
 
-  - task: go-build
-    file: common-pipelines/go/go-build.yml
-    input_mapping:
-      src: pull-request
-
+    # vulnerable dependency check (last because it can be slow)
+    - task: govulncheck
+      file: common-pipelines/go/govulncheck.yml
+      input_mapping:
+        src: pull-request
 
   on_failure:
     put: pull-request

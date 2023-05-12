@@ -73,13 +73,13 @@ resources:
     repository: ((src-repo))
     access_token: ((cg-ci-bot-ghtoken))
     disable_forks: true
-    base_branch: testing
+    base_branch: main
 
 - name: common-pipelines
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines
-    branch: testing
+    branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 resource_types:

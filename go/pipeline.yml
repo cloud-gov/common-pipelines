@@ -29,6 +29,7 @@ jobs:
           tag: ((harden-concourse-task-tag))
       inputs:
       - name: pull-request
+      - name: common-pipelines
       run:
         path: common-pipelines/go/build.sh
     on_failure:

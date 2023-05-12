@@ -21,7 +21,7 @@ jobs:
   - task: go-build
     file: common-pipelines/go/go.yml
     params:
-      ARGS: ["build", "./..."]
+      ARGS: "build ./..."
     input_mapping:
       src: pull-request
   on_failure:

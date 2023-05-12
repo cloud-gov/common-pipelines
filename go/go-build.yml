@@ -16,4 +16,4 @@ inputs:
 run:
   dir: src
   path: go
-  args: ["build", "./..."]
+  args: ["build", "-v", "./..."]

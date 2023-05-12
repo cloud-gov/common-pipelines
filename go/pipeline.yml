@@ -19,9 +19,7 @@ jobs:
       path: pull-request
       status: pending
   - task: go-build
-    file: common-pipelines/go/go.yml
-    params:
-      ARGS: "build ./..."
+    file: common-pipelines/go/go-build.yml
     input_mapping:
       src: pull-request
   on_failure:

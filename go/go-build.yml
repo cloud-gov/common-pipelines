@@ -12,9 +12,8 @@ image_resource:
 
 inputs:
 - name: src
-- name: common-pipelines
 
 run:
   dir: src
   path: go
-  args: [((ARGS))]
+  args: ["build", "./..."]

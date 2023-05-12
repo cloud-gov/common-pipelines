@@ -13,6 +13,7 @@ jobs:
     version: every
     trigger: true
   - get: common-pipelines
+    passed: [set-self]
   - put: pull-request
     params:
       path: pull-request

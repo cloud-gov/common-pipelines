@@ -28,7 +28,7 @@ resources:
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines
-    branch: testing
+    branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))
 ```
 
@@ -38,4 +38,4 @@ Commit and push the bootstrap pipeline for future use, and bootstrap the pipelin
 fly -t ci set-pipeline --pipeline your-pipeline-name --config ci/pipeline.yml
 ```
 
-Navigate to Concourse and un-pause the pipeline. The `bootstrap` job will run and replace itself with the common pipeline you specified.
+Navigate to Concourse and un-pause the pipeline. The `bootstrap` job will run and replace itself with the common pipeline you specified. If the common pipeline is updated in the future, your pipeline will automatically pull in the changes.

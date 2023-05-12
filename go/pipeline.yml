@@ -30,7 +30,7 @@ jobs:
       inputs:
       - name: pull-request
       run:
-        path: common-pipelines/go/hello.sh
+        path: common-pipelines/go/build.sh
     on_failure:
       put: pull-request
       params:

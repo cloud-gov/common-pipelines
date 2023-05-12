@@ -6,6 +6,7 @@ jobs:
     - set_pipeline: self
       file: common-pipelines/go/pipeline.yml
 
+# todo: passed: [set-self], trigger: true?
 - name: pull-request
   plan:
   - get: pull-request
@@ -31,7 +32,9 @@ jobs:
       - name: pull-request
       - name: common-pipelines
       run:
-        path: common-pipelines/go/build.sh
+        path: go
+        args: [build, ./...]
+        dir: pull-request
     on_failure:
       put: pull-request
       params:

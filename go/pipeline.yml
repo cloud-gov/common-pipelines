@@ -1,3 +1,5 @@
+# credit to https://olegk.dev/github-actions-and-go#heading-codegen-andamp-build
+# for many of the suggested steps and groupings.
 jobs:
 - name: set-self
   plan:
@@ -6,7 +8,6 @@ jobs:
     - set_pipeline: self
       file: common-pipelines/go/pipeline.yml
 
-# todo: passed: [set-self], trigger: true?
 - name: pull-request
   plan:
   - get: pull-request
@@ -19,8 +20,31 @@ jobs:
       path: pull-request
       status: pending
 
+  # code quality and style checks
   - task: go-fmt
     file: common-pipelines/go/go-fmt.yml
+    input_mapping:
+      src: pull-request
+
+  - task: go-vet
+    file: common-pipelines/go/go-vet.yml
+    input_mapping:
+      src: pull-request
+
+  # dependency checks
+  - task: go-mod-tidy
+    file: common-pipelines/go/go-mod-tidy.yml
+    input_mapping:
+      src: pull-request
+
+  - task: go-mod-verify
+    file: common-pipelines/go/go-mod-verify.yml
+    input_mapping:
+      src: pull-request
+
+  # build steps
+  - task: go-generate
+    file: common-pipelines/go/go-generate.yml
     input_mapping:
       src: pull-request
 
@@ -28,10 +52,7 @@ jobs:
     file: common-pipelines/go/go-build.yml
     input_mapping:
       src: pull-request
-  - task: go-vet
-    file: common-pipelines/go/go-vet.yml
-    input_mapping:
-      src: pull-request
+
 
   on_failure:
     put: pull-request

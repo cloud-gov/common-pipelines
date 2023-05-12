@@ -46,6 +46,7 @@ resources:
     access_token: ((cg-ci-bot-ghtoken))
     disable_forks: true
     base_branch: testing
+
 - name: common-pipelines
   type: git
   source:

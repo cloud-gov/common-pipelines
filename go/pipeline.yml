@@ -1,10 +1,10 @@
 jobs:
-# - name: set-self
-#   plan:
-#     - get: common-pipelines
-#       trigger: true
-#     - set_pipeline: self
-#       file: common-pipelines/go/pipeline.yml
+- name: set-self
+  plan:
+    - get: common-pipelines
+      trigger: true
+    - set_pipeline: self
+      file: common-pipelines/go/pipeline.yml
 
 - name: pull-request
   plan:

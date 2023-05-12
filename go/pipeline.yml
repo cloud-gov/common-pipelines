@@ -69,8 +69,8 @@ resources:
 - name: common-pipelines
   type: git
   source:
-    uri: ((pipeline-tasks-git-url))
-    branch: ((pipeline-tasks-git-branch))
+    uri: https://github.com/cloud-gov/common-pipelines
+    branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 resource_types:

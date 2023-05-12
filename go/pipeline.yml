@@ -18,10 +18,21 @@ jobs:
     params:
       path: pull-request
       status: pending
+
+  - task: go-fmt
+    file: common-pipelines/go/go-fmt.yml
+    input_mapping:
+      src: pull-request
+
   - task: go-build
     file: common-pipelines/go/go-build.yml
     input_mapping:
       src: pull-request
+  - task: go-vet
+    file: common-pipelines/go/go-vet.yml
+    input_mapping:
+      src: pull-request
+
   on_failure:
     put: pull-request
     params:

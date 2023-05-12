@@ -15,5 +15,5 @@ inputs:
 
 run:
   dir: src
-  path: go
-  args: ["vet", "./..."]
+  path: bash
+  args: ["-c", "go install golang.org/x/vuln/cmd/govulncheck@latest && govulncheck -test ./..."]

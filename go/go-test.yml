@@ -16,4 +16,4 @@ inputs:
 run:
   dir: src
   path: go
-  args: ["vet", "./..."]
+  args: ["test", "-v", "-race", "-shuffle=on", "./..."]

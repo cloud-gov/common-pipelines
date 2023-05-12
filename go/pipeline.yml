@@ -42,6 +42,11 @@ jobs:
     input_mapping:
       src: pull-request
 
+  - task: govulncheck
+    file: common-pipelines/go/govulncheck.yml
+    input_mapping:
+      src: pull-request
+
   # build steps
   - task: go-generate
     file: common-pipelines/go/go-generate.yml

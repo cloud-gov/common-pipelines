@@ -51,3 +51,7 @@ cloud.gov maintains a variety of software written in a handful of programming la
 * Developers should be able to adopt common pipelines into their pipeline with a minimum of effort. Zero or one lines of code would be ideal.
 * The configuration options for each pipeline should be minimal. They're the API of the pipelines; keep it simple.
 * Favor convention over configuration. Repositories using common pipelines should "just work" if their folders and files are in the right place.
+
+## Development
+
+If you want to iterate on a pipeline in this repository, consider pushing your changes to a topic branch. Topic branches do not have merge protection, so you will be able to iterate more quickly without getting pull requests approved. Change your `pipeline.yml` in your downstream repository to reference your topic branch instead of `main` in the `common-pipelines` resource to continuously pull in your changes. (You can consider working on a topic branch in your downstream repo as well.)

@@ -1,0 +1,62 @@
+jobs:
+- name: set-self
+  plan:
+    - get: common-pipelines
+      trigger: true
+    - set_pipeline: self
+      file: common-pipelines/container/pipeline.yml
+
+- name: pull-request
+  plan:
+    - get: pull-request
+      version: every
+      trigger: true
+
+    - get: common-pipelines
+      passed: [set-self]
+
+    - put: pull-request
+      params:
+        path: pull-request
+        status: pending
+
+    - task: oci-build
+      privileged: true
+      file: common-pipelines/container/oci-build.yml
+      input_mapping:
+        src: pull-request
+
+  on_failure:
+    put: pull-request
+    params:
+      path: pull-request
+      status: failure
+
+resources:
+
+- name: common-pipelines
+  type: git
+  source:
+    uri: https://github.com/cloud-gov/common-pipelines
+    branch: main
+    commit_verification_keys: ((cloud-gov-pgp-keys))
+
+- name: pull-request
+  type: pull-request
+  check_every: 1m
+  source:
+    repository: ((src-repo))
+    access_token: ((cg-ci-bot-ghtoken))
+    disable_forks: true
+    base_branch: main
+
+resource_types:
+- name: slack-notification
+  type: oci-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+
+- name: pull-request
+  type: oci-image
+  source:
+    repository: teliaoss/github-pr-resource

@@ -1,0 +1,21 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: concourse/oci-build-task
+
+inputs:
+- name: src
+
+outputs:
+- name: image
+
+run:
+  dir: src
+  path: build
+
+params:
+  BUILD_ARG_TOKEN: ((ua-token)) # todo rename ubuntu-advantage-token
+  # CONTEXT: task/harden-concourse-tasks/ # todo

@@ -17,5 +17,5 @@ run:
   path: build
 
 params:
-  BUILD_ARG_TOKEN: ((ua-token)) # todo rename ubuntu-advantage-token
+  BUILD_ARG_TOKEN: ((ubuntu-advantage-token))
   # CONTEXT: task/harden-concourse-tasks/ # todo

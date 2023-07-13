@@ -52,11 +52,11 @@ resources:
 
 resource_types:
 - name: slack-notification
-  type: oci-image
+  type: registry-image
   source:
     repository: cfcommunity/slack-notification-resource
 
 - name: pull-request
-  type: oci-image
+  type: registry-image
   source:
     repository: teliaoss/github-pr-resource

@@ -13,8 +13,11 @@ outputs:
 - name: image
 
 run:
-  dir: src
   path: build
 
 params:
+  # Required for running 'usg' hardening tool.
   BUILD_ARG_TOKEN: ((ubuntu-advantage-token))
+  # Required to use the image in later steps.
+  UNPACK_ROOTFS: true
+  CONTEXT: src

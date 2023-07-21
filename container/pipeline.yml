@@ -31,11 +31,16 @@ jobs:
         src: pull-request
       params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
 
+    - task: usg-audit
+      file: common-pipelines/container/usg-audit.yml
+      image: image
+
   on_failure:
     put: pull-request
     params:
       path: pull-request
       status: failure
+
 
 resources:
 

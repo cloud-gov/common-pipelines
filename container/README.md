@@ -10,6 +10,8 @@ Copy the contents of [example](example) into folder `ci/` in your repository, se
 fly -t ci set-pipeline --pipeline YOUR-PIPELINE-NAME --config ci/pipeline.yml --load-vars-from ci/vars.yml
 ```
 
+It is recommended that `YOUR-PIPELINE-NAME` be your repository name so you can find the pipeline easily in Concourse.
+
 The vars in `vars.yml` may be assigned empty maps:
 
 ```yaml

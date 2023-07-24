@@ -4,7 +4,15 @@ Build, audit, and scan Open Container Initiative (OCI) images on PR, and push th
 
 ## Usage
 
-In addition to setting `src-repo` in CredHub (see [the repository README](../README.md#Usage)), you must copy `vars.yml` to `ci/vars.yml` in your repository. The vars in the file may be assigned empty maps:
+Copy the contents of [example](example) into folder `ci/` in your repository, set `src-repo` on the appropriate path in CredHub, and run:
+
+```sh
+fly -t ci set-pipeline --pipeline YOUR-PIPELINE-NAME --config ci/pipeline.yml --load-vars-from ci/vars.yml
+```
+
+It is recommended that `YOUR-PIPELINE-NAME` be your repository name so you can find the pipeline easily in Concourse.
+
+The vars in `vars.yml` may be assigned empty maps:
 
 ```yaml
 # vars.yml

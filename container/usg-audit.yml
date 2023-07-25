@@ -1,0 +1,15 @@
+---
+platform: linux
+
+inputs:
+- name: common-pipelines
+
+outputs:
+- name: audit
+
+run:
+  path: common-pipelines/container/usg-audit.sh
+
+params:
+  # Required for running 'usg' audit tool.
+  UBUNTU_ADVANTAGE_TOKEN: ((ubuntu-advantage-token))

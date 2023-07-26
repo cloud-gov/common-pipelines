@@ -46,6 +46,38 @@ jobs:
       path: pull-request
       status: failure
 
+- name: main
+  plan:
+    - get: src
+      trigger: true
+
+    - get: common-pipelines
+      passed: [set-self]
+      trigger: true
+
+    - task: oci-build
+      privileged: true
+      file: common-pipelines/container/oci-build.yml
+      params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
+
+    - in_parallel:
+      - task: usg-audit
+        file: common-pipelines/container/usg-audit.yml
+        image: image
+
+      - task: scan-image
+        file: common-pipelines/container/scan-image.yml
+
+  on_failure:
+    put: slack
+    params:
+      text:  |
+        :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED to upload image to ECR
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: '#cg-platform-news'
+      username: ((slack-username))
+      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+
 
 resources:
 
@@ -53,13 +85,6 @@ resources:
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines
-    branch: main
-    commit_verification_keys: ((cloud-gov-pgp-keys))
-
-- name: src
-  type: git
-  source:
-    uri: https://github.com/((src-repo))
     branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
@@ -71,6 +96,18 @@ resources:
     access_token: ((cg-ci-bot-ghtoken))
     disable_forks: true
     base_branch: main
+
+- name: slack
+  type: slack-notification
+  source:
+    url: ((slack-webhook-url))
+
+- name: src
+  type: git
+  source:
+    uri: https://github.com/((src-repo))
+    branch: main
+    commit_verification_keys: ((cloud-gov-pgp-keys))
 
 resource_types:
 - name: slack-notification

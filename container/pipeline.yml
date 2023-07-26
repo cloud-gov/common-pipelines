@@ -69,8 +69,12 @@ jobs:
         file: common-pipelines/container/usg-audit.yml
         image: image
 
-      - task: scan-image
-        file: common-pipelines/container/scan-image.yml
+      - do:
+        - task: scan-image
+          file: common-pipelines/container/scan-image.yml
+
+        - task: cve-check
+          file: common-pipelines/container/cve-check.yml
 
   on_failure:
     put: slack

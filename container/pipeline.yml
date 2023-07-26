@@ -37,8 +37,12 @@ jobs:
         file: common-pipelines/container/usg-audit.yml
         image: image
 
-      - task: scan-image
-        file: common-pipelines/container/scan-image.yml
+      - do:
+        - task: scan-image
+          file: common-pipelines/container/scan-image.yml
+
+        - task: cve-check
+          file: common-pipelines/container/cve-check.yml
 
   on_failure:
     put: pull-request
@@ -85,7 +89,7 @@ resources:
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines
-    branch: main
+    branch: cve-check
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 - name: pull-request
@@ -106,7 +110,7 @@ resources:
   type: git
   source:
     uri: https://github.com/((src-repo))
-    branch: main
+    branch: test-pr
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 resource_types:

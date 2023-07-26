@@ -6,6 +6,9 @@ image_resource:
   source:
     repository: concourse/oci-build-task
 
+caches:
+- path: cache
+
 inputs:
 - name: src
 

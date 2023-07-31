@@ -57,6 +57,10 @@ Did you create the repository in ECR first? Did you set `image-repository` in Cr
 
 ## Design choices
 
+### Why tag with the git short hash / short_ref?
+
+We build a variety of docker images with a variety of versioning schemes, ranging from "none" to semantic versioning. We may expand our tagging scheme in the future, but for now, the short hash — the first seven characters of the commit SHA — is a tag that works universally and functions as a reference back to the commit the image was built from, which is useful in troubleshooting.
+
 ### Why load step params from a map instead of individually?
 
 The current approach groups task parameters into a map (see [Usage](#Usage)) and sets the entire map "structurally" on the task at once. An alternative approach would be eliding the map and specifying each parameter in the vars file or CredHub separately, like:

@@ -4,7 +4,9 @@ Build, audit, and scan Open Container Initiative (OCI) images on PR, and push th
 
 ## Usage
 
-Copy the contents of [example](example) into folder `ci/` in your repository, set `src-repo` on the appropriate path in CredHub, and run:
+Copy the contents of [example](example) into folder `ci/` in your repository. In the appropriate folder in CredHub, set `src-repo` to the fully qualified name of the repository in GitHub, like `organization/repository`, and set `image-repository` to the ECR repository name, which should be the name of the GitHub repository without the organization.
+
+Once set, run:
 
 ```sh
 fly -t ci set-pipeline --pipeline YOUR-PIPELINE-NAME --config ci/pipeline.yml --load-vars-from ci/vars.yml
@@ -12,7 +14,11 @@ fly -t ci set-pipeline --pipeline YOUR-PIPELINE-NAME --config ci/pipeline.yml --
 
 It is recommended that `YOUR-PIPELINE-NAME` be your repository name so you can find the pipeline easily in Concourse.
 
-The vars in `vars.yml` may be assigned empty maps:
+If problems occur, see [Troubleshooting](#Troubleshooting).
+
+### Vars file
+
+The vars in `your-repo/ci/vars.yml` may be assigned empty maps:
 
 ```yaml
 # vars.yml
@@ -34,6 +40,20 @@ Most params have reasonable defaults and don't need to be explicitly set. Test w
 Note that `vars.yml` cannot be empty; it must include maps, even empty ones, for every parameter specified in the pipeline, or the `set-self` job will fail because it cannot find the vars.
 
 Since the vars file is in a GitHub repository, it cannot contain sensitive params. Storing the vars in CredHub would be better but is not currently possible; see "Design choices" below.
+
+## Troubleshooting
+
+See also [..README.md - Troubleshooting](../README.md#Troubleshooting).
+
+### Failing to push
+
+If the `put: image` step fails and the log shows the following:
+
+```
+retrying Post "https://aws-account-number.dkr.ecr.us-gov-west-1.amazonaws.com/v2/cloud-gov/example-pipeline/blobs/uploads/": EOF
+```
+
+Did you create the repository in ECR first? Did you set `image-repository` in CredHub to the name of the GitHub repository, excluding the GitHub organization?
 
 ## Design choices
 

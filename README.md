@@ -4,6 +4,8 @@ Reusable Concourse pipelines. Reference the pipeline for your app's language, `f
 
 ## Usage
 
+See each pipeline folder for pipeline-specific details. The general instructions follow.
+
 Set the `src-repo` value in your repository's Credhub path:
 
 ```sh
@@ -55,3 +57,7 @@ cloud.gov maintains a variety of software written in a handful of programming la
 ## Development
 
 If you want to iterate on a pipeline in this repository, consider pushing your changes to a topic branch. Topic branches do not have merge protection, so you will be able to iterate more quickly without getting pull requests approved. Change your `pipeline.yml` in your downstream repository to reference your topic branch instead of `main` in the `common-pipelines` resource to continuously pull in your changes. (You can consider working on a topic branch in your downstream repo as well.)
+
+## Troubleshooting
+
+If your pipeline shows up as "Archived" in Concourse after running the steps in [Usage](#Usage), the most likely reason is that a branch is wrong, either in `common-pipelines` (if you are using a topic branch to work on a pipeline; see [Development](#Development)) or in your own repository's `ci/pipeline.yml`. Double-check that they all match and set the pipeline again. (You may need to run `fly destroy-pipeline` to remove the archived pipeline.)

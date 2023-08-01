@@ -8,7 +8,7 @@ jobs:
     - set_pipeline: self
       file: common-pipelines/container/pipeline.yml
       var_files:
-        - pipeline-configuration/ci/vars.yml
+        - pipeline-config/ci/vars.yml
 
 - name: pull-request
   plan:

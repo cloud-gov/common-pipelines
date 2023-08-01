@@ -140,7 +140,7 @@ resources:
   type: git
   source:
     uri: https://github.com/((src-repo))
-    branch: main
+    branch: ((src-target-branch))
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 resource_types:

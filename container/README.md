@@ -6,6 +6,8 @@ Build, audit, and scan Open Container Initiative (OCI) images on PR, and push th
 
 Copy the contents of [example](example) into folder `ci/` in your repository. In the appropriate folder in CredHub, set `src-repo` to the fully qualified name of the repository in GitHub, like `organization/repository`, and set `image-repository` to the ECR repository name, which should be the name of the GitHub repository without the organization.
 
+* src-target-branch (todo)
+
 Once set, run:
 
 ```sh

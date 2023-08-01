@@ -101,7 +101,7 @@ resources:
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines
-    branch: main
+    branch: pipeline-config-repo
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 - name: image
@@ -119,7 +119,7 @@ resources:
   type: git
   source:
     uri: https://github.com/((pipeline-config-repo))
-    branch: main
+    branch: build-upstream
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 - name: pull-request

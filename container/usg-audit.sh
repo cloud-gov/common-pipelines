@@ -13,9 +13,9 @@ enable_services:
 - esm-infra
 EOF
 
-apt-get update
-apt-get -y upgrade
-apt-get -y -q install \
+apt-get -qq update
+apt-get -y -qq upgrade
+apt-get -y -qq install \
   ubuntu-advantage-tools \
   ca-certificates \
   python3-pip
@@ -23,7 +23,7 @@ apt-get -y -q install \
 echo "UA attaching"
 ua attach --attach-config ua-attach-config.yaml
 
-apt-get -y -q install usg
+apt-get -y -qq install usg
 
 echo "installing bs4"
 # Install the python library BeautifulSoup to parse html

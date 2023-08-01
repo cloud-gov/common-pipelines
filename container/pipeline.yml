@@ -110,6 +110,7 @@ resources:
     aws_access_key_id: ((ecr_aws_key))
     aws_secret_access_key: ((ecr_aws_secret))
     repository: ((image-repository))
+    tag: latest
     aws_region: us-gov-west-1
 
 - name: pull-request

@@ -78,3 +78,11 @@ In other words, this approach results in the smallest API surface and least impl
 ### Why load step params from a vars file in your repository instead of CredHub?
 
 Vars in CredHub of type `json` are not [structurally substituted](https://concourse-ci.org/vars.html#var-interpolation) like vars in a local yaml (or JSON!) file. Without structural substitution, you'd need to set each value individually; see the previous section for why this would create more work. (Issue or discussion on Concourse repo forthcoming.)
+
+### Why have separate pipeline-config-repo and src-repo vars?
+
+Or: Why have separate pipeline-config and src resources?
+
+The motivating use case is building images from repositories we do not control. For example, [concourse/git-resource](https://github.com/concourse/git-resource) contains a Dockerfile that can be customized with the base image of your choice by setting the `base_image` ARG.
+
+This configuration must live in a repository somewhere due to the Concourse bug described in the previous section, so we must have two repository references: One for the source and one for the pipeline configuration.

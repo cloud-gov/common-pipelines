@@ -3,12 +3,12 @@ jobs:
   plan:
     - get: common-pipelines
       trigger: true
-    - get: src
+    - get: pipeline-config
       trigger: true
     - set_pipeline: self
       file: common-pipelines/container/pipeline.yml
       var_files:
-        - src/ci/vars.yml
+        - pipeline-configuration/ci/vars.yml
 
 - name: pull-request
   plan:
@@ -112,6 +112,15 @@ resources:
     repository: ((image-repository))
     tag: latest
     aws_region: us-gov-west-1
+
+# Source of configuration for this pipeline, like vars.yml. May be the same as
+# src.
+- name: pipeline-config
+  type: git
+  source:
+    uri: https://github.com/((pipeline-config-repo))
+    branch: main
+    commit_verification_keys: ((cloud-gov-pgp-keys))
 
 - name: pull-request
   type: pull-request

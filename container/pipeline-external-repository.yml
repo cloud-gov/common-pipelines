@@ -17,6 +17,8 @@ jobs:
 
     - get: base-image
       trigger: true
+      params:
+        format: oci
 
     - get: common-pipelines
       passed: [set-self]

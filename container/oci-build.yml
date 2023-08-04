@@ -23,7 +23,7 @@ params:
   # Full reference: https://github.com/concourse/oci-build-task#params
 
   # Match the base image build ARG to the image reference set in IMAGE_ARG_base_image.
-  BUILD_ARG_base_image: base-image
+  # BUILD_ARG_base_image: base-image
   # Required for running 'usg' hardening tool.
   BUILD_ARG_TOKEN: ((ubuntu-advantage-token))
   # Required to use the image in later steps.
@@ -31,4 +31,4 @@ params:
   # Set build context to the repository containing the dockerfile.
   CONTEXT: src
   # Load the base image tarball from the base-image input into an OCI image reference.
-  IMAGE_ARG_base-image: base-image/image.tar
+  IMAGE_ARG_base_image: base-image/image.tar

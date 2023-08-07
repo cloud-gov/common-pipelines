@@ -81,10 +81,12 @@ In other words, this approach results in the smallest API surface and least impl
 
 Vars in CredHub of type `json` are not [structurally substituted](https://concourse-ci.org/vars.html#var-interpolation) like vars in a local yaml (or JSON!) file. Without structural substitution, you'd need to set each value individually; see the previous section for why this would create more work. (Issue or discussion on Concourse repo forthcoming.)
 
-### Why have separate pipeline-config-repo and src-repo vars?
+### Why have separate pipelines for GitHub repos inside and outside the cloud-gov org?
 
-Or: Why have separate pipeline-config and src resources?
+Building images from repositories we do not control has different requirements:
 
-The motivating use case is building images from repositories we do not control. For example, [concourse/git-resource](https://github.com/concourse/git-resource) contains a Dockerfile that can be customized with the base image of your choice by setting the `base_image` ARG.
+* Building pull requests is not desirable because we cannot provide automated feedback on those PRs like we can for PRs in our own GitHub org
+* Commits for external repositories cannot be verified, but commits for cloud-gov repositories *must* be verified, and it would be difficult or impossible to configure the `src` resource conditionally based on GitHub org
+* When building internal repositories, the pipeline configuration (pipeline.yml and vars.yml) are in the same repository (src) as the Dockerfile and source code. When building an external repository, this is not the case; we need separate Concourse resources for the source repository and our pipeline configuration.
 
-This configuration must live in a repository somewhere due to the Concourse bug described in the previous section, so we must have two repository references: One for the source and one for the pipeline configuration.
+To accommodate these differences, we maintain two different pipeline files.

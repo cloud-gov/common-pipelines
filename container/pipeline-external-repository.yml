@@ -1,10 +1,11 @@
 jobs:
 - name: set-self
   plan:
-    - get: common-pipelines
-      trigger: true
-    - get: pipeline-config
-      trigger: true
+    - in_parallel:
+      - get: common-pipelines
+        trigger: true
+      - get: pipeline-config
+        trigger: true
     - set_pipeline: self
       file: common-pipelines/container/pipeline-external-repository.yml
       var_files:
@@ -12,17 +13,18 @@ jobs:
 
 - name: main
   plan:
-    - get: src
-      trigger: true
+    - in_parallel:
+      - get: src
+        trigger: true
 
-    - get: base-image
-      trigger: true
-      params:
-        format: oci
+      - get: base-image
+        trigger: true
+        params:
+          format: oci
 
-    - get: common-pipelines
-      passed: [set-self]
-      trigger: true
+      - get: common-pipelines
+        passed: [set-self]
+        trigger: true
 
     - task: oci-build
       privileged: true

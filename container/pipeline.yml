@@ -1,10 +1,11 @@
 jobs:
 - name: set-self
   plan:
-    - get: common-pipelines
-      trigger: true
-    - get: src
-      trigger: true
+    - in_parallel:
+      - get: common-pipelines
+        trigger: true
+      - get: src
+        trigger: true
     - set_pipeline: self
       file: common-pipelines/container/pipeline.yml
       var_files:
@@ -12,13 +13,14 @@ jobs:
 
 - name: pull-request
   plan:
-    - get: pull-request
-      version: every
-      trigger: true
+    - in_parallel:
+      - get: pull-request
+        version: every
+        trigger: true
 
-    - get: common-pipelines
-      passed: [set-self]
-      trigger: true
+      - get: common-pipelines
+        passed: [set-self]
+        trigger: true
 
     - put: pull-request
       params:
@@ -53,12 +55,13 @@ jobs:
 
 - name: main
   plan:
-    - get: src
-      trigger: true
+    - in_parallel:
+      - get: src
+        trigger: true
 
-    - get: common-pipelines
-      passed: [set-self]
-      trigger: true
+      - get: common-pipelines
+        passed: [set-self]
+        trigger: true
 
     - task: oci-build
       privileged: true

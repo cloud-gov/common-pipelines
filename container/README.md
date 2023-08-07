@@ -4,9 +4,14 @@ Build, audit, and scan Open Container Initiative (OCI) images on PR, and push th
 
 ## Usage
 
-Copy the contents of [example](example) into folder `ci/` in your repository. In the appropriate folder in CredHub, set `src-repo` to the fully qualified name of the repository in GitHub, like `organization/repository`, and set `image-repository` to the ECR repository name, which should be the name of the GitHub repository without the organization.
+Copy an example from [examples](examples) into your repository.
 
-* src-target-branch (todo)
+* If you are building a repository in the `cloud-gov` GitHub organization, copy `cloud-gov-repo`.
+  * Set the values in `ci/vars.yml` as needed. All values present in the example file are required.
+  * Set `src-repo` to a value like `cloud-gov/your-repository` in CredHub.
+* If you are building a repository in a different GitHub organization, copy `external-repo`.
+  * Set `pipeline-config-repo` to a value like `cloud-gov/your-repository` in CredHub.
+  * Set the values in `ci/vars.yml` as needed. All values present in the example file are required.
 
 Once set, run:
 
@@ -14,20 +19,20 @@ Once set, run:
 fly -t ci set-pipeline --pipeline YOUR-PIPELINE-NAME --config ci/pipeline.yml --load-vars-from ci/vars.yml
 ```
 
-It is recommended that `YOUR-PIPELINE-NAME` be your repository name so you can find the pipeline easily in Concourse.
+It is recommended that your pipeline name, image name, and repository name all be identical so it is easy to locate them all.
 
 If problems occur, see [Troubleshooting](#Troubleshooting).
 
 ### Vars file
 
-The vars in `your-repo/ci/vars.yml` may be assigned empty maps:
+Some vars in `your-repo/ci/vars.yml` may be assigned empty maps:
 
 ```yaml
 # vars.yml
 oci-build-params: {}
 ```
 
-Or you can populate the maps with params to pass to individual steps:
+You can populate the maps with params to pass to individual steps:
 
 ```yaml
 # example: the oci-build step accepts a map named `oci-build-params`
@@ -37,7 +42,7 @@ oci-build-params:
   DOCKERFILE: build/docker/Dockerfile # specify Dockerfile location when it is not in the repository root
 ```
 
-Most params have reasonable defaults and don't need to be explicitly set. Test with your repository to find out.
+Many params have reasonable defaults and don't need to be explicitly set. Test with your repository to find out.
 
 Note that `vars.yml` cannot be empty; it must include maps, even empty ones, for every parameter specified in the pipeline, or the `set-self` job will fail because it cannot find the vars.
 

@@ -75,7 +75,7 @@ resources:
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines
-    branch: pipeline-config-repo
+    branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 - name: image
@@ -92,7 +92,7 @@ resources:
   type: git
   source:
     uri: https://github.com/((pipeline-config-repo))
-    branch: build-upstream
+    branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 - name: slack

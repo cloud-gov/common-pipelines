@@ -1,2 +1,5 @@
-# All empty by default. See ../README.md#Usage for details.
+# See ../README.md#Usage for details.
+base-image: ubuntu
+base-image-tag: "22.04"
+image-repository: cloud-gov-repo
 oci-build-params: {}

@@ -19,10 +19,10 @@ jobs:
         values:
           - ubuntu-hardened
       do:
-      - set_pipeline: ((.name))
+      - set_pipeline: ((.:name))
         file: common-pipelines/container/pipeline.yml
         var_files:
-          - src/ci/internal/((.name))/vars.yml
+          - src/ci/internal/((.:name))/vars.yml
 
 - name: set-external-pipelines
   plan:
@@ -34,10 +34,10 @@ jobs:
           - git-resource
           - registry-image-resource
       do:
-      - set_pipeline: ((.name))
+      - set_pipeline: ((.:name))
         file: common-pipelines/container/pipeline-external-repository.yml
         var_files:
-          - src/ci/external/((.name))/vars.yml
+          - src/ci/external/((.:name))/vars.yml
 
 resources:
 - name: src

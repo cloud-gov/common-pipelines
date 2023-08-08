@@ -1,0 +1,47 @@
+# job that sets all the rest
+jobs:
+- name: set-self
+  plan:
+    - in_parallel:
+      - get: common-pipelines
+        trigger: true
+      - get: src
+        trigger: true
+    - set_pipeline: self
+      file: src/ci/pipeline.yml
+
+- name: set-internal-pipelines
+  plan:
+    - get: common-pipelines
+      trigger: true
+    - across:
+      - var: name # repo, pipeline, and image name; all the same.
+        values:
+          - ubuntu-hardened
+      do:
+      - set_pipeline: ((.name))
+        file: common-pipelines/container/pipeline.yml
+        var_files:
+          - src/ci/internal/((.name))/vars.yml
+
+- name: set-external-pipelines
+  plan:
+    - get: common-pipelines
+      trigger: true
+    - across:
+      - var: name # repo, pipeline, and image name; all the same.
+        values:
+          - git-resource
+      do:
+      - set_pipeline: ((.name))
+        file: common-pipelines/container/pipeline-external-repository.yml
+        var_files:
+          - src/ci/external/((.name))/vars.yml
+
+resources:
+- name: src
+  type: git
+  source:
+    uri: https://github.com/cloud-gov/set-container-pipelines
+    branch: main
+    commit_verification_keys: ((cloud-gov-pgp-keys))

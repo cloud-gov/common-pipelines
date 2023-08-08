@@ -1,6 +1,6 @@
 base-image: ubuntu
 base-image-tag: "22.04"
-image-repository: git-resource
+image-repository: registry-image-resource
 oci-build-params: {}
-src-repo: concourse/git-resource
+src-repo: concourse/registry-image-resource
 src-target-branch: master

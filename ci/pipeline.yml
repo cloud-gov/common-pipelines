@@ -32,6 +32,7 @@ jobs:
       - var: name # repo, pipeline, and image name; all the same.
         values:
           - git-resource
+          - registry-image-resource
       do:
       - set_pipeline: ((.name))
         file: common-pipelines/container/pipeline-external-repository.yml

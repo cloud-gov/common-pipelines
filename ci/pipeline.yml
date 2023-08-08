@@ -44,5 +44,5 @@ resources:
   type: git
   source:
     uri: https://github.com/cloud-gov/set-container-pipelines
-    branch: main
+    branch: add-existing-pipelines
     commit_verification_keys: ((cloud-gov-pgp-keys))

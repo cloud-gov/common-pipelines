@@ -40,6 +40,13 @@ jobs:
           - src/ci/external/((.:name))/vars.yml
 
 resources:
+- name: common-pipelines
+  type: git
+  source:
+    uri: https://github.com/cloud-gov/common-pipelines
+    branch: main
+    commit_verification_keys: ((cloud-gov-pgp-keys))
+
 - name: src
   type: git
   source:

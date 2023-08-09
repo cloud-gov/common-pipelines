@@ -308,7 +308,7 @@
     <!--4.2.2.7 Ensure rsyslog is not configured to receive logs from a remote client (Automated)-->
     <select idref="xccdf_org.ssgproject.content_rule_rsyslog_nolisten" selected="true"/>
     <!--4.2.3 Ensure all logfiles have appropriate permissions and ownership (Automated)-->
-    <select idref="xccdf_org.ssgproject.content_rule_permissions_local_var_log" selected="true"/>
+    <select idref="xccdf_org.ssgproject.content_rule_permissions_local_var_log" selected="false"/>
     <!--5.1.1 Ensure cron daemon is enabled and running (Automated)-->
     <select idref="xccdf_org.ssgproject.content_rule_service_cron_enabled" selected="true"/>
     <!--5.1.2 Ensure permissions on /etc/crontab are configured (Automated)-->

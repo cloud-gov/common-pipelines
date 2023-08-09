@@ -20,6 +20,7 @@ jobs:
     - across:
       - var: name # repo, pipeline, and image name; all the same.
         values:
+          - s3-simple-resource
           - ubuntu-hardened
       do:
       - set_pipeline: ((.:name))

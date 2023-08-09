@@ -1,0 +1,5 @@
+base-image: ubuntu
+base-image-tag: "22.04"
+image-repository: general-task
+oci-build-params: {}
+src-repo: cloud-gov/general-task

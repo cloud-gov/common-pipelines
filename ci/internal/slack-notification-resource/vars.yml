@@ -3,6 +3,6 @@ base-image-tag: "latest"
 image-repository: slack-notification-resource
 oci-build-params: {
   CONTEXT: src,
-  DOCKERFILE: dockerfiles/ubuntu/Dockerfile
+  DOCKERFILE: $CONTEXT/dockerfiles/ubuntu/Dockerfile
 }
 src-repo: cloud-gov/slack-notification-resource

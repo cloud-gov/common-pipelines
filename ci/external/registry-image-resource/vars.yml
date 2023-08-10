@@ -1,5 +1,5 @@
-base-image: ubuntu
-base-image-tag: "22.04"
+base-image: ubuntu-hardened
+base-image-tag: "latest"
 image-repository: registry-image-resource
 oci-build-params: {}
 src-repo: concourse/registry-image-resource

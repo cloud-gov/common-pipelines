@@ -51,9 +51,6 @@ jobs:
 - name: continuous-scan
   plan:
     - in_parallel:
-      - get: src
-        trigger: false
-
       - get: image
         trigger: false
         params:
@@ -62,7 +59,7 @@ jobs:
       - get: common-pipelines
         trigger: false
 
-      - get: every-30-days
+      - get: daily
         trigger: true
 
     - in_parallel:
@@ -133,10 +130,10 @@ resources:
     branch: ((src-target-branch))
     # Since src is a repo outside the cloud-gov org, don't verify commits.
 
-- name: every-30-days
+- name: daily
   type: time
   source:
-    interval: 720h
+    interval: 24h
 
 resource_types:
 - name: slack-notification

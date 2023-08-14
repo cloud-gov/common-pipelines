@@ -190,7 +190,7 @@ resources:
 - name: every-30-days
   type: time
   source:
-    interval: 30d
+    interval: 720h
 
 resource_types:
 - name: slack-notification

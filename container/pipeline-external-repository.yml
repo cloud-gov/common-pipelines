@@ -62,7 +62,7 @@ jobs:
       - get: common-pipelines
         trigger: false
 
-      - get: monthly
+      - get: every-30-days
         trigger: true
 
     - in_parallel:
@@ -109,7 +109,7 @@ resources:
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines
-    branch: main
+    branch: continuous-scanning
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 - name: image
@@ -133,20 +133,13 @@ resources:
     branch: ((src-target-branch))
     # Since src is a repo outside the cloud-gov org, don't verify commits.
 
-- name: monthly
-  type: cron-resource
+- name: every-30-days
+  type: time
   source:
-    expression: "0 6 22 * *"
-    location: "America/New_York"
-    fire_immediately: true
+    interval: 30d
 
 resource_types:
 - name: slack-notification
   type: registry-image
   source:
     repository: cfcommunity/slack-notification-resource
-
-- name: cron-resource
-  type: docker-image
-  source:
-    repository: cftoolsmiths/cron-resource

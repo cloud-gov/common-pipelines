@@ -109,7 +109,7 @@ resources:
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines
-    branch: continuous-scanning
+    branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))
 
 - name: image

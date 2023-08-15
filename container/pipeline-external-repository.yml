@@ -48,6 +48,48 @@ jobs:
       username: ((slack-username))
       icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
+- name: continuous-scan
+  plan:
+    - in_parallel:
+      - get: image
+        trigger: false
+        params:
+          format: oci
+
+      - get: common-pipelines
+        trigger: false
+
+      - get: daily
+        trigger: true
+
+    - in_parallel:
+      - do:
+        - task: scan-image
+          file: common-pipelines/container/scan-image.yml
+
+        - task: cve-check
+          file: common-pipelines/container/cve-check.yml
+
+  on_failure:
+    put: slack
+    params:
+      text:  |
+        :x: Continuous Scan of `$BUILD_PIPELINE_NAME` FAILED
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: '#cg-platform-news'
+      username: ((slack-username))
+      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+
+  on_success:
+    put: slack
+    params:
+      text:  |
+        :white_check_mark: Continuous Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: '#cg-platform-news'
+      username: ((slack-username))
+      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+
 
 resources:
 
@@ -87,6 +129,11 @@ resources:
     uri: https://github.com/((src-repo))
     branch: ((src-target-branch))
     # Since src is a repo outside the cloud-gov org, don't verify commits.
+
+- name: daily
+  type: time
+  source:
+    interval: 24h
 
 resource_types:
 - name: slack-notification

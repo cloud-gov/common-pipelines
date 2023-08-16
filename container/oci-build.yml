@@ -21,7 +21,10 @@ run:
   args:
   - -exc
   - |
-    sed -i '/FROM ${base_image}/a ARG DEBIAN_FRONTEND=noninteractive\n' src/Dockerfile
+    if [[ -z "$DOCKERFILE"]]; then
+    export DOCKERFILE=$CONTEXT/Dockerfile
+    fi
+    sed -i '/FROM ${base_image} AS resource/a ARG DEBIAN_FRONTEND=noninteractive\n' $DOCKERFILE
     build
 
 params:

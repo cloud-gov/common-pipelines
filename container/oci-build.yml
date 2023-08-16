@@ -17,7 +17,12 @@ outputs:
 - name: image
 
 run:
-  path: build
+  path: sh
+  args:
+  - -exc
+  - |
+    sed -i '/FROM ${base_image}/a ARG DEBIAN_FRONTEND=noninteractive\n' src/Dockerfile
+    build
 
 params:
   # Full reference: https://github.com/concourse/oci-build-task#params

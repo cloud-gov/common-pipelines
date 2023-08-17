@@ -17,7 +17,15 @@ outputs:
 - name: image
 
 run:
-  path: build
+  path: sh
+  args:
+  - -exc
+  - |
+    if [[ -z "$DOCKERFILE"]]; then
+    export DOCKERFILE=$CONTEXT/Dockerfile
+    fi
+    sed -i '/FROM ${base_image} AS resource/a ARG DEBIAN_FRONTEND=noninteractive\n' $DOCKERFILE
+    build
 
 params:
   # Full reference: https://github.com/concourse/oci-build-task#params

@@ -24,6 +24,7 @@ jobs:
           - s3-simple-resource
           - ubuntu-hardened
           - slack-notification-resource
+          - s3-resource
       do:
       - set_pipeline: ((.:name))
         file: common-pipelines/container/pipeline.yml

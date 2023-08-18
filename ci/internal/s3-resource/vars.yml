@@ -1,0 +1,7 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: s3-resource
+oci-build-params: {
+  DOCKERFILE: src/dockerfiles/ubuntu/Dockerfile
+}
+src-repo: cloud-gov/s3-resource

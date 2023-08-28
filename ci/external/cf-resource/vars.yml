@@ -1,0 +1,8 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: cf-resource
+oci-build-params: {
+  DOCKERFILE: src/dockerfiles/ubuntu/Dockerfile
+}
+src-repo: cloudfoundry-community/cf-resource
+src-target-branch: master

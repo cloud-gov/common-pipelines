@@ -41,6 +41,7 @@ jobs:
     - across:
       - var: name # repo, pipeline, and image name; all the same.
         values:
+          - cf-resource
           - git-resource
           - registry-image-resource
       do:

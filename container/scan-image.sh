@@ -1,4 +1,8 @@
 #!/bin/bash
+
+echo "Installing grype cli"
+curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+
 grype image/image.tar -c common-pipelines/container/grype.yaml -q -o json --file cves/output.json
 grype image/image.tar -c common-pipelines/container/grype.yaml -q -o table --file table.txt
 

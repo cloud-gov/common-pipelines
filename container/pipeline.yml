@@ -14,6 +14,8 @@ jobs:
       - get: common-pipelines
         trigger: true
 
+      - get: general-task
+
     - put: pull-request
       params:
         path: pull-request
@@ -35,9 +37,11 @@ jobs:
       - do:
         - task: scan-image
           file: common-pipelines/container/scan-image.yml
+          image: general-task
 
         - task: cve-check
           file: common-pipelines/container/cve-check.yml
+          image: general-task
 
   on_failure:
     put: pull-request
@@ -59,6 +63,8 @@ jobs:
       - get: common-pipelines
         trigger: true
 
+      - get: general-task
+
     - task: oci-build
       privileged: true
       file: common-pipelines/container/oci-build.yml
@@ -72,9 +78,11 @@ jobs:
       - do:
         - task: scan-image
           file: common-pipelines/container/scan-image.yml
+          image: general-task
 
         - task: cve-check
           file: common-pipelines/container/cve-check.yml
+          image: general-task
 
     - put: image
       inputs:
@@ -108,13 +116,17 @@ jobs:
       - get: daily
         trigger: true
 
+      - get: general-task
+
     - in_parallel:
       - do:
         - task: scan-image
           file: common-pipelines/container/scan-image.yml
+          image: general-task
 
         - task: cve-check
           file: common-pipelines/container/cve-check.yml
+          image: general-task
 
   on_failure:
     put: slack
@@ -189,11 +201,33 @@ resources:
   source:
     interval: 24h
 
+- name: general-task
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: general-task
+    aws_region: us-gov-west-1
+    tag: latest
+
 resource_types:
+- name: registry-image
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: registry-image-resource
+    aws_region: us-gov-west-1
+    tag: latest
+
 - name: slack-notification
   type: registry-image
   source:
-    repository: cfcommunity/slack-notification-resource
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: slack-notification-resource
+    aws_region: us-gov-west-1
+    tag: latest
 
 - name: pull-request
   type: registry-image

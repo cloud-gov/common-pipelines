@@ -1,6 +1,7 @@
 ---
 platform: linux
 
+#cannot be factored out because it intereferes with oci-build-task output
 image_resource:
   type: registry-image
   source:

@@ -44,6 +44,7 @@ jobs:
           - cf-resource
           - git-resource
           - registry-image-resource
+          - semver-resource
       do:
       - set_pipeline: ((.:name))
         file: common-pipelines/container/pipeline-external-repository.yml

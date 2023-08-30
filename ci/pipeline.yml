@@ -43,6 +43,7 @@ jobs:
         values:
           - cf-resource
           - git-resource
+          - github-pr-resource
           - registry-image-resource
           - semver-resource
       do:

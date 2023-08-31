@@ -14,10 +14,9 @@ RUN apt install -y --no-install-recommends \
     git-lfs \
     openssh-server \
     openssh-client \
+    git-crypt \
     && chmod +x /opt/resource/*
 COPY scripts/askpass.sh /usr/local/bin/askpass.sh
-ADD scripts/install_git_crypt.sh install_git_crypt.sh
-RUN ./install_git_crypt.sh && rm ./install_git_crypt.sh
 
 FROM resource
 LABEL MAINTAINER=telia-oss

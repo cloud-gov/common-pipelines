@@ -23,5 +23,7 @@ RUN cd ${CONCOURSE_CODE_PATH} \
 RUN cd ${CONCOURSE_CODE_PATH} \
   && mkdir -p /opt/resource \
   && cp assets/* /opt/resource
+  
+COPY --from=builder /opt/resource /opt/resource
 
 RUN rm -rf ${GOPATH} ${GOROOT} /usr/local/go /code

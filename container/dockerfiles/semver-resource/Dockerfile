@@ -4,12 +4,10 @@ FROM golang:1.14 as builder
 ENV CONCOURSE_CODE_PATH ${GOPATH}/src/github.com/concourse/semver-resource
 
 FROM ${base_image} AS resource
-COPY --from=builder /go/src/github.com/telia-oss/github-pr-resource/build /opt/resource
 RUN apt update && apt upgrade -y -o Dpkg::Options::="--force-confdef"
 RUN apt install -y --no-install-recommends \
     git \
-    bash \
-    && rm -rf /var/cache/apk/*
+    bash 
 
 ADD . /code
 

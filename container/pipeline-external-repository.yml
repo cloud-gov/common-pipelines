@@ -13,7 +13,7 @@ jobs:
       - get: common-pipelines
         trigger: ((common-pipelines-trigger))
 
-      - get: dockerfile
+      - get: common-dockerfile
         trigger: ((dockerfile-trigger))
 
       - get: general-task
@@ -118,7 +118,7 @@ resources:
     paths: ["container/*"]
     ignore_paths: ["container/dockerfiles/*"]
 
-- name: dockerfile
+- name: common-dockerfiles
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines

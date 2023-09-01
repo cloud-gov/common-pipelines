@@ -3,3 +3,6 @@ base-image-tag: "latest"
 image-repository: general-task
 oci-build-params: {}
 src-repo: cloud-gov/general-task
+common-pipelines-trigger: false
+docker-file-path: []
+docker-file-trigger: false

@@ -3,3 +3,6 @@ base-image-tag: "22.04"
 image-repository: ubuntu-hardened
 oci-build-params: {}
 src-repo: cloud-gov/ubuntu-hardened
+common-pipelines-trigger: true
+docker-file-path: []
+docker-file-trigger: false

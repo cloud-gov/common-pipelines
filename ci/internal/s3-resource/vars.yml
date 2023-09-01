@@ -5,3 +5,6 @@ oci-build-params: {
   DOCKERFILE: src/Dockerfile
 }
 src-repo: cloud-gov/s3-resource
+common-pipelines-trigger: false
+docker-file-path: []
+docker-file-trigger: false

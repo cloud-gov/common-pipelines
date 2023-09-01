@@ -4,3 +4,6 @@ image-repository: registry-image-resource
 oci-build-params: {}
 src-repo: concourse/registry-image-resource
 src-target-branch: master
+common-pipelines-trigger: false
+docker-file-path: []
+docker-file-trigger: false

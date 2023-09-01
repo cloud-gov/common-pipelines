@@ -6,3 +6,6 @@ oci-build-params: {
 }
 src-repo: cloudfoundry-community/cf-resource
 src-target-branch: master
+common-pipelines-trigger: false
+docker-file-path: []
+docker-file-trigger: false

@@ -5,3 +5,6 @@ oci-build-params: {
   DOCKERFILE: src/dockerfiles/ubuntu/Dockerfile
 }
 src-repo: cloud-gov/slack-notification-resource
+common-pipelines-trigger: false
+docker-file-path: []
+docker-file-trigger: false

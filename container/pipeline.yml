@@ -14,8 +14,8 @@ jobs:
       - get: common-pipelines
         trigger: ((common-pipelines-trigger))
 
-      - get: docker-file
-        trigger: ((docker-file-trigger))
+      - get: dockerfile
+        trigger: ((dockerfile-trigger))
 
       - get: general-task
 
@@ -64,8 +64,8 @@ jobs:
       - get: common-pipelines
         trigger: ((common-pipelines-trigger))
 
-      - get: docker-file
-        trigger: ((docker-file-trigger))
+      - get: dockerfile
+        trigger: ((dockerfile-trigger))
 
       - get: general-task
 
@@ -168,13 +168,13 @@ resources:
     paths: ["container/*"]
     ignore_paths: ["container/dockerfiles/*"]
 
-- name: docker-file
+- name: dockerfile
   type: git
   source:
     uri: https://github.com/cloud-gov/common-pipelines
     branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))
-    paths: ((docker-file-path))
+    paths: ((dockerfile-path))
 
 - name: image
   type: registry-image

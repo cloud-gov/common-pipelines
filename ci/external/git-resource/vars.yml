@@ -2,7 +2,7 @@ base-image: ubuntu-hardened
 base-image-tag: "latest"
 image-repository: git-resource
 oci-build-params: {
-  DOCKERFILE: docker-file/container/dockerfiles/git-resource/Dockerfile
+  DOCKERFILE: dockerfile/container/dockerfiles/git-resource/Dockerfile
 }
 src-repo: concourse/git-resource
 src-target-branch: master

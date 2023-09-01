@@ -2,7 +2,7 @@ base-image: ubuntu-hardened
 base-image-tag: "latest"
 image-repository: github-pr-resource
 oci-build-params: {
-  DOCKERFILE: docker-file/container/dockerfiles/github-pr-resource/Dockerfile
+  DOCKERFILE: dockerfile/container/dockerfiles/github-pr-resource/Dockerfile
 }
 src-repo: telia-oss/github-pr-resource
 src-target-branch: master

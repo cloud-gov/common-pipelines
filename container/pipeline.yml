@@ -12,7 +12,10 @@ jobs:
           format: oci
 
       - get: common-pipelines
-        trigger: true
+        trigger: ((common-pipelines-trigger))
+
+      - get: common-dockerfiles
+        trigger: ((dockerfile-trigger))
 
       - get: general-task
 
@@ -59,7 +62,10 @@ jobs:
           format: oci
 
       - get: common-pipelines
-        trigger: true
+        trigger: ((common-pipelines-trigger))
+
+      - get: common-dockerfiles
+        trigger: ((dockerfile-trigger))
 
       - get: general-task
 
@@ -159,6 +165,16 @@ resources:
     uri: https://github.com/cloud-gov/common-pipelines
     branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))
+    paths: ["container/*"]
+    ignore_paths: ["container/dockerfiles/*"]
+
+- name: common-dockerfiles
+  type: git
+  source:
+    uri: https://github.com/cloud-gov/common-pipelines
+    branch: main
+    commit_verification_keys: ((cloud-gov-pgp-keys))
+    paths: ((dockerfile-path))
 
 - name: image
   type: registry-image

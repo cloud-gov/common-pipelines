@@ -7,5 +7,5 @@ oci-build-params: {
 src-repo: telia-oss/github-pr-resource
 src-target-branch: master
 common-pipelines-trigger: false
-docker-file-path: ["container/dockerfiles/github-pr-resource/Dockerfile"]
-docker-file-trigger: true
+dockerfile-path: ["container/dockerfiles/github-pr-resource/Dockerfile"]
+dockerfile-trigger: true

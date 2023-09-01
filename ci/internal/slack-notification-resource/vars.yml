@@ -6,5 +6,5 @@ oci-build-params: {
 }
 src-repo: cloud-gov/slack-notification-resource
 common-pipelines-trigger: false
-docker-file-path: []
-docker-file-trigger: false
+dockerfile-path: []
+dockerfile-trigger: false

@@ -7,5 +7,5 @@ oci-build-params: {
 src-repo: concourse/git-resource
 src-target-branch: master
 common-pipelines-trigger: false
-docker-file-path: ["container/dockerfiles/git-resource/Dockerfile"]
-docker-file-trigger: true
+dockerfile-path: ["container/dockerfiles/git-resource/Dockerfile"]
+dockerfile-trigger: true

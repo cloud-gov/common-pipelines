@@ -7,5 +7,5 @@ oci-build-params: {
 src-repo: alphagov/paas-semver-resource
 src-target-branch: gds_main
 common-pipelines-trigger: false
-docker-file-path: ["container/dockerfiles/semver-resource/Dockerfile"]
-docker-file-trigger: true
+dockerfile-path: ["container/dockerfiles/semver-resource/Dockerfile"]
+dockerfile-trigger: true

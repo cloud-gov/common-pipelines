@@ -64,6 +64,9 @@ jobs:
       - get: common-pipelines
         trigger: ((common-pipelines-trigger))
 
+      - get: docker-file
+        trigger: ((docker-file-trigger))
+
       - get: general-task
 
     - task: oci-build

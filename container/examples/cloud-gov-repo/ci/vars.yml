@@ -5,5 +5,5 @@ image-repository: cloud-gov-repo
 oci-build-params: {}
 src-repo: cloud-gov/ubuntu-hardened
 common-pipelines-trigger: false
-docker-file-path: []
-docker-file-trigger: false
+dockerfile-path: []
+dockerfile-trigger: false

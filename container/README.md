@@ -42,6 +42,15 @@ oci-build-params:
   DOCKERFILE: build/docker/Dockerfile # specify Dockerfile location when it is not in the repository root
 ```
 
+Some vars in `your-repo/ci/vars/yml` may also be assigned empty lists:
+
+```yaml
+#vars.yml
+docker-file-path: []
+```
+
+Most often you will set the `docker-file-path` to an empty list, unless you've created a Dockerfile for an external resource in this repo. In this case you will also want to set the `docker-file-trigger` to `true` so the pipeline triggers on any Dockerfile changes.
+
 Many params have reasonable defaults and don't need to be explicitly set. Test with your repository to find out.
 
 Note that `vars.yml` cannot be empty; it must include maps, even empty ones, for every parameter specified in the pipeline, or the `set-self` job will fail because it cannot find the vars.

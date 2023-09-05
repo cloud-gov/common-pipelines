@@ -1,0 +1,11 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: email-resource
+oci-build-params: {
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/email-resource/Dockerfile
+}
+src-repo: pivotal-cf/email-resource
+src-target-branch: master
+common-pipelines-trigger: false
+dockerfile-path: ["container/dockerfiles/email-resource/Dockerfile"]
+dockerfile-trigger: true

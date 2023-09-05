@@ -2,6 +2,8 @@ ARG base_image
 
 FROM golang:1.21 as builder
 
+WORKDIR /usr/src/app
+
 COPY . .
 
 ADD https://curl.haxx.se/ca/cacert.pem /etc/ssl/certs/ca-certificates.crt

@@ -15,5 +15,7 @@ go build -o /opt/resource/check check/cmd/*.go && \
 go build -o /opt/resource/in in/cmd/*.go && \
 go build -o /opt/resource/out out/cmd/*.go
 
+RUN go test ./... -v
+
 FROM ${base_image} AS resource
 COPY --from=builder /opt/resource/ /opt/resource/

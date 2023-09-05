@@ -6,6 +6,9 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+RUN mkdir ~/.ssh/ && touch ~/.ssh/known_hosts && \
+ssh-keyscan github.com >>~/.ssh/known_hosts
+
 ADD https://curl.haxx.se/ca/cacert.pem /etc/ssl/certs/ca-certificates.crt
 
 RUN export GOPATH=$PWD/go && export PATH=$GOPATH/bin:$PATH

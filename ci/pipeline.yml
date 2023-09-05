@@ -42,6 +42,7 @@ jobs:
       - var: name # repo, pipeline, and image name; all the same.
         values:
           - cf-resource
+          - email-resource
           - git-resource
           - github-pr-resource
           - registry-image-resource

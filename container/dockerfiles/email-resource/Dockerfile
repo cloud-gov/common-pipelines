@@ -6,8 +6,6 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-ADD https://curl.haxx.se/ca/cacert.pem /etc/ssl/certs/ca-certificates.crt
-
 RUN export GOPATH=$PWD/go && export PATH=$GOPATH/bin:$PATH
 
 RUN go mod download && \

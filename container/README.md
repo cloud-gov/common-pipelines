@@ -4,22 +4,22 @@ Build, audit, and scan Open Container Initiative (OCI) images on PR, and push th
 
 ## Usage
 
-Copy an example from [examples](examples) into your repository.
+To setup a pipeline:
 
-* If you are building a repository in the `cloud-gov` GitHub organization, copy `cloud-gov-repo`.
-  * Set the values in `ci/vars.yml` as needed. All values present in the example file are required.
-  * Set `src-repo` to a value like `cloud-gov/your-repository` in CredHub.
-* If you are building a repository in a different GitHub organization, copy `external-repo`.
-  * Set `pipeline-config-repo` to a value like `cloud-gov/your-repository` in CredHub.
-  * Set the values in `ci/vars.yml` as needed. All values present in the example file are required.
+* Create a new folder (see note below on naming) in the [set-container-pipelines](https://github.com/cloud-gov/set-container-pipelines) repo.
+  * If building an image from a cloud.gov owned repository, or from a repository that has been forked into the cloud.gov organization, create the folder in `ci/internal`.
+  * If using an external organization's repository, then create the folder in `ci/external`.
+* Copy the relevant example `vars.yml` file into your new folder.
+  * Example file for [internal repos](examples/cloud-gov-repo/ci/vars.yml)
+  * Example file for [external repos](examples/external-repo/ci/vars.yml)
+* Set the values in the `vars.yml` file as needed. All values present in the example file are required.
+* Some external repos require extra configuration, see the section below on [Configuring External Repositories](#configuring-external-repositories).
+* Update the relevant list with the name of your repo in the [pipeline.yml](https://github.com/cloud-gov/set-container-pipelines/blob/main/ci/pipeline.yml) file.
+* Create a PR with your changes in the `set-containter-pipelines` repo.
 
-Once set, run:
+When the PR gets accepted and merged it will kick off the creation of a pipeline for building. auditing, and scanning your image will be created.
 
-```sh
-fly -t ci set-pipeline --pipeline YOUR-PIPELINE-NAME --config ci/pipeline.yml --load-vars-from ci/vars.yml
-```
-
-It is recommended that your pipeline name, image name, and repository name all be identical so it is easy to locate them all.
+**Note:** It is recommended that your folder name, image name, and repository name all be identical so it is easy to locate them all.
 
 If problems occur, see [Troubleshooting](#Troubleshooting).
 
@@ -56,6 +56,19 @@ Many params have reasonable defaults and don't need to be explicitly set. Test w
 Note that `vars.yml` cannot be empty; it must include maps, even empty ones, for every parameter specified in the pipeline, or the `set-self` job will fail because it cannot find the vars.
 
 Since the vars file is in a GitHub repository, it cannot contain sensitive params. Storing the vars in CredHub would be better but is not currently possible; see "Design choices" below.
+
+### Configuring External Repositories
+
+In some cases external repositories may not work out-of-the-box with our base hardened image. The following methods can be used to address these cases:
+
+1. Add a Dockerfile to the `common-pipelines` repository under `dockerfiles/<your-repo-name>`.
+   * Copy over the contents of the external repo's Dockerfile and modify it so that it builds with our base hardened image.
+   * Set the Dockerfile location in the relevant sections of the `vars.yml` file.
+2. Fork the external repository to the cloud.gov organization.
+   * Modify the Dockerfile and any other configuration files as necessary.
+   * Proceed as you would for an internal repository.
+
+Adding a Dockerfile to the `common-pipelines` repo is preferred over forking a repo when possible, as this adds less maintenance burden.
 
 ## Troubleshooting
 

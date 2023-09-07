@@ -18,7 +18,7 @@ To setup a pipeline:
 * Update the relevant list of repos in the [pipeline.yml](https://github.com/cloud-gov/set-container-pipelines/blob/main/ci/pipeline.yml) file with the name of your repo.
 * Create a PR with your changes in the `set-containter-pipelines` repo.
 
-When the PR gets accepted and merged it will kick off the creation of a pipeline for building. auditing, and scanning your image will be created.
+When the PR gets accepted and merged it will kick off the creation of a pipeline for building. auditing, and scanning your image.
 
 **Note:** It is recommended that your folder name, image name, and repository name all be identical so it is easy to locate them all.
 

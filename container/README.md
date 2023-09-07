@@ -13,8 +13,9 @@ To setup a pipeline:
   * Example file for [internal repos](examples/cloud-gov-repo/ci/vars.yml)
   * Example file for [external repos](examples/external-repo/ci/vars.yml)
 * Set the values in the `vars.yml` file as needed. All values present in the example file are required.
+* The `base-image` variable should be set to our [ubuntu-hardened](https://github.com/cloud-gov/ubuntu-hardened) image where possible
 * Some external repos require extra configuration, see the section below on [Configuring External Repositories](#configuring-external-repositories).
-* Update the relevant list with the name of your repo in the [pipeline.yml](https://github.com/cloud-gov/set-container-pipelines/blob/main/ci/pipeline.yml) file.
+* Update the relevant list of repos in the [pipeline.yml](https://github.com/cloud-gov/set-container-pipelines/blob/main/ci/pipeline.yml) file with the name of your repo.
 * Create a PR with your changes in the `set-containter-pipelines` repo.
 
 When the PR gets accepted and merged it will kick off the creation of a pipeline for building. auditing, and scanning your image will be created.
@@ -65,8 +66,10 @@ In some cases external repositories may not work out-of-the-box with our base ha
    * Copy over the contents of the external repo's Dockerfile and modify it so that it builds with our base hardened image.
    * Set the Dockerfile location in the relevant sections of the `vars.yml` file.
 2. Fork the external repository to the cloud.gov organization.
-   * Modify the Dockerfile and any other configuration files as necessary.
+   * Modify the Dockerfile to use the base hardened image and modify any other configurations necessary.
    * Proceed as you would for an internal repository.
+3. Fork the external repository and add code to manually harden the image
+   * This is only necessary for images that can't be made to work with our base hardened image
 
 Adding a Dockerfile to the `common-pipelines` repo is preferred over forking a repo when possible, as this adds less maintenance burden.
 

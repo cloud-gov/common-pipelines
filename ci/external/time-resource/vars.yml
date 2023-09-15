@@ -1,11 +1,9 @@
 base-image: ubuntu-hardened
 base-image-tag: "latest"
 image-repository: time-resource
-oci-build-params: {
-  DOCKERFILE: common-dockerfiles/container/dockerfiles/time-resource/Dockerfile
-}
+oci-build-params: {}
 src-repo: concourse/time-resource
 src-target-branch: master
 common-pipelines-trigger: false
-dockerfile-path: ["container/dockerfiles/time-resource/Dockerfile"]
-dockerfile-trigger: true
+dockerfile-path: []
+dockerfile-trigger: false

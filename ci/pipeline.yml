@@ -48,6 +48,7 @@ jobs:
           - github-pr-resource
           - registry-image-resource
           - semver-resource
+          - time-resource
       do:
       - set_pipeline: ((.:name))
         file: common-pipelines/container/pipeline-external-repository.yml

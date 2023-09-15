@@ -42,6 +42,7 @@ jobs:
     - across:
       - var: name # repo, pipeline, and image name; all the same.
         values:
+          - cf-cli-resource
           - cf-resource
           - email-resource
           - git-resource

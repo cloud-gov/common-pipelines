@@ -1,0 +1,11 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: semver-resource
+oci-build-params: {
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/semver-resource/Dockerfile
+}
+src-repo: alphagov/paas-semver-resource
+src-target-branch: gds_main
+common-pipelines-trigger: false
+dockerfile-path: ["container/dockerfiles/semver-resource/Dockerfile"]
+dockerfile-trigger: true

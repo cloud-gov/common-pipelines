@@ -1,0 +1,8 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: cron-resource
+oci-build-params: {}
+src-repo: cloud-gov/cron-resource
+common-pipelines-trigger: false
+dockerfile-path: []
+dockerfile-trigger: false

@@ -1,0 +1,11 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: cf-cli-resource
+oci-build-params: {
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/cf-cli-resource/Dockerfile
+}
+src-repo: nulldriver/cf-cli-resource
+src-target-branch: main
+common-pipelines-trigger: false
+dockerfile-path: ["container/dockerfiles/cf-cli-resource/Dockerfile"]
+dockerfile-trigger: true

@@ -1,0 +1,11 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: github-pr-resource
+oci-build-params: {
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/github-pr-resource/Dockerfile
+}
+src-repo: telia-oss/github-pr-resource
+src-target-branch: master
+common-pipelines-trigger: false
+dockerfile-path: ["container/dockerfiles/github-pr-resource/Dockerfile"]
+dockerfile-trigger: true

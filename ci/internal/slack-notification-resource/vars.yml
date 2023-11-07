@@ -1,0 +1,10 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: slack-notification-resource
+oci-build-params: {
+  DOCKERFILE: src/dockerfiles/ubuntu/Dockerfile
+}
+src-repo: cloud-gov/slack-notification-resource
+common-pipelines-trigger: false
+dockerfile-path: []
+dockerfile-trigger: false

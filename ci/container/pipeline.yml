@@ -8,7 +8,7 @@ jobs:
       - get: src
         trigger: true
     - set_pipeline: self
-      file: src/ci/pipeline.yml
+      file: src/ci/container/pipeline.yml
 
 - name: set-internal-pipelines
   plan:
@@ -30,7 +30,7 @@ jobs:
       - set_pipeline: ((.:name))
         file: common-pipelines/container/pipeline.yml
         var_files:
-          - src/ci/internal/((.:name))/vars.yml
+          - src/ci/container/internal/((.:name))/vars.yml
 
 - name: set-external-pipelines
   plan:
@@ -54,7 +54,7 @@ jobs:
       - set_pipeline: ((.:name))
         file: common-pipelines/container/pipeline-external-repository.yml
         var_files:
-          - src/ci/external/((.:name))/vars.yml
+          - src/ci/container/external/((.:name))/vars.yml
 
 resources:
 - name: common-pipelines

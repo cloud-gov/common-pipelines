@@ -6,17 +6,17 @@ Build, audit, and scan Open Container Initiative (OCI) images on PR, and push th
 
 To setup a pipeline:
 
-* Create a new folder (see note below on naming) in the [set-container-pipelines](https://github.com/cloud-gov/set-container-pipelines) repo.
-  * If building an image from a cloud.gov owned repository, or from a repository that has been forked into the cloud.gov organization, create the folder in `ci/internal`.
-  * If using an external organization's repository, then create the folder in `ci/external`.
+* Create a new folder (see note below on naming) in [ci/container](../ci/container).
+  * If building an image from a cloud.gov owned repository, or from a repository that has been forked into the cloud.gov organization, create the folder in `ci/container/internal`.
+  * If using an external organization's repository, then create the folder in `ci/container/external`.
 * Copy the relevant example `vars.yml` file into your new folder.
   * Example file for [internal repos](examples/cloud-gov-repo/ci/vars.yml)
   * Example file for [external repos](examples/external-repo/ci/vars.yml)
 * Set the values in the `vars.yml` file as needed. All values present in the example file are required.
-* The `base-image` variable should be set to our [ubuntu-hardened](https://github.com/cloud-gov/ubuntu-hardened) image where possible
-* Some external repos require extra configuration, see the section below on [Configuring External Repositories](#configuring-external-repositories).
-* Update the relevant list of repos in the [pipeline.yml](https://github.com/cloud-gov/set-container-pipelines/blob/main/ci/pipeline.yml) file with the name of your repo.
-* Create a PR with your changes in the `set-containter-pipelines` repo.
+* The `base-image` variable should be set to our [ubuntu-hardened](https://github.com/cloud-gov/ubuntu-hardened) image.
+* Some external repos require extra configuration. See the section below on [Configuring External Repositories](#configuring-external-repositories).
+* Update the relevant list of repos in the [pipeline.yml](../ci/container/pipeline.yml) file with the name of your repo.
+* Create a PR with your changes.
 
 When the PR gets accepted and merged it will kick off the creation of a pipeline for building. auditing, and scanning your image.
 
@@ -43,7 +43,7 @@ oci-build-params:
   DOCKERFILE: build/docker/Dockerfile # specify Dockerfile location when it is not in the repository root
 ```
 
-Some vars in `your-repo/ci/vars/yml` may also be assigned empty lists:
+Some vars in `your-repo/ci/vars.yml` may also be assigned empty lists:
 
 ```yaml
 #vars.yml

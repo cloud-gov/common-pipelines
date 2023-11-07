@@ -3,18 +3,13 @@ jobs:
 - name: set-self
   plan:
     - in_parallel:
-      - get: common-pipelines
-        trigger: true
       - get: src
         trigger: true
     - set_pipeline: self
-      file: src/ci/pipeline.yml
+      file: src/ci/container/pipeline.yml
 
 - name: set-internal-pipelines
   plan:
-    - get: common-pipelines
-      trigger: true
-      passed: [set-self]
     - get: src
       trigger: true
     - across:
@@ -28,15 +23,12 @@ jobs:
           - s3-resource
       do:
       - set_pipeline: ((.:name))
-        file: common-pipelines/container/pipeline.yml
+        file: src/ci/container/pipeline-internal.yml
         var_files:
-          - src/ci/internal/((.:name))/vars.yml
+          - src/ci/container/internal/((.:name))/vars.yml
 
 - name: set-external-pipelines
   plan:
-    - get: common-pipelines
-      trigger: true
-      passed: [set-self]
     - get: src
       trigger: true
     - across:
@@ -52,21 +44,14 @@ jobs:
           - time-resource
       do:
       - set_pipeline: ((.:name))
-        file: common-pipelines/container/pipeline-external-repository.yml
+        file: src/ci/container/pipeline-external.yml
         var_files:
-          - src/ci/external/((.:name))/vars.yml
+          - src/ci/container/external/((.:name))/vars.yml
 
 resources:
-- name: common-pipelines
-  type: git
-  source:
-    uri: https://github.com/cloud-gov/common-pipelines
-    branch: main
-    commit_verification_keys: ((cloud-gov-pgp-keys))
-
 - name: src
   type: git
   source:
-    uri: https://github.com/cloud-gov/set-container-pipelines
+    uri: https://github.com/cloud-gov/common-pipelines
     branch: main
     commit_verification_keys: ((cloud-gov-pgp-keys))

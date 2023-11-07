@@ -73,6 +73,21 @@ In some cases external repositories may not work out-of-the-box with our base ha
 
 Adding a Dockerfile to the `common-pipelines` repo is preferred over forking a repo when possible, as this adds less maintenance burden.
 
+## CIS Rule Customization/Tailoring
+
+We set the following CIS Rule exceptions in our `tailor.xml` file:
+
+| Rule | Name | Reason for Exception | How to Confirm |
+| ---- | ---- | -------------------- | -------------- |
+| 1.4.3 | `xccdf_org.ssgproject.content_rule_ensure_root_password_configured` | Not applicable to concourse containers | Check out documentation on [concourse internals](https://concourse-ci.org/internals.html) and [fly intercept](https://concourse-ci.org/builds.html#fly-intercept) |
+| 3.5.2.9 | `xccdf_org.ssgproject.content_rule_service_nftables_enabled` | False Positive: nftables is enabled | Run `systemctl is-enabled nftables` |
+| 3.5.2.8 | `xccdf_org.ssgproject.content_rule_nftables_ensure_default_deny_policy` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
+| 3.5.2.10 | `xccdf_org.ssgproject.content_rule_nftables_rules_permanent`| Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
+| 3.5.2.5 | `xccdf_org.ssgproject.content_rule_set_nftables_base_chain` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
+| 3.5.2.6 | `xccdf_org.ssgproject.content_rule_set_nftables_loopback_traffic` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
+| 3.5.2.4 | `xccdf_org.ssgproject.content_rule_set_nftables_table` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
+| 4.2.3 | `xccdf_org.ssgproject.content_rule_permissions_local_var_log` | Triggers on apt log files causing a false positive | Apt log permissions are set this way [by design](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=285551)
+
 ## Troubleshooting
 
 See also [..README.md - Troubleshooting](../README.md#Troubleshooting).
@@ -85,7 +100,7 @@ If the `put: image` step fails and the log shows the following:
 retrying Post "https://aws-account-number.dkr.ecr.us-gov-west-1.amazonaws.com/v2/cloud-gov/example-pipeline/blobs/uploads/": EOF
 ```
 
-Did you create the repository in ECR first? Did you set `image-repository` in CredHub to the name of the GitHub repository, excluding the GitHub organization?
+Did you create the ECR repository [in cg-provision](https://github.com/cloud-gov/cg-provision/tree/main/terraform/stacks/ecr) first? Did you set `image-repository` in CredHub to the name of the GitHub repository, excluding the GitHub organization?
 
 ## Design choices
 

@@ -2,6 +2,12 @@
 
 Reusable Concourse pipelines. Reference the pipeline for your app's language, `fly set-pipeline`, and you're done.
 
+## Index
+
+* `ci`: Concrete pipeline instances that use templates from this repository.
+* `container`: Template pipelines for containerized software.
+* `go`: Template pipeline for Go apps. Not currently in use.
+
 ## Usage
 
 See each pipeline folder for pipeline-specific details. The general instructions follow.
@@ -14,7 +20,7 @@ credhub set -n /path/to/repo/src-repo -v cloud-gov/your-repo
 
 Run `credhub find -n src-repo` for examples.
 
-Create file `ci/pipeline.yml` in your repository with the following contents, replacing LANGUAGE with your app's language:
+Create file `ci/pipeline.yml` in your repository (or this one!) with the following contents, replacing LANGUAGE with your app's language:
 
 ```yaml
 jobs:
@@ -47,6 +53,35 @@ Navigate to Concourse and un-pause the pipeline. The `bootstrap` job will run an
 An adage of Continuous Integration: "Treat pipelines like cattle, not like pets."
 
 cloud.gov maintains a variety of software written in a handful of programming languages. Apps written in the same language should be built and deployed in the same way, and developers should not have to reinvent the wheel by writing a new pipeline every time.
+
+## Architecture
+
+Common pipelines use a parent/child pattern so that one pipeline can manage many others. For example, this diagram shows the relationships between container pipelines:
+
+```mermaid
+flowchart LR
+    classDef ellipses fill:#ffffff,stroke:#ffffff
+    classDef job fill:#ecffec,stroke:#73d893
+
+    container["container pipeline"]
+    container -->|sets self| container
+    container -->|contains| external["set-external-pipelines job"]:::job
+    container -->|contains| internal["set-internal-pipelines job"]:::job
+
+    external -->|sets| cf-cli-resource["cf-cli-resource pipeline"]
+    external -->|sets| cf-resource["cf-resource pipeline"]
+    external -->|sets| external-etc["..."]:::ellipses
+    external -->|sets| time-resource["time-resource pipeline"]
+    internal -->|sets| cron-resource["cron-resource pipeline"]
+    internal -->|sets| general-task["general-task pipeline"]
+    internal -->|sets| internal-etc["..."]:::ellipses
+    internal -->|sets| s3-resource["s3-resource pipeline"]
+```
+
+This has several advantages over individually set pipelines:
+
+* Operators only need to manually fly one pipeline, for example `container`, instead of many individual pipelines, making recovery in case of system error easier.
+* The single top-level pipeline can use Concourse steps like `across` to set each child pipeline in the exact same way, with any differences extracted as `vars`. This brings all the benefits of DRY to pipelines.
 
 ## Design principles
 

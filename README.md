@@ -2,6 +2,12 @@
 
 Reusable Concourse pipelines. Reference the pipeline for your app's language, `fly set-pipeline`, and you're done.
 
+## Index
+
+* `ci`: Concrete pipeline instances that use templates from this repository.
+* `container`: Template pipelines for containerized software.
+* `go`: Template pipeline for Go apps. Not currently in use.
+
 ## Usage
 
 See each pipeline folder for pipeline-specific details. The general instructions follow.
@@ -14,7 +20,7 @@ credhub set -n /path/to/repo/src-repo -v cloud-gov/your-repo
 
 Run `credhub find -n src-repo` for examples.
 
-Create file `ci/pipeline.yml` in your repository with the following contents, replacing LANGUAGE with your app's language:
+Create file `ci/pipeline.yml` in your repository (or this one!) with the following contents, replacing LANGUAGE with your app's language:
 
 ```yaml
 jobs:
@@ -48,6 +54,35 @@ An adage of Continuous Integration: "Treat pipelines like cattle, not like pets.
 
 cloud.gov maintains a variety of software written in a handful of programming languages. Apps written in the same language should be built and deployed in the same way, and developers should not have to reinvent the wheel by writing a new pipeline every time.
 
+## Architecture
+
+Common pipelines use a parent/child pattern so that one pipeline can manage many others. For example, this diagram shows the relationships between container pipelines:
+
+```mermaid
+flowchart LR
+    classDef ellipses fill:#ffffff,stroke:#ffffff
+    classDef job fill:#ecffec,stroke:#73d893
+
+    container["container pipeline"]
+    container -->|sets self| container
+    container -->|contains| external["set-external-pipelines job"]:::job
+    container -->|contains| internal["set-internal-pipelines job"]:::job
+
+    external -->|sets| cf-cli-resource["cf-cli-resource pipeline"]
+    external -->|sets| cf-resource["cf-resource pipeline"]
+    external -->|sets| external-etc["..."]:::ellipses
+    external -->|sets| time-resource["time-resource pipeline"]
+    internal -->|sets| cron-resource["cron-resource pipeline"]
+    internal -->|sets| general-task["general-task pipeline"]
+    internal -->|sets| internal-etc["..."]:::ellipses
+    internal -->|sets| s3-resource["s3-resource pipeline"]
+```
+
+This has several advantages over individually set pipelines:
+
+* Operators only need to manually fly one pipeline, for example `container`, instead of many individual pipelines, making recovery in case of system error easier.
+* The single top-level pipeline can use Concourse steps like `across` to set each child pipeline in the exact same way, with any differences extracted as `vars`. This brings all the benefits of DRY to pipelines.
+
 ## Design principles
 
 * Developers should be able to adopt common pipelines into their pipeline with a minimum of effort. Zero or one lines of code would be ideal.
@@ -57,21 +92,6 @@ cloud.gov maintains a variety of software written in a handful of programming la
 ## Development
 
 If you want to iterate on a pipeline in this repository, consider pushing your changes to a topic branch. Topic branches do not have merge protection, so you will be able to iterate more quickly without getting pull requests approved. Change your `pipeline.yml` in your downstream repository to reference your topic branch instead of `main` in the `common-pipelines` resource to continuously pull in your changes. (You can consider working on a topic branch in your downstream repo as well.)
-
-## CIS Rule Customization/Tailoring
-
-We set the following CIS Rule exceptions in our `tailor.xml` file:
-
-| Rule | Name | Reason for Exception | How to Confirm |
-| ---- | ---- | -------------------- | -------------- |
-| 1.4.3 | `xccdf_org.ssgproject.content_rule_ensure_root_password_configured` | Not applicable to concourse containers | Check out documentation on [concourse internals](https://concourse-ci.org/internals.html) and [fly intercept](https://concourse-ci.org/builds.html#fly-intercept) |
-| 3.5.2.9 | `xccdf_org.ssgproject.content_rule_service_nftables_enabled` | False Positive: nftables is enabled | Run `systemctl is-enabled nftables` |
-| 3.5.2.8 | `xccdf_org.ssgproject.content_rule_nftables_ensure_default_deny_policy` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 3.5.2.10 | `xccdf_org.ssgproject.content_rule_nftables_rules_permanent`| Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 3.5.2.5 | `xccdf_org.ssgproject.content_rule_set_nftables_base_chain` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 3.5.2.6 | `xccdf_org.ssgproject.content_rule_set_nftables_loopback_traffic` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 3.5.2.4 | `xccdf_org.ssgproject.content_rule_set_nftables_table` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 4.2.3 | `xccdf_org.ssgproject.content_rule_permissions_local_var_log` | Triggers on apt log files causing a false positive | Apt log permissions are set this way [by design](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=285551)
 
 ## Troubleshooting
 

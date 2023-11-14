@@ -12,6 +12,7 @@ jobs:
   plan:
     - get: src
       trigger: true
+      passed: [set-self]
     - across:
       - var: name # repo, pipeline, and image name; all the same.
         values:
@@ -31,6 +32,7 @@ jobs:
   plan:
     - get: src
       trigger: true
+      passed: [set-self]
     - across:
       - var: name # repo, pipeline, and image name; all the same.
         values:

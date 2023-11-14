@@ -23,7 +23,7 @@ jobs:
           - s3-resource
       do:
       - set_pipeline: ((.:name))
-        file: src/ci/container/pipeline-internal.yml
+        file: src/container/pipeline-internal.yml
         var_files:
           - src/ci/container/internal/((.:name))/vars.yml
 
@@ -44,7 +44,7 @@ jobs:
           - time-resource
       do:
       - set_pipeline: ((.:name))
-        file: src/ci/container/pipeline-external.yml
+        file: src/container/pipeline-external.yml
         var_files:
           - src/ci/container/external/((.:name))/vars.yml
 

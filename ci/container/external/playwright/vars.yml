@@ -1,0 +1,11 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: playwright
+oci-build-params: {
+  DOCKERFILE: common-dockerfiles/docker/Dockerfile.jammy
+}
+src-repo: microsoft/playwright
+src-target-branch: main
+common-pipelines-trigger: false
+dockerfile-path: ["docker/Dockerfile.jammy"]
+dockerfile-trigger: true

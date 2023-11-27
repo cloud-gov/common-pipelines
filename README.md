@@ -10,43 +10,7 @@ Reusable Concourse pipelines. Reference the pipeline for your app's language, `f
 
 ## Usage
 
-See each pipeline folder for pipeline-specific details. The general instructions follow.
-
-Set the `src-repo` value in your repository's Credhub path:
-
-```sh
-credhub set -n /path/to/repo/src-repo -v cloud-gov/your-repo
-```
-
-Run `credhub find -n src-repo` for examples.
-
-Create file `ci/pipeline.yml` in your repository (or this one!) with the following contents, replacing LANGUAGE with your app's language:
-
-```yaml
-jobs:
-- name: set-self
-  plan:
-    - get: common-pipelines
-      trigger: true
-    - set_pipeline: self
-      file: common-pipelines/LANGUAGE/pipeline.yml
-
-resources:
-- name: common-pipelines
-  type: git
-  source:
-    uri: https://github.com/cloud-gov/common-pipelines
-    branch: main
-    commit_verification_keys: ((cloud-gov-pgp-keys))
-```
-
-Commit and push the bootstrap pipeline for future use, and bootstrap the pipeline in Concourse:
-
-```sh
-fly -t ci set-pipeline --pipeline your-pipeline-name --config ci/pipeline.yml
-```
-
-Navigate to Concourse and un-pause the pipeline. The `bootstrap` job will run and replace itself with the common pipeline you specified. If the common pipeline is updated in the future, your pipeline will automatically pull in the changes.
+See the README in each folder for pipeline-specific details. In general, you will "register" a new pipeline by modifying a parent pipeline in `ci/` and configuring it with a vars file. Once you merge your changes to `main`, the parent pipeline will automatically create your new child pipeline.
 
 ## Motivation
 
@@ -85,7 +49,7 @@ This has several advantages over individually set pipelines:
 
 ## Design principles
 
-* Developers should be able to adopt common pipelines into their pipeline with a minimum of effort. Zero or one lines of code would be ideal.
+* Developers should be able to adopt common pipelines with a minimum of effort. One line of code would be ideal.
 * The configuration options for each pipeline should be minimal. They're the API of the pipelines; keep it simple.
 * Favor convention over configuration. Repositories using common pipelines should "just work" if their folders and files are in the right place.
 
@@ -99,8 +63,8 @@ If you want to iterate on a pipeline in this repository, consider pushing your c
 
 If your pipeline shows up as "Archived" in Concourse after running the steps in [Usage](#Usage), the cause could be one of the following:
 
-* A branch is wrong, either in `common-pipelines` (if you are using a topic branch to work on a pipeline; see [Development](#Development)) or in your own repository's `ci/pipeline.yml`. Each file has a resource representing `common-pipelines` and representing your repository, making **four total resources**; Double-check that they all match and set the pipeline again. (You may need to run `fly destroy-pipeline` to remove the archived pipeline.)
-* An input name may be wrong. Check the logs of the `set_self` step for errors.
+* A branch is wrong. If you are using a topic branch to work on a pipeline, double-check that you updated all references from `main` to the topic branch. See [Development](#Development). You may need to run `fly destroy-pipeline` to remove the archived pipeline before you can `set` it again.
+* An input name may be wrong. Check the logs of any `set_pipeline` steps for errors.
 
 ### Old pipeline version
 

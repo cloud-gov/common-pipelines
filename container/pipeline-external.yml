@@ -39,6 +39,10 @@ jobs:
           file: common-pipelines/container/software-inventory.yml
           image: image
 
+        - task: list-open-ports
+          file: common-pipelines/container/list-ports.yml
+          image: image
+
     - put: image
       inputs:
         - image
@@ -83,6 +87,10 @@ jobs:
         
         - task: software-inventory
           file: common-pipelines/container/software-inventory.yml
+          image: image
+
+        - task: list-open-ports
+          file: common-pipelines/container/list-ports.yml
           image: image
 
   on_failure:

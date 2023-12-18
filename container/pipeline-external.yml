@@ -81,10 +81,6 @@ jobs:
         - task: cve-check
           file: common-pipelines/container/cve-check.yml
         
-        - task: software-inventory
-          file: common-pipelines/container/software-inventory.yml
-          image: image
-
   on_failure:
     put: slack
     params:

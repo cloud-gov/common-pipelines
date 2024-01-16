@@ -2,7 +2,7 @@
 
 Reusable Concourse pipelines. Reference the pipeline for your app's language, `fly set-pipeline`, and you're done.
 
-## Index
+## Index 
 
 * `ci`: Concrete pipeline instances that use templates from this repository.
 * `container`: Template pipelines for containerized software.

@@ -73,6 +73,14 @@ In some cases external repositories may not work out-of-the-box with our base ha
 
 Adding a Dockerfile to the `common-pipelines` repo is preferred over forking a repo when possible, as this adds less maintenance burden.
 
+### Configuring Pages Repositories
+
+In some cases Pages repositories may need to be added so the pipelines can be added to the Pages team in Concourse CI.
+
+1. Follow the above guidence for setting up the `vars.yml` and directory structure.
+2. Add the repository named directory and `vars.yml` file under `ci/container/pages/<the-repo-name>`.
+3. Add the repo name to the `set-pages-pipelines` task in the `ci/container/pipeline.yml`.
+
 ## CIS Rule Customization/Tailoring
 
 We set the following CIS Rule exceptions in our `tailor.xml` file:

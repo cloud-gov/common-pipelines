@@ -1,0 +1,183 @@
+jobs:
+- name: main
+  plan:
+    - in_parallel:
+      - get: src
+        trigger: true
+
+      - get: base-image
+        trigger: true
+        params:
+          format: oci
+
+      - get: common-pipelines
+        trigger: ((common-pipelines-trigger))
+
+      - get: common-dockerfiles
+        trigger: ((dockerfile-trigger))
+
+      - get: general-task
+
+    - task: oci-build
+      privileged: true
+      file: common-pipelines/container/oci-build.yml
+      params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
+
+    - in_parallel:
+      - task: usg-audit
+        file: common-pipelines/container/usg-audit.yml
+        image: image
+
+      - do:
+        - task: scan-image
+          file: common-pipelines/container/scan-image.yml
+
+        - task: cve-check
+          file: common-pipelines/container/cve-check.yml
+
+        - task: software-inventory
+          file: common-pipelines/container/software-inventory.yml
+          image: image
+
+    - put: image
+      inputs:
+        - image
+        - src
+      params:
+        image: image/image.tar
+        additional_tags: src/.git/short_ref
+
+  on_failure:
+    put: slack
+    params:
+      text:  |
+        :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED to upload image to ECR
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+
+- name: continuous-scan
+  plan:
+    - in_parallel:
+      - get: image
+        trigger: false
+        params:
+          format: oci
+
+      - get: common-pipelines
+        trigger: false
+
+      - get: daily
+        trigger: true
+
+      - get: general-task
+
+    - in_parallel:
+      - do:
+        - task: scan-image
+          file: common-pipelines/container/scan-image.yml
+
+        - task: cve-check
+          file: common-pipelines/container/cve-check.yml
+        
+  on_failure:
+    put: slack
+    params:
+      text:  |
+        :x: Continuous Scan of `$BUILD_PIPELINE_NAME` FAILED
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+
+  on_success:
+    put: slack
+    params:
+      text:  |
+        :white_check_mark: Continuous Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+
+
+resources:
+
+- name: base-image
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: ((base-image))
+    tag: ((base-image-tag))
+    aws_region: us-gov-west-1
+
+- name: common-pipelines
+  type: git
+  source:
+    uri: https://github.com/cloud-gov/common-pipelines
+    branch: main
+    paths: ["container/*"]
+    ignore_paths: ["container/dockerfiles/*"]
+
+- name: common-dockerfiles
+  type: git
+  source:
+    uri: https://github.com/cloud-gov/common-pipelines
+    branch: main
+    paths: ((dockerfile-path))
+
+- name: image
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: ((image-repository))
+    tag: latest
+    aws_region: us-gov-west-1
+
+- name: slack
+  type: slack-notification
+  source:
+    url: ((slack-webhook-url))
+
+- name: src
+  type: git
+  source:
+    uri: https://github.com/((src-repo))
+    branch: ((src-target-branch))
+    # Since src is a repo outside the cloud-gov org, don't verify commits.
+
+- name: daily
+  type: time
+  source:
+    interval: 24h
+
+- name: general-task
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: general-task
+    aws_region: us-gov-west-1
+    tag: latest
+
+resource_types:
+- name: registry-image
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: registry-image-resource
+    aws_region: us-gov-west-1
+    tag: latest
+
+- name: slack-notification
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: slack-notification-resource
+    aws_region: us-gov-west-1
+    tag: latest

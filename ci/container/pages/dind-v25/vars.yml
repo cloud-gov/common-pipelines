@@ -1,0 +1,11 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: pages-dind-v25
+oci-build-params: {
+  CONTEXT: src/dind/v25
+}
+src-repo: cloud-gov/pages-images
+src-target-branch: main
+common-pipelines-trigger: false
+dockerfile-path: []
+dockerfile-trigger: true

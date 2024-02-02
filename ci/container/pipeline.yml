@@ -50,6 +50,23 @@ jobs:
         var_files:
           - src/ci/container/external/((.:name))/vars.yml
 
+- name: set-pages-pipelines
+  plan:
+    - get: src
+      trigger: true
+      passed: [set-self]
+    - across:
+      - var: name # repo, pipeline, and image name; all the same.
+        values:
+          - dind-v25
+          - node-v20
+      do:
+      - set_pipeline: ((.:name))
+        file: src/container/pipeline-pages.yml
+        team: pages
+        var_files:
+          - src/ci/container/pages/((.:name))/vars.yml
+
 resources:
 - name: src
   type: git

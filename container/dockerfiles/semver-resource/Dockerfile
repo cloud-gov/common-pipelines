@@ -1,3 +1,4 @@
+# Dockerfile using our hardened base image
 ARG base_image
 FROM golang:1.14 as builder
 

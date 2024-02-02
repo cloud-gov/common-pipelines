@@ -108,7 +108,7 @@ jobs:
       text:  |
         :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED to upload image to ECR
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: '#cg-platform-news'
+      channel: ((slack-channel-failure))
       username: ((slack-username))
       icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 

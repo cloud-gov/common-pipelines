@@ -4,8 +4,8 @@ image-repository: github-pr-resource
 oci-build-params: {
   DOCKERFILE: common-dockerfiles/container/dockerfiles/github-pr-resource/Dockerfile
 }
-src-repo: telia-oss/github-pr-resource
-src-target-branch: master
+src-repo: cloud-gov/github-pr-resource
+src-target-branch: main
 common-pipelines-trigger: false
 dockerfile-path: ["container/dockerfiles/github-pr-resource/Dockerfile"]
 dockerfile-trigger: true

@@ -22,6 +22,7 @@ jobs:
           - ubuntu-hardened
           - slack-notification-resource
           - s3-resource
+          - github-pr-resource
       do:
       - set_pipeline: ((.:name))
         file: src/container/pipeline-internal.yml
@@ -40,7 +41,6 @@ jobs:
           - cf-resource
           - email-resource
           - git-resource
-          - github-pr-resource
           - registry-image-resource
           - semver-resource
           - time-resource

@@ -61,7 +61,7 @@ jobs:
           - dind-v25
           - node-v20
       do:
-      - set_pipeline: ((.:name))
+      - set_pipeline: image-((.:name))
         file: src/container/pipeline-pages.yml
         team: pages
         var_files:

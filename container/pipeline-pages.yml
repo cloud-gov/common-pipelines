@@ -1,4 +1,56 @@
 jobs:
+- name: pull-request
+  plan:
+    - in_parallel:
+      - get: src
+        resource: pull-request
+        trigger: true
+
+      - get: base-image
+        trigger: true
+        params:
+          format: oci
+
+      - get: common-pipelines
+        trigger: ((common-pipelines-trigger))
+
+      - get: common-dockerfiles
+        trigger: ((dockerfile-trigger))
+
+      - get: general-task
+
+    - task: oci-build
+      privileged: true
+      file: common-pipelines/container/oci-build.yml
+      params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
+
+    - in_parallel:
+      - task: usg-audit
+        file: common-pipelines/container/usg-audit.yml
+        image: image
+
+      - do:
+        - task: scan-image
+          file: common-pipelines/container/scan-image.yml
+
+        - task: cve-check
+          file: common-pipelines/container/cve-check.yml
+
+        - task: software-inventory
+          file: common-pipelines/container/software-inventory.yml
+          image: image
+
+  on_failure:
+    put: slack
+    params:
+      text:  |
+        :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED pull request tasks
+        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      channel: ((slack-channel))
+      username: ((slack-username))
+      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+
+
 - name: main
   plan:
     - in_parallel:
@@ -147,7 +199,15 @@ resources:
   source:
     uri: https://github.com/((src-repo))
     branch: ((src-target-branch))
-    # Since src is a repo outside the cloud-gov org, don't verify commits.
+    commit_verification_keys: ((cloud-gov-pages-gpg-keys))
+
+- name: pull-request
+  type: pull-request
+  check_every: 1m
+  source:
+    repository: ((src-repo))
+    access_token: ((pages-operations-ci-github-token))
+    disable_forks: true
 
 - name: daily
   type: time
@@ -164,6 +224,15 @@ resources:
     tag: latest
 
 resource_types:
+- name: pull-request
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: github-pr-resource
+    aws_region: us-gov-west-1
+    tag: latest
+
 - name: registry-image
   type: registry-image
   source:

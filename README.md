@@ -27,19 +27,29 @@ flowchart LR
     classDef ellipses fill:#ffffff,stroke:#ffffff
     classDef job fill:#ecffec,stroke:#73d893
 
-    container["container pipeline"]
-    container -->|sets self| container
-    container -->|contains| external["set-external-pipelines job"]:::job
-    container -->|contains| internal["set-internal-pipelines job"]:::job
+    subgraph Main Concourse Team
+        container["container pipeline"]
+        container -->|sets self| container
+        container -->|contains| external["set-external-pipelines job"]:::job
+        container -->|contains| internal["set-internal-pipelines job"]:::job
+        container -->|contains| pages["set-pages-pipelines job"]:::job
 
-    external -->|sets| cf-cli-resource["cf-cli-resource pipeline"]
-    external -->|sets| cf-resource["cf-resource pipeline"]
-    external -->|sets| external-etc["..."]:::ellipses
-    external -->|sets| time-resource["time-resource pipeline"]
-    internal -->|sets| cron-resource["cron-resource pipeline"]
-    internal -->|sets| general-task["general-task pipeline"]
-    internal -->|sets| internal-etc["..."]:::ellipses
-    internal -->|sets| s3-resource["s3-resource pipeline"]
+        external -->|sets| cf-cli-resource["cf-cli-resource pipeline"]
+        external -->|sets| cf-resource["cf-resource pipeline"]
+        external -->|sets| external-etc["..."]:::ellipses
+        external -->|sets| time-resource["time-resource pipeline"]
+        internal -->|sets| cron-resource["cron-resource pipeline"]
+        internal -->|sets| general-task["general-task pipeline"]
+        internal -->|sets| internal-etc["..."]:::ellipses
+        internal -->|sets| s3-resource["s3-resource pipeline"]
+    end
+    
+    subgraph Pages Concourse Team
+        pages -->|sets| pages-dind-v25["image-dind-v25 pipeline"]
+        pages -->|sets| pages-node-v20["image-node-v20 pipeline"]
+        pages -->|sets| pages-python-v3["image-python-v3.11 pipeline"]
+        pages -->|sets| pages-etc["..."]:::ellipses
+    end
 ```
 
 This has several advantages over individually set pipelines:

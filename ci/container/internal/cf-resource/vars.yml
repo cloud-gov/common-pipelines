@@ -4,7 +4,7 @@ image-repository: cf-resource
 oci-build-params: {
   DOCKERFILE: src/dockerfiles/ubuntu/Dockerfile
 }
-src-repo: cloudfoundry-community/cf-resource
+src-repo: cloud-gov/cf-resource
 src-target-branch: master
 common-pipelines-trigger: false
 dockerfile-path: []

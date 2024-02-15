@@ -23,6 +23,7 @@ jobs:
           - slack-notification-resource
           - s3-resource
           - github-pr-resource
+          - cf-resource
       do:
       - set_pipeline: ((.:name))
         file: src/container/pipeline-internal.yml
@@ -38,7 +39,6 @@ jobs:
       - var: name # repo, pipeline, and image name; all the same.
         values:
           - cf-cli-resource
-          - cf-resource
           - email-resource
           - git-resource
           - registry-image-resource

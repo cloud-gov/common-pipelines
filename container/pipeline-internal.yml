@@ -93,7 +93,7 @@ jobs:
         - task: import-scan
           file: common-pipelines/container/import-scan.yml
           params:
-            scan_type: "Main"
+            SCAN_TYPE: "Main"
 
         - task: software-inventory
           file: common-pipelines/container/software-inventory.yml

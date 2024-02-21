@@ -18,6 +18,5 @@ run:
   path: common-pipelines/container/import-scan.sh
 
 params:
-  SCAN_TYPE:
   DEFECTDOJO_IMPORT_URL: ((defectdojo_import_url))
   DEFECTDOJO_AUTH_TOKEN: ((defectdojo_auth_token))

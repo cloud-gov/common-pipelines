@@ -12,6 +12,7 @@ image_resource:
     tag: latest
 
 inputs:
+- name: common-pipelines
 - name: cves
 
 run:

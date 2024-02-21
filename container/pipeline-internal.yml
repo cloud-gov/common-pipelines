@@ -91,7 +91,7 @@ jobs:
           file: common-pipelines/container/cve-check.yml
 
         - task: import-scan
-          file: common-pipelines/container/import-scan.ynl
+          file: common-pipelines/container/import-scan.yml
           params:
             scan_type: "Main"
 

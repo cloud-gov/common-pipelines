@@ -93,7 +93,6 @@ jobs:
         - task: import-scan
           file: common-pipelines/container/import-scan.yml
           params:
-            SCANTYPE: "Main"
             IMAGENAME: ((image-repository))
 
         - task: software-inventory

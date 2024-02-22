@@ -12,6 +12,6 @@ curl -X "POST" $DEFECTDOJO_IMPORT_URL \
   -F "verified=true" \
   -F "scan_type=Anchore Grype" \
   -F "product_name=${IMAGENAME}" \
-  -F "engagement_name=$SCAN_TYPE" \
+  -F "engagement_name=$SCANTYPE" \
   -F "auto_create_context=true" \
   -F "file=@cves/output.json;type=application/json"

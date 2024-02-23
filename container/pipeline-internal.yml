@@ -54,6 +54,12 @@ jobs:
       path: pull-request
       status: failure
 
+  on_success:
+    put: pull-request
+    params:
+      path: pull-request
+      status: success
+
 - name: main
   plan:
     - in_parallel:

@@ -110,13 +110,13 @@ jobs:
 
   on_failure:
     put: slack
-    params:
+    params: &slack-failure-params
       text:  |
         :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED to upload image to ECR
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
       channel: ((slack-channel-failure))
       username: ((slack-username))
-      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+      icon_url: ((slack-icon-url))
 
 - name: continuous-scan
   plan:
@@ -145,22 +145,19 @@ jobs:
   on_failure:
     put: slack
     params:
+      <<: *slack-failure-params
       text:  |
         :x: Continuous Scan of `$BUILD_PIPELINE_NAME` FAILED
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel-failure))
-      username: ((slack-username))
-      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
   on_success:
     put: slack
     params:
+      <<: *slack-failure-params
       text:  |
         :white_check_mark: Continuous Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: '#cg-platform-news'
-      username: ((slack-username))
-      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+      channel: ((slack-channel-success))
 
 resources:
 

@@ -40,6 +40,7 @@ jobs:
       - var: name # repo, pipeline, and image name; all the same.
         values:
           - cf-cli-resource
+          - cloud-service-broker
           - email-resource
           - git-resource
           - registry-image-resource

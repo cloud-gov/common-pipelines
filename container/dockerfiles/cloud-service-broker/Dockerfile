@@ -19,6 +19,5 @@ RUN update-ca-certificates
 ENV PORT 8080
 EXPOSE 8080/tcp
 
-WORKDIR /bin
 ENTRYPOINT ["/bin/cloud-service-broker"]
 CMD ["help"]

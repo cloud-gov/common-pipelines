@@ -1,3 +1,6 @@
+# Dockerfile using our hardened base image
+ARG base_image
+
 # Adapted from https://github.com/cloudfoundry/cloud-service-broker/blob/main/Dockerfile
 FROM golang:1.22 AS build
 WORKDIR /app
@@ -5,9 +8,6 @@ ADD . /app
 
 ARG CSB_VERSION=0.0.0
 RUN GOOS=linux go build -o ./build/cloud-service-broker -ldflags "-X github.com/cloudfoundry/cloud-service-broker/utils.Version=$CSB_VERSION"
-
-# Dockerfile using our hardened base image
-ARG base_image
 
 FROM ${base_image}
 

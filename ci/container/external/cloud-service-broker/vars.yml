@@ -1,7 +1,8 @@
 base-image: ubuntu-hardened
 base-image-tag: "latest"
 image-repository: cloud-service-broker
-oci-build-params: {}
+oci-build-params:
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/cloud-service-broker/Dockerfile
 src-repo: cloudfoundry/cloud-service-broker
 src-target-branch: main
 common-pipelines-trigger: false

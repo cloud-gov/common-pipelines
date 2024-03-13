@@ -16,6 +16,12 @@ COPY --from=build /app/build/cloud-service-broker /bin/cloud-service-broker
 # Install RDS certificate bundle to support connecting to RDS instances.
 # Link from: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html#UsingWithRDS.SSL.GovCloudCertificates
 ADD https://truststore.pki.us-gov-west-1.rds.amazonaws.com/global/global-bundle.pem /usr/local/share/ca-certificates/
+# Extension must be .crt for ca-certificates to detect it.
+RUN mv /usr/local/share/ca-certificates/global-bundle.pem /usr/local/share/ca-certificates/global-bundle.crt
+# update-ca-certificates will spuriously output the following:
+# "rehash: warning: skipping global-bundle.pem,it does not contain exactly one certificate or CRL"
+# You can verify that global-bundle.crt was not skipped by grepping /etc/ssl/certs/ca-certificates.crt
+# for the certs from global-bundle.crt in the final image.
 RUN update-ca-certificates
 
 ENV PORT 8080

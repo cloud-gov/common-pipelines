@@ -13,7 +13,9 @@ FROM ${base_image}
 
 COPY --from=build /app/build/cloud-service-broker /bin/cloud-service-broker
 
-ADD https://s3.amazonaws.com/rds-downloads/rds-ca-2019-root.pem /usr/local/share/ca-certificates/
+# Install RDS certificate bundle to support connecting to RDS instances.
+# Link from: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html#UsingWithRDS.SSL.GovCloudCertificates
+ADD https://truststore.pki.us-gov-west-1.rds.amazonaws.com/global/global-bundle.pem /usr/local/share/ca-certificates/
 RUN update-ca-certificates
 
 ENV PORT 8080

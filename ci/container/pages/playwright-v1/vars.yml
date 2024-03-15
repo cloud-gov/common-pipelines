@@ -1,4 +1,4 @@
-base-image: ubuntu-hardened
+base-image: pages-node-v20
 base-image-tag: "latest"
 image-repository: pages-playwright-v1
 oci-build-params: {

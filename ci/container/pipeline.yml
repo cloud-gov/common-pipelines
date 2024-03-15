@@ -24,7 +24,6 @@ jobs:
           - s3-resource
           - github-pr-resource
           - cf-resource
-          - playwright
       do:
       - set_pipeline: ((.:name))
         file: src/container/pipeline-internal.yml
@@ -63,6 +62,7 @@ jobs:
           - dind-v25
           - node-v20
           - python-v3.11
+          - playwright-v1
       do:
       - set_pipeline: image-((.:name))
         file: src/container/pipeline-pages.yml

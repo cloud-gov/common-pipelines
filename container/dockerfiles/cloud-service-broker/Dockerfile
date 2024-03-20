@@ -7,11 +7,11 @@ WORKDIR /app
 ADD . /app
 
 ARG CSB_VERSION=0.0.0
-RUN GOOS=linux go build -o ./build/cloud-service-broker -ldflags "-X github.com/cloudfoundry/cloud-service-broker/utils.Version=$CSB_VERSION"
+RUN GOOS=linux go build -o ./build/csb -ldflags "-X github.com/cloudfoundry/cloud-service-broker/utils.Version=$CSB_VERSION"
 
 FROM ${base_image}
 
-COPY --from=build /app/build/cloud-service-broker /bin/cloud-service-broker
+COPY --from=build /app/build/csb /app/csb
 
 # Install RDS certificate bundle to support connecting to RDS instances.
 # Link from: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html#UsingWithRDS.SSL.GovCloudCertificates
@@ -27,6 +27,6 @@ RUN update-ca-certificates
 ENV PORT 8080
 EXPOSE 8080/tcp
 
-WORKDIR /bin
-ENTRYPOINT ["/bin/cloud-service-broker"]
+WORKDIR /app
+ENTRYPOINT ["/app/csb"]
 CMD ["help"]

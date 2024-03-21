@@ -24,6 +24,7 @@ jobs:
           - s3-resource
           - github-pr-resource
           - cf-resource
+          - playwright-python
       do:
       - set_pipeline: ((.:name))
         file: src/container/pipeline-internal.yml

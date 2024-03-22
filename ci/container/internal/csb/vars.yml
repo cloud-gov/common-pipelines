@@ -1,7 +1,8 @@
 base-image: cloud-service-broker
 base-image-tag: "latest"
 image-repository: csb
-oci-build-params: {}
+oci-build-params:
+  BUILD_ARG_BUILD_ENV: production
 src-repo: cloud-gov/csb
 common-pipelines-trigger: false
 dockerfile-path: []

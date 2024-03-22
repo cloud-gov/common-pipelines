@@ -25,6 +25,7 @@ jobs:
           - github-pr-resource
           - cf-resource
           - playwright-python
+          - csb
       do:
       - set_pipeline: ((.:name))
         file: src/container/pipeline-internal.yml

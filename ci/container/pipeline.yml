@@ -64,7 +64,6 @@ jobs:
           - dind-v25
           - node-v20
           - python-v3.11
-          - playwright-v1
       do:
       - set_pipeline: image-((.:name))
         file: src/container/pipeline-pages.yml

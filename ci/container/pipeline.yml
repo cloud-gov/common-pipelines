@@ -1,80 +1,81 @@
 # job that sets all the rest
 jobs:
-- name: set-self
-  plan:
-    - in_parallel:
+  - name: set-self
+    plan:
+      - in_parallel:
+          - get: src
+            trigger: true
+      - set_pipeline: self
+        file: src/ci/container/pipeline.yml
+
+  - name: set-internal-pipelines
+    plan:
       - get: src
         trigger: true
-    - set_pipeline: self
-      file: src/ci/container/pipeline.yml
+        passed: [set-self]
+      - across:
+          - var: name # repo, pipeline, and image name; all the same.
+            values:
+              - cron-resource
+              - general-task
+              - s3-simple-resource
+              - ubuntu-hardened
+              - slack-notification-resource
+              - s3-resource
+              - github-pr-resource
+              - cf-resource
+              - playwright-python
+              - csb
+              - oci-build-task
+        do:
+          - set_pipeline: ((.:name))
+            file: src/container/pipeline-internal.yml
+            var_files:
+              - src/ci/container/internal/((.:name))/vars.yml
 
-- name: set-internal-pipelines
-  plan:
-    - get: src
-      trigger: true
-      passed: [set-self]
-    - across:
-      - var: name # repo, pipeline, and image name; all the same.
-        values:
-          - cron-resource
-          - general-task
-          - s3-simple-resource
-          - ubuntu-hardened
-          - slack-notification-resource
-          - s3-resource
-          - github-pr-resource
-          - cf-resource
-          - playwright-python
-          - csb
-      do:
-      - set_pipeline: ((.:name))
-        file: src/container/pipeline-internal.yml
-        var_files:
-          - src/ci/container/internal/((.:name))/vars.yml
+  - name: set-external-pipelines
+    plan:
+      - get: src
+        trigger: true
+        passed: [set-self]
+      - across:
+          - var: name # repo, pipeline, and image name; all the same.
+            values:
+              - cf-cli-resource
+              - cloud-service-broker
+              - email-resource
+              - git-resource
+              - registry-image-resource
+              - semver-resource
+              - time-resource
+        do:
+          - set_pipeline: ((.:name))
+            file: src/container/pipeline-external.yml
+            var_files:
+              - src/ci/container/external/((.:name))/vars.yml
 
-- name: set-external-pipelines
-  plan:
-    - get: src
-      trigger: true
-      passed: [set-self]
-    - across:
-      - var: name # repo, pipeline, and image name; all the same.
-        values:
-          - cf-cli-resource
-          - cloud-service-broker
-          - email-resource
-          - git-resource
-          - registry-image-resource
-          - semver-resource
-          - time-resource
-      do:
-      - set_pipeline: ((.:name))
-        file: src/container/pipeline-external.yml
-        var_files:
-          - src/ci/container/external/((.:name))/vars.yml
-
-- name: set-pages-pipelines
-  plan:
-    - get: src
-      trigger: true
-      passed: [set-self]
-    - across:
-      - var: name # repo, pipeline, and image name; all the same.
-        values:
-          - dind-v25
-          - node-v20
-          - python-v3.11
-      do:
-      - set_pipeline: image-((.:name))
-        file: src/container/pipeline-pages.yml
-        team: pages
-        var_files:
-          - src/ci/container/pages/((.:name))/vars.yml
+  - name: set-pages-pipelines
+    plan:
+      - get: src
+        trigger: true
+        passed: [set-self]
+      - across:
+          - var: name # repo, pipeline, and image name; all the same.
+            values:
+              - dind-v25
+              - node-v20
+              - python-v3.11
+        do:
+          - set_pipeline: image-((.:name))
+            file: src/container/pipeline-pages.yml
+            team: pages
+            var_files:
+              - src/ci/container/pages/((.:name))/vars.yml
 
 resources:
-- name: src
-  type: git
-  source:
-    uri: https://github.com/cloud-gov/common-pipelines
-    branch: main
-    commit_verification_keys: ((cloud-gov-pgp-keys))
+  - name: src
+    type: git
+    source:
+      uri: https://github.com/cloud-gov/common-pipelines
+      branch: main
+      commit_verification_keys: ((cloud-gov-pgp-keys))

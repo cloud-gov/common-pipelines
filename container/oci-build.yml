@@ -4,19 +4,23 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: concourse/oci-build-task
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: oci-build-task
+    aws_region: us-gov-west-1
+    tag: latest
 
 caches:
-- path: cache
+  - path: cache
 
 inputs:
-- name: src
-- name: base-image
-- name: common-pipelines
-- name: common-dockerfiles
+  - name: src
+  - name: base-image
+  - name: common-pipelines
+  - name: common-dockerfiles
 
 outputs:
-- name: image
+  - name: image
 
 run:
   path: build

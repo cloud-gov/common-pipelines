@@ -3,8 +3,12 @@ base-image-tag: "latest"
 image-repository: cloud-service-broker
 oci-build-params:
   DOCKERFILE: common-dockerfiles/container/dockerfiles/cloud-service-broker/Dockerfile
-src-repo: cloudfoundry/cloud-service-broker
-src-target-branch: main
+src.source:
+  url: https://github.com/cloudfoundry/cloud-service-broker
+  # From https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string.
+  # Modified to start with `^v?` instead of `^`.
+  tag_regex: ^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
+  # Since src is a repo outside the cloud-gov org, don't verify commits.
 common-pipelines-trigger: false
 dockerfile-path: ["container/dockerfiles/cloud-service-broker/Dockerfile"]
 dockerfile-trigger: true

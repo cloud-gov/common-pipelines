@@ -3,7 +3,7 @@ base-image-tag: "latest"
 image-repository: cf-cli-resource
 oci-build-params:
   DOCKERFILE: common-dockerfiles/container/dockerfiles/cf-cli-resource/Dockerfile
-src.source:
+src-source:
   url: https://github.com/nulldriver/cf-cli-resource
   branch: main
   # Since src is a repo outside the cloud-gov org, don't verify commits.

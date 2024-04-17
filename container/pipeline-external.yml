@@ -153,7 +153,7 @@ resources:
 
 - name: src
   type: git
-  source: ((src.source))
+  source: ((src-source))
 
 - name: daily
   type: time

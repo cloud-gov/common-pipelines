@@ -1,10 +1,9 @@
 base-image: ubuntu-hardened
 base-image-tag: "latest"
 image-repository: git-resource
-oci-build-params: {
+oci-build-params:
   DOCKERFILE: common-dockerfiles/container/dockerfiles/git-resource/Dockerfile
-}
-src.source:
+src-source:
   url: https://github.com/concourse/git-resource
   branch: master
   # Since src is a repo outside the cloud-gov org, don't verify commits.

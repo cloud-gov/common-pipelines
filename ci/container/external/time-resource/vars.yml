@@ -2,7 +2,7 @@ base-image: ubuntu-hardened
 base-image-tag: "latest"
 image-repository: time-resource
 oci-build-params: {}
-src.source:
+src-source:
   url: https://github.com/concourse/time-resource
   branch: master
   # Since src is a repo outside the cloud-gov org, don't verify commits.

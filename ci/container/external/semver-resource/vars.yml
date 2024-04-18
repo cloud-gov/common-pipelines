@@ -3,7 +3,7 @@ base-image-tag: "latest"
 image-repository: semver-resource
 oci-build-params:
   DOCKERFILE: common-dockerfiles/container/dockerfiles/semver-resource/Dockerfile
-src.source:
+src-source:
   url: https://github.com/alphagov/paas-semver-resource
   branch: gds_main
   # Since src is a repo outside the cloud-gov org, don't verify commits.

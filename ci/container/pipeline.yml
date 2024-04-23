@@ -27,6 +27,7 @@ jobs:
               - playwright-python
               - csb
               - oci-build-task
+              - bosh-deployment-resource
         do:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-internal.yml

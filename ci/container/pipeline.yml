@@ -28,6 +28,7 @@ jobs:
               - csb
               - oci-build-task
               - bosh-deployment-resource
+              - github-release-resource
         do:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-internal.yml

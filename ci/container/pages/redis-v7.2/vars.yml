@@ -1,0 +1,11 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: pages-redis-v7.2
+oci-build-params: {
+  CONTEXT: src/redis/v7.2
+}
+src-repo: cloud-gov/pages-images
+src-target-branch: main
+common-pipelines-trigger: false
+dockerfile-path: []
+dockerfile-trigger: true

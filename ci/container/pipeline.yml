@@ -68,6 +68,7 @@ jobs:
               - node-v20
               - python-v3.11
               - redis-v7.2
+              - postgres-v15
         do:
           - set_pipeline: image-((.:name))
             file: src/container/pipeline-pages.yml

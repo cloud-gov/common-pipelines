@@ -82,6 +82,8 @@ jobs:
       - get: src
       - get: cg-scripts
       - get: general-task
+      - get: daily
+        trigger: true
       - task: get-current-container-images
         file: src/container/container-tracking.yml
         image: general-task
@@ -104,6 +106,11 @@ resources:
       uri: https://github.com/cloud-gov/cg-scripts
       branch: main
       commit_verification_keys: ((cloud-gov-pgp-keys))
+
+  - name: daily
+    type: time
+    source:
+      interval: 24h
 
   - name: general-task
     type: registry-image
@@ -130,5 +137,14 @@ resource_types:
       aws_access_key_id: ((ecr_aws_key))
       aws_secret_access_key: ((ecr_aws_secret))
       repository: git-resource
+      aws_region: us-gov-west-1
+      tag: latest
+
+  - name: time
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: time-resource
       aws_region: us-gov-west-1
       tag: latest

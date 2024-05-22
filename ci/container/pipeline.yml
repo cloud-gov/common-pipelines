@@ -81,9 +81,10 @@ jobs:
     plan:
       - get: src
       - get: cg-scripts
+      - get: general-task
       - task: get-current-container-images
         file: src/container/container-tracking.yml
-        image: image
+        image: general-task
         params:
           ATC_URL: https://ci.fr.cloud.gov
           CONCOURSE_AUTH_USERNAME: ((concourse-auth-username))
@@ -103,3 +104,22 @@ resources:
       uri: https://github.com/cloud-gov/cg-scripts
       branch: main
       commit_verification_keys: ((cloud-gov-pgp-keys))
+
+  - name: general-task
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: general-task
+      aws_region: us-gov-west-1
+      tag: latest
+
+resource_types:
+  - name: registry-image
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: registry-image-resource
+      aws_region: us-gov-west-1
+      tag: latest

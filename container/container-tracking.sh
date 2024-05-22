@@ -10,8 +10,8 @@ mv fly /usr/local/bin/
   set +x
   fly --target ci login \
     --concourse-url "${ATC_URL}" \
-    --username "${BASIC_AUTH_USERNAME}" \
-    --password "${BASIC_AUTH_PASSWORD}"
+    --username "${CONCOURSE_AUTH_USERNAME}" \
+    --password "${CONCOURSE_AUTH_PASSWORD}"
 )
 
 ./cg-scripts/concourse/get-pipeline-container-images.sh

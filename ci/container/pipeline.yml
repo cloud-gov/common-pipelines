@@ -77,10 +77,29 @@ jobs:
             var_files:
               - src/ci/container/pages/((.:name))/vars.yml
 
+  - name: container-instance-tracking
+    plan:
+      - get: src
+      - get: cg-scripts
+      - task: get-current-container-images
+        file: src/container/container-tracking.yml
+        image: image
+        params:
+          ATC_URL: https://ci.fr.cloud.gov
+          CONCOURSE_AUTH_USERNAME: ((concourse-auth-username))
+          CONCOURSE_AUTH_PASSWORD: ((concourse-auth-password))
+
 resources:
   - name: src
     type: git
     source:
       uri: https://github.com/cloud-gov/common-pipelines
+      branch: main
+      commit_verification_keys: ((cloud-gov-pgp-keys))
+
+  - name: cg-scripts
+    type: git
+    source:
+      uri: https://github.com/cloud-gov/cg-scripts
       branch: main
       commit_verification_keys: ((cloud-gov-pgp-keys))

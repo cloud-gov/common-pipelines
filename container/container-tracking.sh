@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eo pipefail
 
-curl -o fly "${ATC_URL}/api/v1/cli?arch=amd64&platform=linux"
+curl -so fly "${ATC_URL}/api/v1/cli?arch=amd64&platform=linux"
 chmod +x fly
 mv fly /usr/local/bin/
 

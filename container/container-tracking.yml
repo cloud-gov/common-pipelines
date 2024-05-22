@@ -1,0 +1,14 @@
+---
+platform: linux
+
+inputs:
+  - name: src
+  - name: cg-scripts
+
+run:
+  path: src/container/container-tracking.sh
+
+params:
+  ATC_URL:
+  CONCOURSE_AUTH_USERNAME:
+  CONCOURSE_AUTH_PASSWORD:

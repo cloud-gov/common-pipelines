@@ -1,7 +1,7 @@
 # Dockerfile using our hardened base image
 ARG base_image
 
-FROM golang:1.14 as builder
+FROM golang:1.21 as builder
 ADD . /go/src/github.com/telia-oss/github-pr-resource
 WORKDIR /go/src/github.com/telia-oss/github-pr-resource
 RUN curl -sL https://taskfile.dev/install.sh | sh

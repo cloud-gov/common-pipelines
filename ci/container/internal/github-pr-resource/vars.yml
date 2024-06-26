@@ -1,11 +1,8 @@
 base-image: ubuntu-hardened
 base-image-tag: "latest"
 image-repository: github-pr-resource
-oci-build-params: {
-  DOCKERFILE: common-dockerfiles/container/dockerfiles/github-pr-resource/Dockerfile
-}
+oci-build-params: {}
 src-repo: cloud-gov/github-pr-resource
-src-target-branch: main
 common-pipelines-trigger: false
-dockerfile-path: ["container/dockerfiles/github-pr-resource/Dockerfile"]
-dockerfile-trigger: true
+dockerfile-path: []
+dockerfile-trigger: false

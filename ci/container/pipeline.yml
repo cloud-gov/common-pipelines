@@ -43,6 +43,7 @@ jobs:
       - across:
           - var: name # repo, pipeline, and image name; all the same.
             values:
+              - bosh-io-release-resource
               - cf-cli-resource
               - cloud-service-broker
               - email-resource

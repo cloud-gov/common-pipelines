@@ -1,0 +1,11 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: pool-resource
+oci-build-params: {}
+src-source:
+  uri: https://github.com/concourse/pool-resource
+  branch: master
+  # Since src is a repo outside the cloud-gov org, don't verify commits.
+common-pipelines-trigger: false
+dockerfile-path: []
+dockerfile-trigger: false

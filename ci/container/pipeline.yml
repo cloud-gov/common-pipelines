@@ -44,6 +44,7 @@ jobs:
           - var: name # repo, pipeline, and image name; all the same.
             values:
               - bosh-io-release-resource
+              - bosh-io-stemcell-resource
               - cf-cli-resource
               - cloud-service-broker
               - email-resource

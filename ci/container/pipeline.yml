@@ -49,6 +49,7 @@ jobs:
               - cloud-service-broker
               - email-resource
               - git-resource
+              - pool-resource
               - registry-image-resource
               - semver-resource
               - time-resource

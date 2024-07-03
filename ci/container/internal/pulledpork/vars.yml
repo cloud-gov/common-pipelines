@@ -1,0 +1,10 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: pulledpork
+oci-build-params: {
+  DOCKERFILE: src/ci/docker/pulledpork/Dockerfile
+}
+src-repo: cloud-gov/cg-snort-boshrelease
+common-pipelines-trigger: false
+dockerfile-path: []
+dockerfile-trigger: false

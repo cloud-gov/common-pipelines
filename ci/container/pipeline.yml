@@ -29,6 +29,7 @@ jobs:
               - oci-build-task
               - bosh-deployment-resource
               - github-release-resource
+              - pulledpork
         do:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-internal.yml

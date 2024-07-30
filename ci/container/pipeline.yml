@@ -95,6 +95,23 @@ jobs:
           ATC_URL: https://ci.fr.cloud.gov
           CONCOURSE_AUTH_USERNAME: ((concourse-auth-username))
           CONCOURSE_AUTH_PASSWORD: ((concourse-auth-password))
+          CONCOURSE_TEAM_NAME: main
+
+  - name: pages-container-instance-tracking
+    plan:
+      - get: src
+      - get: cg-scripts
+      - get: general-task
+      - get: daily
+        trigger: true
+      - task: get-current-container-images
+        file: src/container/container-tracking.yml
+        image: general-task
+        params:
+          ATC_URL: https://ci.fr.cloud.gov
+          CONCOURSE_AUTH_USERNAME: ((concourse-auth-username))
+          CONCOURSE_AUTH_PASSWORD: ((concourse-auth-password))
+          CONCOURSE_TEAM_NAME: pages
 
 resources:
   - name: src

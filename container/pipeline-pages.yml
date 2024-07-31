@@ -46,7 +46,7 @@ jobs:
       text:  |
         :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED pull request tasks
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel-failure))
+      channel: ((slack-channel))
       username: ((slack-username))
       icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
@@ -142,14 +142,14 @@ jobs:
           file: common-pipelines/container/import-scan.yml
           params:
             IMAGENAME: ((image-repository))
-        
+
   on_failure:
     put: slack
     params:
       text:  |
         :x: Continuous Scan of `$BUILD_PIPELINE_NAME` FAILED
         <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel-failure))
+      channel: ((slack-channel))
       username: ((slack-username))
       icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 

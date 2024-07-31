@@ -74,6 +74,7 @@ jobs:
               - redis-v7.2
               - nginx-v1
               - postgres-v15
+              - zap
         do:
           - set_pipeline: image-((.:name))
             file: src/container/pipeline-pages.yml

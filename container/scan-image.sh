@@ -1,6 +1,6 @@
 #!/bin/bash
-grype image/image.tar -c common-pipelines/container/grype.yaml -q -o json --file cves/output.json
-grype image/image.tar -c common-pipelines/container/grype.yaml -q -o table --file table.txt
+grype image/image.tar -c common-pipelines/container/grype.yaml --only-fixed -q -o json --file cves/output.json
+grype image/image.tar -c common-pipelines/container/grype.yaml --only-fixed -q -o table --file table.txt
 
 cat cves/output.json | jq '.matches | .[]? |  .vulnerability.severity' >> severity.txt
 

@@ -1,262 +1,261 @@
 jobs:
-- name: pull-request
-  plan:
-    - in_parallel:
-      - get: src
-        resource: pull-request
-        trigger: true
+  - name: pull-request
+    plan:
+      - in_parallel:
+          - get: src
+            resource: pull-request
+            trigger: true
 
-      - get: base-image
-        trigger: true
-        params:
-          format: oci
+          - get: base-image
+            trigger: true
+            params:
+              format: oci
 
-      - get: common-pipelines
-        trigger: ((common-pipelines-trigger))
+          - get: common-pipelines
+            trigger: ((common-pipelines-trigger))
 
-      - get: common-dockerfiles
-        trigger: ((dockerfile-trigger))
+          - get: common-dockerfiles
+            trigger: ((dockerfile-trigger))
 
-      - get: general-task
+          - get: general-task
 
-    - task: oci-build
-      privileged: true
-      file: common-pipelines/container/oci-build.yml
-      params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
+      - task: oci-build
+        privileged: true
+        file: common-pipelines/container/oci-build.yml
+        params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
 
-    - in_parallel:
-      - task: usg-audit
-        file: common-pipelines/container/usg-audit.yml
-        image: image
+      - in_parallel:
+          - task: usg-audit
+            file: common-pipelines/container/usg-audit.yml
+            image: image
 
-      - do:
-        - task: scan-image
-          file: common-pipelines/container/scan-image.yml
+          - do:
+              - task: scan-image
+                file: common-pipelines/container/scan-image.yml
 
-        - task: cve-check
-          file: common-pipelines/container/cve-check.yml
+              - task: cve-check
+                file: common-pipelines/container/cve-check.yml
 
-        - task: software-inventory
-          file: common-pipelines/container/software-inventory.yml
-          image: image
+              - task: software-inventory
+                file: common-pipelines/container/software-inventory.yml
+                image: image
 
-  on_failure:
-    put: slack
-    params:
-      text:  |
-        :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED pull request tasks
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel-failure))
-      username: ((slack-username))
-      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
-
-
-- name: main
-  plan:
-    - in_parallel:
-      - get: src
-        trigger: true
-
-      - get: base-image
-        trigger: true
-        params:
-          format: oci
-
-      - get: common-pipelines
-        trigger: ((common-pipelines-trigger))
-
-      - get: common-dockerfiles
-        trigger: ((dockerfile-trigger))
-
-      - get: general-task
-
-    - task: oci-build
-      privileged: true
-      file: common-pipelines/container/oci-build.yml
-      params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
-
-    - in_parallel:
-      - task: usg-audit
-        file: common-pipelines/container/usg-audit.yml
-        image: image
-
-      - do:
-        - task: scan-image
-          file: common-pipelines/container/scan-image.yml
-
-        - task: cve-check
-          file: common-pipelines/container/cve-check.yml
-
-        - task: import-scan
-          file: common-pipelines/container/import-scan.yml
-          params:
-            IMAGENAME: ((image-repository))
-
-        - task: software-inventory
-          file: common-pipelines/container/software-inventory.yml
-          image: image
-
-    - put: image
-      inputs:
-        - image
-        - src
+    on_failure:
+      put: slack
       params:
-        image: image/image.tar
-        additional_tags: src/.git/short_ref
+        text: |
+          :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED pull request tasks
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel-failure))
+        username: ((slack-username))
+        icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
-  on_failure:
-    put: slack
-    params:
-      text:  |
-        :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED to upload image to ECR
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+  - name: main
+    plan:
+      - in_parallel:
+          - get: src
+            trigger: true
 
-- name: continuous-scan
-  plan:
-    - in_parallel:
-      - get: image
-        trigger: false
+          - get: base-image
+            trigger: true
+            params:
+              format: oci
+
+          - get: common-pipelines
+            trigger: ((common-pipelines-trigger))
+
+          - get: common-dockerfiles
+            trigger: ((dockerfile-trigger))
+
+          - get: general-task
+
+      - task: oci-build
+        privileged: true
+        file: common-pipelines/container/oci-build.yml
+        params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
+
+      - in_parallel:
+          - task: usg-audit
+            file: common-pipelines/container/usg-audit.yml
+            image: image
+
+          - do:
+              - task: scan-image
+                file: common-pipelines/container/scan-image.yml
+
+              - task: cve-check
+                file: common-pipelines/container/cve-check.yml
+
+              - task: import-scan
+                file: common-pipelines/container/import-scan.yml
+                params:
+                  IMAGENAME: ((image-repository))
+
+              - task: software-inventory
+                file: common-pipelines/container/software-inventory.yml
+                image: image
+
+      - put: image
+        inputs:
+          - image
+          - src
+        get_params:
+          skip_download: true
         params:
-          format: oci
+          image: image/image.tar
+          additional_tags: src/.git/short_ref
 
-      - get: common-pipelines
-        trigger: false
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Pipeline `$BUILD_PIPELINE_NAME` FAILED to upload image to ECR
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
-      - get: daily
-        trigger: true
+  - name: continuous-scan
+    plan:
+      - in_parallel:
+          - get: image
+            trigger: false
+            params:
+              format: oci
 
-      - get: general-task
+          - get: common-pipelines
+            trigger: false
 
-    - in_parallel:
-      - do:
-        - task: scan-image
-          file: common-pipelines/container/scan-image.yml
+          - get: daily
+            trigger: true
 
-        - task: cve-check
-          file: common-pipelines/container/cve-check.yml
+          - get: general-task
 
-        - task: import-scan
-          file: common-pipelines/container/import-scan.yml
-          params:
-            IMAGENAME: ((image-repository))
-        
-  on_failure:
-    put: slack
-    params:
-      text:  |
-        :x: Continuous Scan of `$BUILD_PIPELINE_NAME` FAILED
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel-failure))
-      username: ((slack-username))
-      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+      - in_parallel:
+          - do:
+              - task: scan-image
+                file: common-pipelines/container/scan-image.yml
 
-  on_success:
-    put: slack
-    params:
-      text:  |
-        :white_check_mark: Continuous Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
-        <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      channel: ((slack-channel))
-      username: ((slack-username))
-      icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+              - task: cve-check
+                file: common-pipelines/container/cve-check.yml
 
+              - task: import-scan
+                file: common-pipelines/container/import-scan.yml
+                params:
+                  IMAGENAME: ((image-repository))
+
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :x: Continuous Scan of `$BUILD_PIPELINE_NAME` FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel-failure))
+        username: ((slack-username))
+        icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+
+    on_success:
+      put: slack
+      params:
+        text: |
+          :white_check_mark: Continuous Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
+        username: ((slack-username))
+        icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
 resources:
+  - name: base-image
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: ((base-image))
+      tag: ((base-image-tag))
+      aws_region: us-gov-west-1
 
-- name: base-image
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: ((base-image))
-    tag: ((base-image-tag))
-    aws_region: us-gov-west-1
+  - name: common-pipelines
+    type: git
+    source:
+      uri: https://github.com/cloud-gov/common-pipelines
+      branch: main
+      paths: ["container/*"]
+      ignore_paths: ["container/dockerfiles/*"]
 
-- name: common-pipelines
-  type: git
-  source:
-    uri: https://github.com/cloud-gov/common-pipelines
-    branch: main
-    paths: ["container/*"]
-    ignore_paths: ["container/dockerfiles/*"]
+  - name: common-dockerfiles
+    type: git
+    source:
+      uri: https://github.com/cloud-gov/common-pipelines
+      branch: main
+      paths: ((dockerfile-path))
 
-- name: common-dockerfiles
-  type: git
-  source:
-    uri: https://github.com/cloud-gov/common-pipelines
-    branch: main
-    paths: ((dockerfile-path))
+  - name: image
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: ((image-repository))
+      tag: latest
+      aws_region: us-gov-west-1
 
-- name: image
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: ((image-repository))
-    tag: latest
-    aws_region: us-gov-west-1
+  - name: slack
+    type: slack-notification
+    source:
+      url: ((slack-webhook-url))
 
-- name: slack
-  type: slack-notification
-  source:
-    url: ((slack-webhook-url))
+  - name: src
+    type: git
+    source:
+      uri: https://github.com/((src-repo))
+      branch: ((src-target-branch))
+      commit_verification_keys: ((cloud-gov-pages-gpg-keys))
 
-- name: src
-  type: git
-  source:
-    uri: https://github.com/((src-repo))
-    branch: ((src-target-branch))
-    commit_verification_keys: ((cloud-gov-pages-gpg-keys))
+  - name: pull-request
+    type: pull-request
+    check_every: 1m
+    source:
+      repository: ((src-repo))
+      access_token: ((pages-operations-ci-github-token))
+      disable_forks: true
 
-- name: pull-request
-  type: pull-request
-  check_every: 1m
-  source:
-    repository: ((src-repo))
-    access_token: ((pages-operations-ci-github-token))
-    disable_forks: true
+  - name: daily
+    type: time
+    source:
+      interval: 24h
 
-- name: daily
-  type: time
-  source:
-    interval: 24h
-
-- name: general-task
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: general-task
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: general-task
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: general-task
+      aws_region: us-gov-west-1
+      tag: latest
 
 resource_types:
-- name: pull-request
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: github-pr-resource
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: pull-request
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: github-pr-resource
+      aws_region: us-gov-west-1
+      tag: latest
 
-- name: registry-image
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: registry-image-resource
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: registry-image
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: registry-image-resource
+      aws_region: us-gov-west-1
+      tag: latest
 
-- name: slack-notification
-  type: registry-image
-  source:
-    aws_access_key_id: ((ecr_aws_key))
-    aws_secret_access_key: ((ecr_aws_secret))
-    repository: slack-notification-resource
-    aws_region: us-gov-west-1
-    tag: latest
+  - name: slack-notification
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: slack-notification-resource
+      aws_region: us-gov-west-1
+      tag: latest

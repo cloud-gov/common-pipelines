@@ -1,9 +1,7 @@
 base-image: ubuntu-hardened
 base-image-tag: "latest"
-image-repository: pages-dind-v25
-oci-build-params: {
-  CONTEXT: src/dind/v25
-}
+image-repository: pages-dind
+oci-build-params: { CONTEXT: src/dind/v27 }
 src-repo: cloud-gov/pages-images
 src-target-branch: main
 common-pipelines-trigger: false

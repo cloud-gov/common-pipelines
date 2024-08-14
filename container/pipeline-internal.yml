@@ -185,32 +185,16 @@ jobs:
           - get: monthly
             trigger: true
 
-          - get: conmon-scan-file
-
           - get: general-task
 
       - task: conmon-scan
         file: common-pipelines/container/conmon-scan.yml
+        params:
+          IMAGENAME: ((image-repository))
 
-        on_failure:
-          put: slack
-          params:
-            <<: *slack-failure-params
-            text: |
-              :x: ConMon Scan of `$BUILD_PIPELINE_NAME` FAILED
-              <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-        on_success:
-          do:
-            - put: conmon-scan-file
-              params:
-                file: cves/output.xml
-            - put: slack
-              params:
-                <<: *slack-failure-params
-                text: |
-                  :white_check_mark: ConMon Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
-                  <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-                channel: ((slack-channel-success))
+      - put: conmon-scan-file
+        params:
+          file: conmon-scan/((image-repository)).xml
 
 resources:
   - name: base-image
@@ -294,9 +278,9 @@ resources:
     type: s3-iam
     source:
       bucket: ((container_scans_bucket))
-      versioned_file: ((image-repository)).xml
-      initial_version: ((image-repository)).xml
+      versioned_file: conmon-scan/((image-repository)).xml
       region_name: us-gov-west-1
+      server_side_encryption: AES256
 
 resource_types:
   - name: registry-image

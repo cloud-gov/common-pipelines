@@ -16,7 +16,10 @@ inputs:
 - name: image
 
 outputs:
-- name: cves
+- name: conmon-scan
 
 run:
   path: common-pipelines/container/conmon-scan.sh
+
+params:
+  IMAGENAME:

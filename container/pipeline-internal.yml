@@ -192,25 +192,25 @@ jobs:
       - task: conmon-scan
         file: common-pipelines/container/conmon-scan.yml
 
-      on_failure:
-        put: slack
-        params:
-          <<: *slack-failure-params
-          text: |
-            :x: ConMon Scan of `$BUILD_PIPELINE_NAME` FAILED
-            <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-      on_success:
-        do:
-          - put: conmon-scan-file
-            params:
-              file: cves/output.xml
-          - put: slack
-            params:
-              <<: *slack-failure-params
-              text: |
-                :white_check_mark: ConMon Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
-                <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-              channel: ((slack-channel-success))
+        on_failure:
+          put: slack
+          params:
+            <<: *slack-failure-params
+            text: |
+              :x: ConMon Scan of `$BUILD_PIPELINE_NAME` FAILED
+              <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        on_success:
+          do:
+            - put: conmon-scan-file
+              params:
+                file: cves/output.xml
+            - put: slack
+              params:
+                <<: *slack-failure-params
+                text: |
+                  :white_check_mark: ConMon Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
+                  <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+                channel: ((slack-channel-success))
 
 resources:
   - name: base-image

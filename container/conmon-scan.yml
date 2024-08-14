@@ -19,4 +19,4 @@ outputs:
 - name: cves
 
 run:
-  path: common-pipelines/container/scan-image.sh
+  path: common-pipelines/container/conmon-scan.sh

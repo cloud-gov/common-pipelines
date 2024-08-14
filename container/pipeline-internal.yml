@@ -171,6 +171,47 @@ jobs:
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
         channel: ((slack-channel-success))
 
+  - name: conmon-scan
+    plan:
+      - in_parallel:
+          - get: image
+            trigger: false
+            params:
+              format: oci
+
+          - get: common-pipelines
+            trigger: false
+
+          - get: monthly
+            trigger: true
+
+          - get: conmon-scan-file
+
+          - get: general-task
+
+      - task: conmon-scan
+        file: common-pipelines/container/conmon-scan.yml
+
+      on_failure:
+        put: slack
+        params:
+          <<: *slack-failure-params
+          text: |
+            :x: ConMon Scan of `$BUILD_PIPELINE_NAME` FAILED
+            <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+      on_success:
+        do:
+          - put: conmon-scan-file
+            params:
+              file: cves/output.xml
+          - put: slack
+            params:
+              <<: *slack-failure-params
+              text: |
+                :white_check_mark: ConMon Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
+                <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+              channel: ((slack-channel-success))
+
 resources:
   - name: base-image
     type: registry-image
@@ -233,6 +274,13 @@ resources:
     source:
       interval: 24h
 
+  - name: monthly
+    type: cron-resource
+    source:
+      expression: "0 6 22 * *"
+      location: "America/New_York"
+      fire_immediately: true
+
   - name: general-task
     type: registry-image
     source:
@@ -241,6 +289,14 @@ resources:
       repository: general-task
       aws_region: us-gov-west-1
       tag: latest
+
+  - name: conmon-scan-file
+    type: s3-iam
+    source:
+      bucket: ((container_scans_bucket))
+      versioned_file: ((image-repository)).xml
+      initial_version: ((image-repository)).xml
+      region_name: us-gov-west-1
 
 resource_types:
   - name: registry-image
@@ -267,5 +323,23 @@ resource_types:
       aws_access_key_id: ((ecr_aws_key))
       aws_secret_access_key: ((ecr_aws_secret))
       repository: github-pr-resource
+      aws_region: us-gov-west-1
+      tag: latest
+
+  - name: s3-iam
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: s3-resource
+      aws_region: us-gov-west-1
+      tag: latest
+
+  - name: cron-resource
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: cron-resource
       aws_region: us-gov-west-1
       tag: latest

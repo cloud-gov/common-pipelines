@@ -187,12 +187,15 @@ jobs:
 
           - get: general-task
 
+          - get: conmon-scan-file
+
       - task: conmon-scan
         file: common-pipelines/container/conmon-scan.yml
         params:
           IMAGENAME: ((image-repository))
 
       - put: conmon-scan-file
+        tags: [iaas]
         params:
           file: conmon-scan/((image-repository)).xml
 
@@ -281,6 +284,7 @@ resources:
       versioned_file: conmon-scan/((image-repository)).xml
       region_name: us-gov-west-1
       server_side_encryption: AES256
+      initial_version: conmon-scan/((image-repository)).xml
 
 resource_types:
   - name: registry-image

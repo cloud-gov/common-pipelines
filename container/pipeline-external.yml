@@ -134,7 +134,6 @@ jobs:
           IMAGENAME: ((image-repository))
 
       - put: conmon-scan-file
-        tags: [iaas]
         params:
           file: conmon-scan/((image-repository)).xml
 

@@ -68,7 +68,7 @@ jobs:
       - across:
           - var: name # repo, pipeline, and image name; all the same.
             values:
-              - dind-v25
+              - dind
               - node-v20
               - python-v3.11
               - redis-v7.2

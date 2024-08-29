@@ -1,0 +1,11 @@
+base-image: ubuntu-hardened
+base-image-tag: "latest"
+image-repository: external-domain-broker
+oci-build-params: {
+  DOCKERFILE: src/docker/Dockerfile.dev
+}
+src-repo: cloud-gov/external-domain-broker
+src-target-branch: master
+common-pipelines-trigger: false
+dockerfile-path: []
+dockerfile-trigger: false

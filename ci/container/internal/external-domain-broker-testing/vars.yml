@@ -1,6 +1,6 @@
 base-image: ubuntu-hardened
 base-image-tag: "latest"
-image-repository: external-domain-broker
+image-repository: external-domain-broker-testing
 oci-build-params: {
   DOCKERFILE: src/docker/Dockerfile.dev
 }

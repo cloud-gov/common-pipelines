@@ -5,7 +5,7 @@ oci-build-params: {
   DOCKERFILE: src/docker/Dockerfile.dev
 }
 src-repo: cloud-gov/external-domain-broker
-src-target-branch: master
+src-target-branch: main
 common-pipelines-trigger: false
 dockerfile-path: []
 dockerfile-trigger: false

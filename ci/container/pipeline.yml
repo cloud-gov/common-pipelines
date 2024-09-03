@@ -30,6 +30,7 @@ jobs:
               - bosh-deployment-resource
               - github-release-resource
               - pulledpork
+              - external-domain-broker-testing
         do:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-internal.yml

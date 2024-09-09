@@ -31,6 +31,7 @@ jobs:
               - github-release-resource
               - pulledpork
               - external-domain-broker-testing
+              - external-domain-broker-migrator-testing
         do:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-internal.yml

@@ -9,6 +9,7 @@ outputs:
 
 run:
   path: common-pipelines/container/usg-audit.sh
+  user: root
 
 params:
   # Required for running 'usg' audit tool.

@@ -2,7 +2,7 @@
 ARG base_image
 
 # Adapted from https://github.com/cloudfoundry/cloud-service-broker/blob/main/Dockerfile
-FROM golang:1.22 AS build
+FROM golang:1 AS build
 WORKDIR /app
 ADD . /app
 

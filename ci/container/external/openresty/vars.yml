@@ -2,13 +2,11 @@ base-image: ubuntu-hardened
 base-image-tag: "latest"
 image-repository: openresty
 oci-build-params:
-  DOCKERFILE: src/jammy/Dockerfile
-  BUILD_ARG_RESTY_IMAGE_BASE: ubuntu-hardened
-  BUILD_ARG_RESTY_IMAGE_TAG: latest
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/openresty/Dockerfile
 src-source:
   uri: https://github.com/openresty/docker-openresty
   branch: master
   # Since src is a repo outside the cloud-gov org, don't verify commits.
 common-pipelines-trigger: false
-dockerfile-path: []
+dockerfile-path: ["container/dockerfiles/openresty/Dockerfile"]
 dockerfile-trigger: true

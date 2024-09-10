@@ -209,7 +209,6 @@ resources:
     source:
       expression: "0 6 22 * *"
       location: "America/New_York"
-      fire_immediately: true
 
   - name: general-task
     type: registry-image

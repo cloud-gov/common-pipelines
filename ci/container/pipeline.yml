@@ -32,6 +32,7 @@ jobs:
               - pulledpork
               - external-domain-broker-testing
               - external-domain-broker-migrator-testing
+              - legacy-domain-certificate-renewer-testing
         do:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-internal.yml

@@ -31,6 +31,10 @@ jobs:
               - github-release-resource
               - pulledpork
               - concourse-http-jq-resource
+              - external-domain-broker-testing
+              - external-domain-broker-migrator-testing
+              - legacy-domain-certificate-renewer-testing
+
         do:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-internal.yml
@@ -55,6 +59,7 @@ jobs:
               - registry-image-resource
               - semver-resource
               - time-resource
+              - openresty
         do:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-external.yml

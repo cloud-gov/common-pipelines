@@ -27,7 +27,7 @@ apt-get -y -qq install usg
 
 echo "installing bs4"
 # Install the python library BeautifulSoup to parse html
-pip3 install beautifulsoup4
+python3 -m pip install beautifulsoup4
 
 # Run cis audit and put html results into cis-audit.html file
 echo "running audit"

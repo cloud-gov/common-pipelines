@@ -39,8 +39,6 @@ jobs:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-internal.yml
             var_files:
-              # Later values override earlier ones.
-              - src/ci/container/internal/base_vars.yml
               - src/ci/container/internal/((.:name))/vars.yml
 
   - name: set-external-pipelines

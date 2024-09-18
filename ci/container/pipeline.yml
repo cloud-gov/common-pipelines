@@ -39,7 +39,10 @@ jobs:
           - set_pipeline: ((.:name))
             file: src/container/pipeline-internal.yml
             var_files:
+              # Contrary to Concourse docs, earlier values override later ones.
+              # See https://github.com/concourse/concourse/issues/5455
               - src/ci/container/internal/((.:name))/vars.yml
+              - src/ci/container/internal/base_vars.yml
 
   - name: set-external-pipelines
     plan:

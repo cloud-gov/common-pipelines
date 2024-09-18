@@ -35,6 +35,7 @@ jobs:
               - external-domain-broker-migrator-testing
               - legacy-domain-certificate-renewer-testing
               - opensearch-testing
+              - opensearch-dashboards-testing
 
         do:
           - set_pipeline: ((.:name))

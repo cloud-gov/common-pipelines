@@ -1,11 +1,12 @@
 base-image: ubuntu-hardened
 base-image-tag: "latest"
 image-repository: registry-image-resource
-oci-build-params: {}
+oci-build-params:
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/registry-image-resource/Dockerfile
 src-source:
   uri: https://github.com/concourse/registry-image-resource
   branch: master
   # Since src is a repo outside the cloud-gov org, don't verify commits.
 common-pipelines-trigger: false
-dockerfile-path: []
-dockerfile-trigger: false
+dockerfile-path: ["container/dockerfiles/registry-image-resource/Dockerfile"]
+dockerfile-trigger: true

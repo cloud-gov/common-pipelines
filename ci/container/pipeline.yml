@@ -72,7 +72,7 @@ jobs:
               # Contrary to Concourse docs, earlier values override later ones.
               # See https://github.com/concourse/concourse/issues/5455
               - src/ci/container/external/((.:name))/vars.yml
-              - src/ci/container/internal/base_vars.yml
+              - src/ci/container/external/base_vars.yml
 
   - name: set-pages-pipelines
     plan:

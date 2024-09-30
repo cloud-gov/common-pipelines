@@ -1,9 +1,3 @@
-base-image: ubuntu-hardened
-base-image-tag: "latest"
 image-repository: pages-zap
 oci-build-params: { CONTEXT: src/zap }
 src-repo: cloud-gov/pages-images
-src-target-branch: main
-common-pipelines-trigger: false
-dockerfile-path: []
-dockerfile-trigger: true

@@ -92,6 +92,7 @@ jobs:
             team: pages
             var_files:
               - src/ci/container/pages/((.:name))/vars.yml
+              - src/ci/container/pages/base_vars.yml
 
   - name: container-instance-tracking
     plan:

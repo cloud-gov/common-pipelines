@@ -1,9 +1,9 @@
 image-repository: registry-image-resource
-oci-build-params:
-  DOCKERFILE: common-dockerfiles/container/dockerfiles/registry-image-resource/Dockerfile
+# oci-build-params:
+#   DOCKERFILE: common-dockerfiles/container/dockerfiles/registry-image-resource/Dockerfile
 src-source:
   uri: https://github.com/concourse/registry-image-resource
   branch: master
   # Since src is a repo outside the cloud-gov org, don't verify commits.
-dockerfile-path: ["container/dockerfiles/registry-image-resource/Dockerfile"]
-dockerfile-trigger: true
+# dockerfile-path: ["container/dockerfiles/registry-image-resource/Dockerfile"]
+# dockerfile-trigger: true

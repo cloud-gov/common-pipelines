@@ -1,0 +1,6 @@
+base-image: ubuntu-hardened
+base-image-tag: latest
+oci-build-params: {}
+common-pipelines-trigger: false
+dockerfile-path: []
+dockerfile-trigger: false

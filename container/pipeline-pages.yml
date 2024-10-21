@@ -167,6 +167,7 @@ jobs:
         icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
   - name: conmon-scan
+    serial-groups: [container-scans]
     plan:
       - in_parallel:
           - get: image

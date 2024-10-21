@@ -1,5 +1,6 @@
 jobs:
   - name: main
+    serial_groups: [container-scans]
     plan:
       - in_parallel:
           - get: src
@@ -65,6 +66,7 @@ jobs:
         icon_url: ((slack-icon-url))
 
   - name: continuous-scan
+    serial_groups: [container-scans]
     plan:
       - in_parallel:
           - get: image
@@ -111,6 +113,7 @@ jobs:
         channel: ((slack-channel-success))
 
   - name: conmon-scan
+    serial_groups: [container-scans]
     plan:
       - in_parallel:
           - get: image

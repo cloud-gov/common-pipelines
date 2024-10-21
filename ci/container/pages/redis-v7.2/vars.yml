@@ -1,3 +1,3 @@
-mage-repository: pages-redis-v7.2
+image-repository: pages-redis-v7.2
 oci-build-params: { CONTEXT: src/redis/v7.2 }
 src-repo: cloud-gov/pages-images

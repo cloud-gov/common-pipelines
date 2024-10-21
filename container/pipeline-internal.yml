@@ -61,6 +61,7 @@ jobs:
         status: success
 
   - name: main
+    serial_groups: [container-scans]
     plan:
       - in_parallel:
           - get: src
@@ -126,6 +127,7 @@ jobs:
         icon_url: ((slack-icon-url))
 
   - name: continuous-scan
+    serial-groups: [container-scans]
     plan:
       - in_parallel:
           - get: image

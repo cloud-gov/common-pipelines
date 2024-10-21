@@ -51,7 +51,7 @@ jobs:
         icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
   - name: main
-    serial-groups: [container-scans]
+    serial_groups: [container-scans]
     plan:
       - in_parallel:
           - get: src
@@ -117,7 +117,7 @@ jobs:
         icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
   - name: continuous-scan
-    serial-groups: [container-scans]
+    serial_groups: [container-scans]
     plan:
       - in_parallel:
           - get: image
@@ -167,7 +167,7 @@ jobs:
         icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
   - name: conmon-scan
-    serial-groups: [container-scans]
+    serial_groups: [container-scans]
     plan:
       - in_parallel:
           - get: image

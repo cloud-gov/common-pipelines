@@ -25,7 +25,7 @@ jobs:
           status: pending
 
       - task: static-analysis
-        file: common-pipelines/containers/static-analysis.yml
+        file: common-pipelines/container/static-analysis.yml
         input_mapping:
           src: pull-request
         vars:

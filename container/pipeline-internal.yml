@@ -24,6 +24,14 @@ jobs:
           path: pull-request
           status: pending
 
+      - task: static-analysis
+        file: common-pipelines/containers/static-analysis.yml
+        input_mapping:
+          src: pull-request
+        vars:
+          cmd: ((static-analysis-cmd))
+          args: ((static-analysis-args))
+
       - task: oci-build
         privileged: true
         file: common-pipelines/container/oci-build.yml

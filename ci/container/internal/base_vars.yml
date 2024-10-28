@@ -7,5 +7,5 @@ dockerfile-trigger: false
 static-analysis-cmd: echo
 static-analysis-args:
   [
-    "No static analysis command configured. Set ((static-analysis-cmd)) and ((static-analysis-args)) in your pipeline configuration file to run static analysis on your source code.",
+    "No static analysis command configured. Set static-analysis-cmd and static-analysis-args in your pipeline configuration file to run static analysis on your source code.",
   ]

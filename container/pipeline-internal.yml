@@ -28,9 +28,6 @@ jobs:
         file: common-pipelines/container/static-analysis.yml
         input_mapping:
           src: pull-request
-        vars:
-          cmd: ((static-analysis-cmd))
-          args: ((static-analysis-args))
 
       - task: oci-build
         privileged: true

@@ -4,3 +4,5 @@ image-repository: csb
 oci-build-params:
   BUILD_ARG_BUILD_ENV: production
 src-repo: cloud-gov/csb
+static-analysis-cmd: trivy
+static-analysis-args: ["config", "src/brokerpaks/*"]

@@ -5,4 +5,9 @@ oci-build-params:
   BUILD_ARG_BUILD_ENV: production
 src-repo: cloud-gov/csb
 static-analysis-cmd: trivy
-static-analysis-args: ["config", "src/brokerpaks/*"]
+# We skip check updates because trivy tries pulling an image from GHCR but
+# often gets rate limited. Trivy has config databases built into the binary
+# and we update it fairly often, whenever we rebuild general-task. Especially
+# since we do not depend on the vulnerability scanning, only the misconfig
+# checks, that is often enough.
+static-analysis-args: ["config", "--skip-check-update", "src/brokerpaks/*"]

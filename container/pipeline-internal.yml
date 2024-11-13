@@ -291,7 +291,7 @@ resources:
     type: git
     source:
       uri: https://github.com/((src-repo))
-      branch: main
+      branch: ((src-branch))
       commit_verification_keys: ((cloud-gov-pgp-keys))
 
   - name: daily

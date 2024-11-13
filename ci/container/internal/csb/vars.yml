@@ -4,6 +4,7 @@ image-repository: csb
 oci-build-params:
   BUILD_ARG_BUILD_ENV: production
 src-repo: cloud-gov/csb
+src-branch: brokerpak-topic
 static-analysis-cmd: sh
 # We skip check updates because trivy tries pulling an image from GHCR but
 # often gets rate limited. Trivy has config databases built into the binary

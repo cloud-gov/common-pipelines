@@ -5,6 +5,7 @@ builder-image: ubuntu-hardened
 builder-image-tag: latest
 oci-build-params: {}
 common-pipelines-trigger: false
+# Defaults to the root of the source repo if unspecified.
 dockerfile-path: []
 dockerfile-trigger: false
 static-analysis-cmd: echo

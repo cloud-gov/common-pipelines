@@ -7,7 +7,7 @@ jobs:
             trigger: true
 
           - get: builder-image
-            trigger: true
+            trigger: false
             params:
               format: oci
 
@@ -97,7 +97,7 @@ jobs:
               format: oci
 
           - get: builder-image
-            trigger: true
+            trigger: false
             params:
               format: oci
 

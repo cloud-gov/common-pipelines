@@ -247,6 +247,15 @@ resources:
       tag: ((base-image-tag))
       aws_region: us-gov-west-1
 
+  - name: builder-image
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: ((builder-image))
+      tag: ((builder-image-tag))
+      aws_region: us-gov-west-1
+
   - name: common-pipelines
     type: git
     source:

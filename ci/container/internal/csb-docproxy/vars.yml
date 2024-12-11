@@ -3,4 +3,3 @@ src-repo: cloud-gov/csb
 src-branch: brokerpak-topic
 oci-build-params:
   DOCKERFILE: "src/docproxy/Dockerfile"
-dockerfile-path: ["docproxy/Dockerfile"]

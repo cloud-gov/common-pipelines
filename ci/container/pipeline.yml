@@ -36,6 +36,7 @@ jobs:
               - legacy-domain-certificate-renewer-testing
               - opensearch-testing
               - opensearch-dashboards-testing
+              - csb-docproxy
 
         do:
           - set_pipeline: ((.:name))

@@ -1,5 +1,3 @@
-builder-image: general-task
-builder-image-tag: latest
 image-repository: csb-docproxy
 src-repo: cloud-gov/csb
 src-branch: brokerpak-topic

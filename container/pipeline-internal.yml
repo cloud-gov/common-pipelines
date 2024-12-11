@@ -6,6 +6,11 @@ jobs:
             version: every
             trigger: true
 
+          - get: builder-image
+            trigger: true
+            params:
+              format: oci
+
           - get: base-image
             trigger: true
             params:
@@ -87,6 +92,11 @@ jobs:
             trigger: true
 
           - get: base-image
+            trigger: true
+            params:
+              format: oci
+
+          - get: builder-image
             trigger: true
             params:
               format: oci

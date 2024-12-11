@@ -2,4 +2,4 @@ image-repository: csb-docproxy
 src-repo: cloud-gov/csb
 src-branch: brokerpak-topic
 oci-build-params:
-  DOCKERFILE: "src/docproxy/Dockerfile"
+  CONTEXT: "src/docproxy"

@@ -1,6 +1,10 @@
 base-image: ubuntu-hardened
 base-image-tag: latest
+# Some Dockerfiles may wish to specify a separate builder image for a multi-stage build. Set these vars to do so. By default, it is the same as base-image to avoid pulling additional layers.
+builder-image: ubuntu-hardened
+builder-image-tag: latest
 oci-build-params: {}
 common-pipelines-trigger: false
+# Defaults to the root of the source repo if unspecified.
 dockerfile-path: []
 dockerfile-trigger: false

@@ -1,6 +1,6 @@
 base-image: cloud-service-broker
 base-image-tag: "latest"
-image-repository: csb
+image-repository: cg-csb
 oci-build-params:
   BUILD_ARG_BUILD_ENV: production
 src-repo: cloud-gov/csb

@@ -1,5 +1,5 @@
-image-repository: csb-docproxy
+image-repository: csb-helper
 src-repo: cloud-gov/csb
 src-branch: brokerpak-topic
 oci-build-params:
-  CONTEXT: "src/docproxy"
+  CONTEXT: "src/helper"

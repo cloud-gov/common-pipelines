@@ -3,6 +3,7 @@ base-image-tag: "latest"
 image-repository: cg-csb
 oci-build-params:
   BUILD_ARG_BUILD_ENV: production
+slack-channel-failure: "#cg-customer-success"
 src-repo: cloud-gov/csb
 src-branch: brokerpak-topic
 static-analysis-cmd: sh

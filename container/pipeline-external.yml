@@ -1,10 +1,32 @@
 jobs:
+  - name: code-scan
+    plan:
+      - get: src
+        trigger: true
+      - task: scan
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              aws_access_key_id: ((ecr_aws_key))
+              aws_secret_access_key: ((ecr_aws_secret))
+              repository: general-task
+              aws_region: us-gov-west-1
+              tag: latest
+          run:
+            path: sh
+            args:
+              - "-c"
+              - "set -e; trivy repo --scanners vuln,misconfig,secret https://github.com/((src-repo))"
+
   - name: main
     serial_groups: [container-scans]
     plan:
       - in_parallel:
           - get: src
             trigger: true
+            passed: [code-scan]
 
           - get: base-image
             trigger: true

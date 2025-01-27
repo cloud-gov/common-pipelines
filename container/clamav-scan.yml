@@ -6,3 +6,4 @@ inputs:
 
 run:
   path: common-pipelines/container/clamav-scan.sh
+  user: root

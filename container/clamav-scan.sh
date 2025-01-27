@@ -11,3 +11,5 @@ freshclam
 
 echo "Running clamav scan"
 clamscan -r -i /
+
+echo "Clamav scan is done"

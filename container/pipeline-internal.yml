@@ -72,6 +72,10 @@ jobs:
         params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
 
       - in_parallel:
+          - task: clamav-scan
+            file: common-pipelines/container/clamav-scan.yml
+            image: image
+
           - task: usg-audit
             privileged: true
             file: common-pipelines/container/usg-audit.yml

@@ -127,8 +127,7 @@ jobs:
         inputs:
           - image
           - src
-        get_params:
-          skip_download: true
+        no_get: true
         params:
           image: image/image.tar
           additional_tags: src/.git/short_ref

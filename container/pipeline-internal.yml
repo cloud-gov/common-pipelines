@@ -122,6 +122,10 @@ jobs:
           - get: common-dockerfiles
             trigger: ((dockerfile-trigger))
 
+          - get: audit-html-file
+
+          - get: audit-xml-file
+
       - task: oci-build
         privileged: true
         file: common-pipelines/container/oci-build.yml
@@ -135,6 +139,14 @@ jobs:
           - task: usg-audit
             file: common-pipelines/container/usg-audit.yml
             image: image
+
+          - put: audit-xml-file
+            params:
+              file: audit/((image-repository))-audit.xml
+
+          - put: audit-html-file
+            params:
+              file: audit/((image-repository))-audit.html
 
           - do:
               - task: scan-image
@@ -335,6 +347,24 @@ resources:
       region_name: us-gov-west-1
       server_side_encryption: AES256
       initial_version: conmon-scan/((image-repository)).xml
+
+  - name: audit-html-file
+    type: s3-iam
+    source:
+      bucket: ((container_scans_bucket))
+      versioned_file: audit/((image-repository))-audit.html
+      region_name: us-gov-west-1
+      server_side_encryption: AES256
+      initial_version: audit/((image-repository))-audit.html
+
+  - name: audit-xml-file
+    type: s3-iam
+    source:
+      bucket: ((container_scans_bucket))
+      versioned_file: audit/((image-repository))-audit.xml
+      region_name: us-gov-west-1
+      server_side_encryption: AES256
+      initial_version: audit/((image-repository))-audit.xml
 
 resource_types:
   - name: registry-image

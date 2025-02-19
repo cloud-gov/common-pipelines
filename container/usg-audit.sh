@@ -31,10 +31,10 @@ python3 -m pip install beautifulsoup4
 
 # Run cis audit and put html results into cis-audit.html file
 echo "running audit"
-usg audit --tailoring-file common-pipelines/container/tailor.xml --html-file $PWD/audit/cis-audit.html --results-file $PWD/audit/cis-audit.xml
+usg audit --tailoring-file common-pipelines/container/tailor.xml --html-file /audit/$IMAGENAME-audit.html --results-file /audit/$IMAGENAME-audit.xml
 
 # Parse the resulting cis-audit.html file looking for pass/fail via a python script
-if [ "$(./common-pipelines/container/parse_cis_audit_html.py --inputfile audit/cis-audit.html)" == "failed" ]
+if [ "$(./common-pipelines/container/parse_cis_audit_html.py --inputfile audit/$IMAGENAME-audit.html)" == "failed" ]
 then
   echo "Container hardening audit FAILED"
   exit 1

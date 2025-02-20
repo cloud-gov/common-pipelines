@@ -3,7 +3,6 @@ platform: linux
 
 inputs:
   - name: common-pipelines
-  - name: image
 
 outputs:
   - name: audit

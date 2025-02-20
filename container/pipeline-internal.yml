@@ -139,6 +139,8 @@ jobs:
           - task: usg-audit
             file: common-pipelines/container/usg-audit.yml
             image: image
+            params:
+              IMAGENAME: ((image-repository))
 
           - do:
               - task: scan-image

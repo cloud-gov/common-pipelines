@@ -2,8 +2,8 @@
 set -eo pipefail
 
 # set up dir and file
-touch audit/cis-audit.html
-touch audit/cis-audit.xml
+touch audit/$IMAGENAME-audit.html
+touch audit/$IMAGENAME-audit.xml
 
 echo "Configuring ua attach config"
 cat <<EOF >> ua-attach-config.yaml

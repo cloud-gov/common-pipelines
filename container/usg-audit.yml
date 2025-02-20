@@ -2,10 +2,11 @@
 platform: linux
 
 inputs:
-- name: common-pipelines
+  - name: common-pipelines
+  - name: image
 
 outputs:
-- name: audit
+  - name: audit
 
 run:
   path: common-pipelines/container/usg-audit.sh

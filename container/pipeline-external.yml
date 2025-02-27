@@ -39,10 +39,6 @@ jobs:
           - get: common-dockerfiles
             trigger: ((dockerfile-trigger))
 
-          - get: audit-html-file
-
-          - get: audit-xml-file
-
       - task: oci-build
         privileged: true
         file: common-pipelines/container/oci-build.yml
@@ -59,38 +55,40 @@ jobs:
             params:
               IMAGENAME: ((image-repository))
 
-          - do:
-              - task: scan-image
-                file: common-pipelines/container/scan-image.yml
+          - task: scan-image
+            file: common-pipelines/container/scan-image.yml
 
-              - task: cve-check
-                file: common-pipelines/container/cve-check.yml
+      - task: cve-check
+        file: common-pipelines/container/cve-check.yml
 
-              - task: import-scan
-                file: common-pipelines/container/import-scan.yml
-                params:
-                  IMAGENAME: ((image-repository))
+      - in_parallel:
+          - task: import-scan
+            file: common-pipelines/container/import-scan.yml
+            params:
+              IMAGENAME: ((image-repository))
 
-              - task: software-inventory
-                file: common-pipelines/container/software-inventory.yml
-                image: image
+          - task: software-inventory
+            file: common-pipelines/container/software-inventory.yml
+            image: image
 
-      - put: audit-xml-file
-        params:
-          file: audit/((image-repository))-audit.xml
+          - put: audit-xml-file
+            no_get: true
+            params:
+              file: audit/((image-repository))-audit.xml
 
-      - put: audit-html-file
-        params:
-          file: audit/((image-repository))-audit.html
+          - put: audit-html-file
+            no_get: true
+            params:
+              file: audit/((image-repository))-audit.html
 
-      - put: image
-        inputs:
-          - image
-          - src
-        no_get: true
-        params:
-          image: image/image.tar
-          additional_tags: src/.git/short_ref
+          - put: image
+            inputs:
+              - image
+              - src
+            no_get: true
+            params:
+              image: image/image.tar
+              additional_tags: src/.git/short_ref
 
     on_failure:
       put: slack
@@ -117,18 +115,17 @@ jobs:
           - get: daily
             trigger: true
 
+      - task: scan-image
+        file: common-pipelines/container/scan-image.yml
+
       - in_parallel:
-          - do:
-              - task: scan-image
-                file: common-pipelines/container/scan-image.yml
+          - task: cve-check
+            file: common-pipelines/container/cve-check.yml
 
-              - task: cve-check
-                file: common-pipelines/container/cve-check.yml
-
-              - task: import-scan
-                file: common-pipelines/container/import-scan.yml
-                params:
-                  IMAGENAME: ((image-repository))
+          - task: import-scan
+            file: common-pipelines/container/import-scan.yml
+            params:
+              IMAGENAME: ((image-repository))
 
     on_failure:
       put: slack
@@ -137,15 +134,6 @@ jobs:
         text: |
           :x: Continuous Scan of `$BUILD_PIPELINE_NAME` FAILED
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>0
-
-    on_success:
-      put: slack
-      params:
-        <<: *slack-failure-params
-        text: |
-          :white_check_mark: Continuous Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-        channel: ((slack-channel-success))
 
   - name: conmon-scan
     serial_groups: [container-scans]
@@ -180,15 +168,6 @@ jobs:
         text: |
           :x: ConMon Scan of `$BUILD_PIPELINE_NAME` FAILED
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-
-    on_success:
-      put: slack
-      params:
-        <<: *slack-failure-params
-        text: |
-          :white_check_mark: ConMon Scan of `$BUILD_PIPELINE_NAME` ran SUCCESSFULLY
-          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
-        channel: ((slack-channel-success))
 
 resources:
   - name: base-image

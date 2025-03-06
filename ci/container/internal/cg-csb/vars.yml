@@ -5,7 +5,7 @@ oci-build-params:
   BUILD_ARG_BUILD_ENV: production
 slack-channel-failure: "#cg-customer-success"
 src-repo: cloud-gov/csb
-src-branch: brokerpak-topic
+src-branch: ses-topic
 static-analysis-cmd: sh
 # We skip check updates because trivy tries pulling an image from GHCR but
 # often gets rate limited. Trivy has config databases built into the binary

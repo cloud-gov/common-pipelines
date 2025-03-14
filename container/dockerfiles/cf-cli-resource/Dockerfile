@@ -22,13 +22,13 @@ RUN mkdir -p /opt/cf-cli-${CF_CLI_6_VERSION} \
   | tar -zxC /opt/cf-cli-${CF_CLI_6_VERSION} \
   && ln -s /opt/cf-cli-${CF_CLI_6_VERSION}/cf /usr/local/bin
 
-ARG CF_CLI_7_VERSION=7.7.12
+ARG CF_CLI_7_VERSION=7.8.0
 RUN mkdir -p /opt/cf-cli-${CF_CLI_7_VERSION} \
   && curl -SL "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_CLI_7_VERSION}" \
   | tar -zxC /opt/cf-cli-${CF_CLI_7_VERSION} \
   && ln -s /opt/cf-cli-${CF_CLI_7_VERSION}/cf7 /usr/local/bin
 
-ARG CF_CLI_8_VERSION=8.8.0
+ARG CF_CLI_8_VERSION=8.11.0
 RUN mkdir -p /opt/cf-cli-${CF_CLI_8_VERSION} \
   && curl -SL "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_CLI_8_VERSION}" \
   | tar -zxC /opt/cf-cli-${CF_CLI_8_VERSION} \

@@ -1,5 +1,9 @@
 image-repository: bosh-io-stemcell-resource
+oci-build-params:
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/bosh-io-stemcell-resource/Dockerfile
 src-source:
   uri: https://github.com/concourse/bosh-io-stemcell-resource
   branch: master
   # Since src is a repo outside the cloud-gov org, don't verify commits.
+dockerfile-path: ["container/dockerfiles/bosh-io-stemcell-resource/Dockerfile"]
+dockerfile-trigger: true

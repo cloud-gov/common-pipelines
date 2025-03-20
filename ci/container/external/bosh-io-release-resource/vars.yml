@@ -1,4 +1,6 @@
 image-repository: bosh-io-release-resource
+oci-build-params:
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/bosh-io-release-resource/Dockerfile
 src-source:
   uri: https://github.com/concourse/bosh-io-release-resource
   branch: master

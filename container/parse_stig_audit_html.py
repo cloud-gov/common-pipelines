@@ -7,7 +7,7 @@ Search for failed scan results to determine if an image can
 be promoted from staging to production
 """
 # This is a script to parse the output of
-# the usg audit in html from cis-audit.html
+# the usg audit in html from stig-audit.html
 
 
 def main():
@@ -29,7 +29,7 @@ def main():
 def get_args():
     """Parse the arguments looking for just one, inputfile"""
     parser = argparse.ArgumentParser(description=__DESCRIPTION__)
-    parser.add_argument('--inputfile', help="the cis-audit html file>")
+    parser.add_argument('--inputfile', help="the stig-audit html file>")
     return parser.parse_args()
 
 

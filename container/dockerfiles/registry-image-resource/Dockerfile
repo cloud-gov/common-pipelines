@@ -9,8 +9,7 @@ COPY go.sum .
 RUN go mod download
 
 COPY . .
-ENV CGO_ENABLED=0
-ENV AWS_USE_FIPS_ENDPOINT=true
+ENV CGO_ENABLED 0
 RUN go build -o /assets/in ./cmd/in
 RUN go build -o /assets/out ./cmd/out
 RUN go build -o /assets/check ./cmd/check
@@ -21,7 +20,6 @@ RUN set -e; for pkg in $(go list ./...); do \
 FROM ${base_image} AS resource
 USER root
 ENV DEBIAN_FRONTEND=noninteractive
-ENV AWS_USE_FIPS_ENDPOINT=true
 RUN apt update && apt upgrade -y -o Dpkg::Options::="--force-confdef"
 RUN apt update \
   && apt install -y --no-install-recommends \
@@ -42,12 +40,8 @@ ARG DOCKER_PRIVATE_REPO
 ARG DOCKER_PUSH_USERNAME
 ARG DOCKER_PUSH_PASSWORD
 ARG DOCKER_PUSH_REPO
-ARG GCR_PUSH_SERVICE_ACCOUNT_KEY
-ARG GCR_PUSH_REPO
-ENV AWS_USE_FIPS_ENDPOINT=true
 RUN set -e; for test in /tests/*.test; do \
   $test -ginkgo.v; \
   done
 
 FROM resource
-ENV AWS_USE_FIPS_ENDPOINT=true

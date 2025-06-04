@@ -27,6 +27,7 @@ jobs:
               - general-task
               - github-pr-resource
               - github-release-resource
+              - hardened-stack
               - legacy-domain-certificate-renewer-testing
               - oci-build-task
               - opensearch-dashboards-testing

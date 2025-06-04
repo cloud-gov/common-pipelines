@@ -1,4 +1,4 @@
 base-image: cflinuxfs4
-base-image-tag: "1.268"
+base-image-tag: "1.268.0"
 image-repository: cloudfoundry
 src-repo: cloud-gov/ubuntu-hardened

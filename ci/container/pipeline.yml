@@ -18,6 +18,7 @@ jobs:
             values:
               - bosh-deployment-resource
               - cf-resource
+              - cflinuxfs4-hardened-candidate
               - cg-csb
               - concourse-http-jq-resource
               - cron-resource
@@ -27,7 +28,6 @@ jobs:
               - general-task
               - github-pr-resource
               - github-release-resource
-              - hardened-stack
               - legacy-domain-certificate-renewer-testing
               - oci-build-task
               - opensearch-dashboards-testing

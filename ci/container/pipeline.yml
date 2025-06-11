@@ -38,6 +38,7 @@ jobs:
               - s3-simple-resource
               - slack-notification-resource
               - ubuntu-hardened
+              - ubuntu-hardened-stig
 
         do:
           - set_pipeline: ((.:name))

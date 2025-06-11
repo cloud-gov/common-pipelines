@@ -1,0 +1,6 @@
+base-image: ubuntu
+base-image-tag: "22.04"
+image-repository: ubuntu-hardened-stig
+src-repo: cloud-gov/ubuntu-hardened
+src-branch: disa-stig
+tailoring-file: common-pipelines/container/tailor-stig.xml

@@ -80,6 +80,9 @@ jobs:
             privileged: true
             file: common-pipelines/container/usg-audit.yml
             image: image
+            params:
+              IMAGENAME: ((image-repository))
+              TAILORINGFILE: ((tailoring-file))
 
           - task: scan-image
             file: common-pipelines/container/scan-image.yml
@@ -137,6 +140,7 @@ jobs:
             image: image
             params:
               IMAGENAME: ((image-repository))
+              TAILORINGFILE: ((tailoring-file))
 
           - task: scan-image
             file: common-pipelines/container/scan-image.yml

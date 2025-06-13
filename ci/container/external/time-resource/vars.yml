@@ -1,5 +1,9 @@
 image-repository: time-resource
+oci-build-params:
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/time-resource/Dockerfile
 src-source:
   uri: https://github.com/concourse/time-resource
   branch: master
   # Since src is a repo outside the cloud-gov org, don't verify commits.
+dockerfile-path: ["container/dockerfiles/time-resource/Dockerfile"]
+dockerfile-trigger: true

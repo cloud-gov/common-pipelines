@@ -1,5 +1,9 @@
 image-repository: pool-resource
+oci-build-params:
+  DOCKERFILE: common-dockerfiles/container/dockerfiles/pool-resource/Dockerfile
 src-source:
   uri: https://github.com/concourse/pool-resource
   branch: master
   # Since src is a repo outside the cloud-gov org, don't verify commits.
+dockerfile-path: ["container/dockerfiles/pool-resource/Dockerfile"]
+dockerfile-trigger: true

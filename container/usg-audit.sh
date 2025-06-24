@@ -29,6 +29,9 @@ echo "installing bs4"
 # Install the python library BeautifulSoup to parse html
 python3 -m pip install beautifulsoup4
 
+#fix file permissions after running apt so audit passes properly
+find /var/log -perm /137 ! -name '*[bw]tmp' ! -name '*lastlog' -type f -exec chmod 640 '{}' \;
+
 # Run audit and put html results into audit.html file
 echo "running audit"
 usg audit --tailoring-file $TAILORINGFILE --html-file $PWD/audit/$IMAGENAME-audit.html --results-file $PWD/audit/$IMAGENAME-audit.xml

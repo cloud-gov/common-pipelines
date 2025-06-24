@@ -1,5 +1,4 @@
 base-image: paketo-jammy-full
-base-image-tag: latest
 image-repository: paketo-jammy-full-hardened-candidate
 src-repo: cloud-gov/ubuntu-hardened
 src-branch: disa-stig

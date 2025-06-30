@@ -28,23 +28,18 @@ jobs:
             version: every
             trigger: true
             passed: [code-scan]
-
           - get: base-image
             trigger: true
             params:
               format: oci
-
           - get: common-pipelines
             trigger: ((common-pipelines-trigger))
-
           - get: common-dockerfiles
             trigger: ((dockerfile-trigger))
-
       - put: pull-request
         params:
           path: pull-request
           status: pending
-
       - task: static-analysis
         input_mapping:
           src: pull-request
@@ -63,7 +58,6 @@ jobs:
           run:
             path: ((static-analysis-cmd))
             args: ((static-analysis-args))
-
       - task: oci-build
         privileged: true
         file: common-pipelines/container/oci-build.yml
@@ -288,7 +282,7 @@ resources:
     type: git
     source:
       uri: https://github.com/cloud-gov/common-pipelines
-      branch: main
+      branch: opensearch-proxy-variable
       commit_verification_keys: ((cloud-gov-pgp-keys))
       paths: ["container/*"]
       ignore_paths: ["container/dockerfiles/*"]
@@ -297,7 +291,7 @@ resources:
     type: git
     source:
       uri: https://github.com/cloud-gov/common-pipelines
-      branch: main
+      branch: opensearch-proxy-variable
       commit_verification_keys: ((cloud-gov-pgp-keys))
       paths: ((dockerfile-path))
 
@@ -328,7 +322,7 @@ resources:
     type: git
     source:
       uri: https://github.com/((src-repo))
-      branch: ((src-branch))
+      branch: opensearch-proxy-variable
       commit_verification_keys: ((cloud-gov-pgp-keys))
 
   - name: daily

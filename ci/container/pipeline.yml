@@ -1,18 +1,18 @@
 # job that sets all the rest
 jobs:
-  - name: set-self
-    plan:
-      - in_parallel:
-          - get: src
-            trigger: true
-      - set_pipeline: self
-        file: src/ci/container/pipeline.yml
+  # - name: set-self
+  #   plan:
+  #     - in_parallel:
+  #         - get: src
+  #           trigger: true
+  #     - set_pipeline: self
+  #       file: src/ci/container/pipeline.yml
 
   - name: set-internal-pipelines
     plan:
       - get: src
         trigger: true
-        passed: [set-self]
+        # passed: [set-self]
       - across:
           - var: name # repo, pipeline, and image name; all the same.
             values:
@@ -54,7 +54,7 @@ jobs:
     plan:
       - get: src
         trigger: true
-        passed: [set-self]
+        # passed: [set-self]
       - across:
           - var: name # repo, pipeline, and image name; all the same.
             values:
@@ -82,7 +82,7 @@ jobs:
     plan:
       - get: src
         trigger: true
-        passed: [set-self]
+        # passed: [set-self]
       - across:
           - var: name # repo, pipeline, and image name; all the same.
             values:
@@ -138,7 +138,7 @@ resources:
     type: git
     source:
       uri: https://github.com/cloud-gov/common-pipelines
-      branch: main
+      branch: opensearch-proxy-variable
       commit_verification_keys: ((cloud-gov-pgp-keys))
 
   - name: cg-scripts

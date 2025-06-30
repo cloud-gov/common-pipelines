@@ -1,3 +1,4 @@
 image-repository: pages-zap
 oci-build-params: { CONTEXT: src/zap }
 src-repo: cloud-gov/pages-images
+src-path: [zap/*]

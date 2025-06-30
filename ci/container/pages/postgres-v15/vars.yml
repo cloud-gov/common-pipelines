@@ -1,3 +1,4 @@
 image-repository: pages-postgres-v15
 oci-build-params: { CONTEXT: src/postgres/v15 }
 src-repo: cloud-gov/pages-images
+src-path: [postgres/v15/*]

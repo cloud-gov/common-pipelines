@@ -1,3 +1,4 @@
 image-repository: pages-node-v20
 oci-build-params: { CONTEXT: src/node/v20 }
 src-repo: cloud-gov/pages-images
+src-path: [node/v20/*]

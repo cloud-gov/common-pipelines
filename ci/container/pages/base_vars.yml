@@ -1,7 +1,8 @@
 base-image: ubuntu-hardened
 base-image-tag: latest
 src-target-branch: main
+src-path: []
 common-pipelines-trigger: false
 dockerfile-path: []
-dockerfile-trigger: true
+dockerfile-trigger: false
 tailoring-file: common-pipelines/container/tailor.xml

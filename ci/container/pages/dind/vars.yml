@@ -1,3 +1,4 @@
 image-repository: pages-dind
 oci-build-params: { CONTEXT: src/dind/v27 }
 src-repo: cloud-gov/pages-images
+src-path: [dind/v27/*]

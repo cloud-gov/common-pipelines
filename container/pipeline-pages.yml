@@ -276,6 +276,7 @@ resources:
       uri: https://github.com/((src-repo))
       branch: ((src-target-branch))
       commit_verification_keys: ((cloud-gov-pages-gpg-keys))
+      paths: ((src-path))
 
   - name: pull-request
     type: pull-request

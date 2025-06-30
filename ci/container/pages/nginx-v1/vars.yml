@@ -1,3 +1,4 @@
 image-repository: pages-nginx-v1
 oci-build-params: { CONTEXT: src/nginx/v1 }
 src-repo: cloud-gov/pages-images
+src-path: [nginx/v1/*]

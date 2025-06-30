@@ -1,6 +1,7 @@
 base-image: ubuntu-hardened
 base-image-tag: latest
 src-target-branch: main
+src-path: []
 common-pipelines-trigger: false
 dockerfile-path: []
 dockerfile-trigger: false

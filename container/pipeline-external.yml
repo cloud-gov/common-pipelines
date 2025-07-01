@@ -170,6 +170,42 @@ jobs:
           :x: ConMon Scan of `$BUILD_PIPELINE_NAME` FAILED
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
 
+  - name: test-stig-build
+    serial_groups: [container-scans]
+    plan:
+      - in_parallel:
+          - get: src
+            trigger: true
+            passed: [code-scan]
+
+          - get: stig-base-image
+            trigger: true
+            params:
+              format: oci
+
+          - get: common-pipelines
+            trigger: ((common-pipelines-trigger))
+
+          - get: common-dockerfiles
+            trigger: ((dockerfile-trigger))
+
+      - task: oci-build
+        privileged: true
+        file: common-pipelines/container/oci-build.yml
+        params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
+
+      - in_parallel:
+          - task: clamav-scan
+            file: common-pipelines/container/clamav-scan.yml
+            image: image
+
+          - task: usg-audit
+            file: common-pipelines/container/usg-audit.yml
+            image: image
+            params:
+              IMAGENAME: ((image-repository))
+              TAILORINGFILE: common-pipelines/container/tailor-stig.xml
+
 resources:
   - name: base-image
     type: registry-image
@@ -178,6 +214,15 @@ resources:
       aws_secret_access_key: ((ecr_aws_secret))
       repository: ((base-image))
       tag: ((base-image-tag))
+      aws_region: us-gov-west-1
+
+  - name: stig-base-image
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: ((stig-base-image))
+      tag: ((stig-base-image-tag))
       aws_region: us-gov-west-1
 
   - name: common-pipelines

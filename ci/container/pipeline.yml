@@ -8,6 +8,26 @@ jobs:
       - set_pipeline: self
         file: src/ci/container/pipeline.yml
 
+  - name: set-base-pipelines
+    plan:
+      - get: src
+        trigger: true
+        passed: [set-self]
+      - across:
+          - var: name # repo, pipeline, and image name; all the same.
+            values:
+              - ubuntu-hardened
+              - ubuntu-hardened-stig
+
+        do:
+          - set_pipeline: ((.:name))
+            file: src/container/pipeline-base.yml
+            var_files:
+              # Contrary to Concourse docs, earlier values override later ones.
+              # See https://github.com/concourse/concourse/issues/5455
+              - src/ci/container/base/((.:name))/vars.yml
+              - src/ci/container/base/base_vars.yml
+
   - name: set-internal-pipelines
     plan:
       - get: src

@@ -58,6 +58,7 @@ jobs:
               - s3-resource
               - s3-simple-resource
               - slack-notification-resource
+              - zap-runner
 
         do:
           - set_pipeline: ((.:name))

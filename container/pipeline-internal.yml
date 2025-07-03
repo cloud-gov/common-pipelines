@@ -330,6 +330,14 @@ resources:
       uri: https://github.com/((src-repo))
       branch: ((src-branch))
       commit_verification_keys: ((cloud-gov-pgp-keys))
+      git_config:
+        - name: user.name
+          value: cg-ci-bot
+        - name: user.email
+          value: no-reply@cloud.gov
+
+      private_key: ((cg-ci-bot-sshkey.private_key))
+      username: cg-ci-bot
 
   - name: daily
     type: time

@@ -1,6 +1,4 @@
 image-repository: zap-runner
-oci-build-params:
-  CONTEXT: src/zap/pipeline-dev/
 
-src-repo: cloud-gov/office-of-cybersecurity
+src-repo: cloud-gov/zap-runner
 src-target-branch: main

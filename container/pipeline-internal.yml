@@ -275,6 +275,8 @@ jobs:
             trigger: ((dockerfile-trigger))
 
       - task: oci-build
+        input_mapping:
+          base-image: stig-base-image
         privileged: true
         file: common-pipelines/container/oci-build.yml
         params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params

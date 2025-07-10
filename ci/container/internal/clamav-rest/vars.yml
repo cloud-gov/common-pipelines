@@ -1,0 +1,9 @@
+base-image: ubuntu-hardened-stig
+image-repository: clamav-rest
+oci-build-params:
+  BUILD_ARGS_FILE: clamav-rest-image/image/args/build-args.yml
+  DOCKERFILE: clamav-rest-image/image/Dockerfile
+src-repo: cloud-gov/clamav-rest-image
+src-branch: develop
+dockerfile-path: ["image/Dockerfile"]
+dockerfile-trigger: true

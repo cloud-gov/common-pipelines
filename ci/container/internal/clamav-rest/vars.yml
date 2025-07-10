@@ -5,5 +5,3 @@ oci-build-params:
   DOCKERFILE: src/image/Dockerfile
 src-repo: cloud-gov/clamav-rest-image
 src-branch: develop
-dockerfile-path: ["image/Dockerfile"]
-dockerfile-trigger: true

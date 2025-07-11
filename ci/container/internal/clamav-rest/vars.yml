@@ -1,7 +1,7 @@
 base-image: ubuntu-hardened-stig
 image-repository: clamav-rest
 oci-build-params:
-  BUILD_ARGS_FILE: src/image/args/build-args.yml
-  DOCKERFILE: src/image/Dockerfile
+  BUILD_ARGS_FILE: args/build-args.conf
+  CONTEXT: src/image
 src-repo: cloud-gov/clamav-rest-image
 src-branch: develop

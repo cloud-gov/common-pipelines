@@ -1,5 +1,7 @@
 base-image: ubuntu-hardened
 base-image-tag: latest
+stig-base-image: ubuntu-hardened-stig
+stig-base-image-tag: latest
 src-target-branch: main
 src-path: []
 common-pipelines-trigger: false

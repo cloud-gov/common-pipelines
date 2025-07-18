@@ -1,5 +1,5 @@
 base-image: ubuntu-hardened-stig
-image-repository: clamav-rest
+image-repository: clamav-rest-candidate
 oci-build-params:
   BUILD_ARGS_FILE: src/image/args/build-args.conf
   CONTEXT: src/image

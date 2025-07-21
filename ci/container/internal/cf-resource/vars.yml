@@ -2,3 +2,10 @@ image-repository: cf-resource
 oci-build-params: { DOCKERFILE: src/dockerfiles/ubuntu/Dockerfile }
 src-repo: cloud-gov/cf-resource
 src-target-branch: master
+build-test-cmd: build
+build-test-args: []
+build-test-params:
+  DOCKERFILE: src/dockerfiles/ubuntu/Dockerfile
+  TARGET: tests
+  IMAGE_ARG_base_image: base-image/image.tar
+  CONTEXT: src

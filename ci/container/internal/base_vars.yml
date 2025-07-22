@@ -11,5 +11,11 @@ static-analysis-args:
   [
     "No static analysis command configured. Set static-analysis-cmd and static-analysis-args in your pipeline configuration file to run static analysis on your source code.",
   ]
+build-test-cmd: echo
+build-test-args:
+  [
+    "No build test command configured. Set build-test-cmd and build-test-args in your pipeline configuration file to run tests",
+  ]
+build-test-params: {}
 src-branch: main
 tailoring-file: common-pipelines/container/tailor.xml

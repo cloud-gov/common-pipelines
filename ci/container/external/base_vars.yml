@@ -7,3 +7,9 @@ common-pipelines-trigger: false
 dockerfile-path: []
 dockerfile-trigger: false
 tailoring-file: common-pipelines/container/tailor.xml
+build-test-cmd: echo
+build-test-args:
+  [
+    "No build test command configured. Set build-test-cmd and build-test-args in your pipeline configuration file to run tests",
+  ]
+build-test-params: {}

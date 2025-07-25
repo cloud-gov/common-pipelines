@@ -1,2 +1,3 @@
 image-repository: bosh-deployment-resource
 src-repo: cloud-gov/bosh-deployment-resource
+src-repo-uri: https://github.com/cloud-gov/bosh-deployment-resource

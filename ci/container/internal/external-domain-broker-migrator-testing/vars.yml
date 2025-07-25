@@ -1,4 +1,5 @@
 image-repository: external-domain-broker-migrator-testing
 oci-build-params: { DOCKERFILE: src/docker/Dockerfile.dev }
 src-repo: cloud-gov/external-domain-broker-migrator
+src-repo-uri: https://github.com/cloud-gov/external-domain-broker-migrator
 src-target-branch: main

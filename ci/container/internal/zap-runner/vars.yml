@@ -1,4 +1,5 @@
 image-repository: zap-runner
 
 src-repo: cloud-gov/zap-runner
+src-repo-uri: https://github.com/cloud-gov/zap-runner
 src-target-branch: main

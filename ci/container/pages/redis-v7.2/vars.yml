@@ -1,4 +1,5 @@
 image-repository: pages-redis-v7.2
 oci-build-params: { CONTEXT: src/redis/v7.2 }
 src-repo: cloud-gov/pages-images
+src-repo-uri: https://github.com/cloud-gov/pages-images
 src-path: [redis/v7.2/*]

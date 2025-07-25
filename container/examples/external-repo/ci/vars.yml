@@ -3,6 +3,7 @@ base-image-tag: "22.04"
 image-repository: external-repo
 oci-build-params: {}
 src-repo: external-org/external-repo
+src-repo-uri: https://github.com/external-org/external-repo
 src-target-branch: main
 common-pipelines-trigger: false
 dockerfile-path: []

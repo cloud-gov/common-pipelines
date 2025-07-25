@@ -1,3 +1,4 @@
 image-repository: slack-notification-resource
 oci-build-params: { DOCKERFILE: src/dockerfiles/ubuntu/Dockerfile }
 src-repo: cloud-gov/slack-notification-resource
+src-repo-uri: https://github.com/cloud-gov/slack-notification-resource

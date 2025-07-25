@@ -1,3 +1,4 @@
 image-repository: s3-resource
 oci-build-params: { DOCKERFILE: src/Dockerfile }
 src-repo: cloud-gov/s3-resource
+src-repo-uri: https://github.com/cloud-gov/s3-resource

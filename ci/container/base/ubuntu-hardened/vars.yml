@@ -2,3 +2,4 @@ base-image: ubuntu
 base-image-tag: "22.04"
 image-repository: ubuntu-hardened
 src-repo: cloud-gov/ubuntu-hardened
+src-repo-uri: https://github.com/cloud-gov/ubuntu-hardened

@@ -1,4 +1,5 @@
 image-repository: legacy-domain-certificate-renewer-testing
 oci-build-params: { DOCKERFILE: src/docker/Dockerfile.dev }
 src-repo: cloud-gov/legacy-domain-certificate-renewer
+src-repo-uri: https://github.com/cloud-gov/legacy-domain-certificate-renewer
 src-target-branch: main

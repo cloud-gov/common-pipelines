@@ -1,2 +1,3 @@
 image-repository: general-task
 src-repo: cloud-gov/general-task
+src-repo-uri: https://github.com/cloud-gov/general-task

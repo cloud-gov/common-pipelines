@@ -1,4 +1,5 @@
 image-repository: opensearch-testing
 oci-build-params: { DOCKERFILE: src/docker/opensearch/dockerfile }
 src-repo: cloud-gov/opensearch-dashboards-cf-auth-proxy
+src-repo-uri: git@github.com:cloud-gov/opensearch-dashboards-cf-auth-proxy.git
 src-target-branch: main

@@ -312,7 +312,7 @@ resources:
   - name: src
     type: git
     source:
-      uri: https://github.com/((src-repo))
+      uri: ((src-repo-uri))
       branch: ((src-branch))
       commit_verification_keys: ((cloud-gov-pgp-keys))
 

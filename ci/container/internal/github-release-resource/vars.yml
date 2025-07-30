@@ -1,2 +1,3 @@
 image-repository: github-release-resource
 src-repo: cloud-gov/github-release-resource
+src-repo-uri: https://github.com/cloud-gov/github-release-resource

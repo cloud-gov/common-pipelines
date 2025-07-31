@@ -5,5 +5,5 @@ oci-build-params:
   CONTEXT: src/image
 src-repo: cloud-gov/clamav-rest-image
 src-repo-uri: https://github.com/cloud-gov/clamav-rest-image
-src-branch: develop
+src-branch: main
 tailoring-file: common-pipelines/container/tailor-stig.xml

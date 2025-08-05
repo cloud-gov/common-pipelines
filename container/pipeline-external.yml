@@ -174,11 +174,9 @@ jobs:
     plan:
       - in_parallel:
           - get: src
-            trigger: true
             passed: [code-scan]
 
           - get: stig-base-image
-            trigger: true
             params:
               format: oci
 

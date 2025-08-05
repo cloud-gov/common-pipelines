@@ -284,10 +284,8 @@ jobs:
     plan:
       - in_parallel:
           - get: src
-            trigger: true
 
           - get: stig-base-image
-            trigger: true
             params:
               format: oci
 

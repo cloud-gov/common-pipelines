@@ -317,9 +317,10 @@ resources:
       commit_verification_keys: ((cloud-gov-pgp-keys))
 
   - name: daily
-    type: time
+    type: cron-resource
     source:
-      interval: 24h
+      expression: ((daily-scan-time))
+      location: "America/New_York"
 
   - name: weekly
     type: cron-resource

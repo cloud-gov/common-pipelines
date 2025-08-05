@@ -13,3 +13,4 @@ build-test-args:
     "No build test command configured. Set build-test-cmd and build-test-args in your pipeline configuration file to run tests",
   ]
 build-test-params: {}
+daily-scan-time: "0 4 * * *"

@@ -19,3 +19,4 @@ build-test-args:
 build-test-params: {}
 src-branch: main
 tailoring-file: common-pipelines/container/tailor.xml
+daily-scan-time: "0 2 * * *"

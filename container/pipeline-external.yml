@@ -174,11 +174,9 @@ jobs:
     plan:
       - in_parallel:
           - get: src
-            trigger: true
             passed: [code-scan]
 
           - get: stig-base-image
-            trigger: true
             params:
               format: oci
 
@@ -286,9 +284,10 @@ resources:
     source: ((src-source))
 
   - name: daily
-    type: time
+    type: cron-resource
     source:
-      interval: 24h
+      expression: ((daily-scan-time))
+      location: "American/New_York"
 
   - name: monthly
     type: cron-resource

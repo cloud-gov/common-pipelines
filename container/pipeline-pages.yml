@@ -357,7 +357,7 @@ resources:
     type: cron-resource
     source:
       expression: ((daily-scan-time))
-      location: "American/New_York"
+      location: "America/New_York"
 
   - name: monthly
     type: cron-resource

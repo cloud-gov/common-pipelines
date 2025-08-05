@@ -11,3 +11,4 @@ static-analysis-args:
   ]
 src-branch: main
 tailoring-file: common-pipelines/container/tailor.xml
+daily-scan-time: "0 1 * * *"

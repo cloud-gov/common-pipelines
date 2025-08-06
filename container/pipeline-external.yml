@@ -25,7 +25,7 @@ jobs:
     plan:
       - in_parallel:
           - get: src
-            trigger: true
+            #trigger: true
             passed: [code-scan]
 
           - get: base-image
@@ -34,10 +34,10 @@ jobs:
               format: oci
 
           - get: common-pipelines
-            trigger: ((common-pipelines-trigger))
+            #trigger: ((common-pipelines-trigger))
 
           - get: common-dockerfiles
-            trigger: ((dockerfile-trigger))
+            #trigger: ((dockerfile-trigger))
 
       - task: oci-build
         privileged: true

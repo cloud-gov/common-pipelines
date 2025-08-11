@@ -2,7 +2,7 @@ base-image: paketo-jammy-full
 stig-base-image: paketo-jammy-full
 image-repository: paketo-jammy-full-hardened-candidate
 src-repo: cloud-gov/paketo-jammy-full-hardened-release
-src-repo-uri: https://github.com/cloud-gov/paketo-jammy-full-hardened-release
+src-repo-uri: git@github.com:cloud-gov/paketo-jammy-full-hardened-release.git
 src-branch: initial
 tailoring-file: common-pipelines/container/tailor-stig.xml
 oci-build-params:

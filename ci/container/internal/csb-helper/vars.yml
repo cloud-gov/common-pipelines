@@ -2,6 +2,5 @@ image-repository: csb-helper
 slack-channel-failure: "#cg-customer-success"
 src-repo: cloud-gov/csb
 src-repo-uri: https://github.com/cloud-gov/csb
-src-branch: brokerpak-topic
 oci-build-params:
   CONTEXT: "src/helper"

@@ -15,8 +15,6 @@ RUN go mod download && \
     go build -o /opt/resource/out out/cmd/*.go
 
 FROM builder as tests
-RUN mkdir ~/.ssh/ && touch ~/.ssh/known_hosts
-RUN ssh-keyscan github.com >>~/.ssh/known_hosts
 RUN go version
 RUN go test ./... -v
 

@@ -112,10 +112,10 @@ jobs:
     plan:
       - in_parallel:
           - get: src
-            trigger: true
+            # trigger: true
 
           - get: base-image
-            trigger: true
+            # trigger: true
             params:
               format: oci
 
@@ -325,7 +325,7 @@ resources:
   - name: weekly
     type: cron-resource
     source:
-      expression: "0 3 * * 2"
+      expression: "0 4 * * 2"
       location: "America/New_York"
 
   - name: monthly

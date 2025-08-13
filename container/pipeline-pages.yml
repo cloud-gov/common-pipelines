@@ -83,7 +83,7 @@ jobs:
     plan:
       - in_parallel:
           - get: src
-            trigger: true
+            # trigger: true
 
           - get: base-image
             trigger: true
@@ -91,10 +91,10 @@ jobs:
               format: oci
 
           - get: common-pipelines
-            trigger: ((common-pipelines-trigger))
+            # trigger: ((common-pipelines-trigger))
 
           - get: common-dockerfiles
-            trigger: ((dockerfile-trigger))
+            # trigger: ((dockerfile-trigger))
 
       - task: oci-build
         privileged: true

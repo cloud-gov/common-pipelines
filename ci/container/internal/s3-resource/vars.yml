@@ -2,3 +2,10 @@ image-repository: s3-resource
 oci-build-params: { DOCKERFILE: src/Dockerfile }
 src-repo: cloud-gov/s3-resource
 src-repo-uri: https://github.com/cloud-gov/s3-resource
+build-test-cmd: build
+build-test-args: []
+build-test-params:
+  DOCKERFILE: src/Dockerfile
+  TARGET: tests
+  IMAGE_ARG_base_image: base-image/image.tar
+  CONTEXT: src

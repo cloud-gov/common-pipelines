@@ -10,9 +10,13 @@ COPY . .
 RUN export GOPATH=$PWD/go && export PATH=$GOPATH/bin:$PATH
 
 RUN go mod download && \
-go build -o /opt/resource/check check/cmd/*.go && \
-go build -o /opt/resource/in in/cmd/*.go && \
-go build -o /opt/resource/out out/cmd/*.go
+    go build -o /opt/resource/check check/cmd/*.go && \
+    go build -o /opt/resource/in in/cmd/*.go && \
+    go build -o /opt/resource/out out/cmd/*.go
+
+FROM builder as tests
+RUN go version
+RUN go test ./... -v
 
 FROM ${base_image} AS resource
 COPY --from=builder /opt/resource/ /opt/resource/

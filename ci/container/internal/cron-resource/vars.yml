@@ -1,3 +1,5 @@
+base-image: ubuntu-hardened-stig
 image-repository: cron-resource
 src-repo: cloud-gov/cron-resource
 src-repo-uri: https://github.com/cloud-gov/cron-resource
+tailoring-file: common-pipelines/container/tailor-stig.xml

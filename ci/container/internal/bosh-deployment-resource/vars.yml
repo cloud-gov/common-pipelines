@@ -1,3 +1,4 @@
+base-image: ubuntu-hardened-stig
 image-repository: bosh-deployment-resource
 src-repo: cloud-gov/bosh-deployment-resource
 src-repo-uri: https://github.com/cloud-gov/bosh-deployment-resource
@@ -7,3 +8,4 @@ build-test-params:
   TARGET: tests
   IMAGE_ARG_base_image: base-image/image.tar
   CONTEXT: src
+tailoring-file: common-pipelines/container/tailor-stig.xml

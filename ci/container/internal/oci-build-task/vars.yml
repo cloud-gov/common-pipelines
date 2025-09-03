@@ -1,3 +1,5 @@
+base-image: ubuntu-hardened-stig
 image-repository: oci-build-task
 src-repo: cloud-gov/oci-build-task
 src-repo-uri: https://github.com/cloud-gov/oci-build-task
+tailoring-file: common-pipelines/container/tailor-stig.xml

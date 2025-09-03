@@ -1,4 +1,6 @@
+base-image: ubuntu-hardened-stig
 image-repository: playwright-python
 src-repo: cloud-gov/playwright-python
 src-repo-uri: https://github.com/cloud-gov/playwright-python
 src-target-branch: main
+tailoring-file: common-pipelines/container/tailor-stig.xml

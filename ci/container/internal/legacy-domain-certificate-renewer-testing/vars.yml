@@ -1,5 +1,7 @@
+base-image: ubuntu-hardened-stig
 image-repository: legacy-domain-certificate-renewer-testing
 oci-build-params: { DOCKERFILE: src/docker/Dockerfile.dev }
 src-repo: cloud-gov/legacy-domain-certificate-renewer
 src-repo-uri: https://github.com/cloud-gov/legacy-domain-certificate-renewer
 src-target-branch: main
+tailoring-file: common-pipelines/container/tailor-stig.xml

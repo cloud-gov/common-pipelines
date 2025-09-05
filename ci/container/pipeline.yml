@@ -42,9 +42,9 @@ jobs:
               - cg-csb
               - clamav-rest-candidate
               - concourse-http-jq-resource
+              - concourse-rwlock-resource
               - cron-resource
               - csb-helper
-              - concourse-rwlock-resource
               - external-domain-broker-migrator-testing
               - external-domain-broker-testing
               - general-task

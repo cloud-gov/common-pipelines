@@ -25,7 +25,7 @@ jobs:
     plan:
       - in_parallel:
           - get: src
-            # trigger: true
+            trigger: ((src-trigger))
             passed: [code-scan]
 
           - get: base-image

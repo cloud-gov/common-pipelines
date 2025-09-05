@@ -14,3 +14,4 @@ build-test-args:
   ]
 build-test-params: {}
 daily-scan-time: "0 4 * * *"
+src-trigger: false

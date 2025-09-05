@@ -83,7 +83,7 @@ jobs:
     plan:
       - in_parallel:
           - get: src
-            # trigger: true
+            trigger: ((src-trigger))
 
           - get: base-image
             trigger: true

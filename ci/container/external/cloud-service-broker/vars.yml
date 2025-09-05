@@ -7,5 +7,6 @@ src-source:
   # Modified to start with `^v?` instead of `^`.
   tag_regex: ^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$
   # Since src is a repo outside the cloud-gov org, don't verify commits.
+src-trigger: true
 dockerfile-path: ["container/dockerfiles/cloud-service-broker/Dockerfile"]
 dockerfile-trigger: true

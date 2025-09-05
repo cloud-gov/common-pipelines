@@ -3,6 +3,7 @@ image-repository: csb-helper
 slack-channel-failure: "#cg-customer-success"
 src-repo: cloud-gov/csb
 src-repo-uri: https://github.com/cloud-gov/csb
+src-trigger: true
 oci-build-params:
   CONTEXT: "src/helper"
 tailoring-file: common-pipelines/container/tailor-stig.xml

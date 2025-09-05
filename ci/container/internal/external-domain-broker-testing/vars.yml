@@ -4,4 +4,5 @@ oci-build-params: { DOCKERFILE: src/docker/Dockerfile.dev }
 src-repo: cloud-gov/external-domain-broker
 src-repo-uri: https://github.com/cloud-gov/external-domain-broker
 src-target-branch: main
+src-trigger: true
 tailoring-file: common-pipelines/container/tailor-stig.xml

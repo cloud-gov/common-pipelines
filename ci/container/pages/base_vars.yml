@@ -4,6 +4,7 @@ stig-base-image: ubuntu-hardened-stig
 stig-base-image-tag: latest
 src-target-branch: main
 src-path: []
+src-trigger: false
 common-pipelines-trigger: false
 dockerfile-path: []
 dockerfile-trigger: false

@@ -1,0 +1,5 @@
+base-image: ubuntu-hardened-stig
+image-repository: concourse-rwlock-resource
+src-repo: cloud-gov/concourse-rwlock-resource
+src-repo-uri: https://github.com/cloud-gov/concourse-rwlock-resource
+tailoring-file: common-pipelines/container/tailor-stig.xml

@@ -1,3 +1,4 @@
+base-image: ubuntu-hardened-stig
 image-repository: openresty
 oci-build-params:
   DOCKERFILE: common-dockerfiles/container/dockerfiles/openresty/Dockerfile
@@ -7,3 +8,4 @@ src-source:
   # Since src is a repo outside the cloud-gov org, don't verify commits.
 dockerfile-path: ["container/dockerfiles/openresty/Dockerfile"]
 dockerfile-trigger: true
+tailoring-file: common-pipelines/container/tailor-stig.xml

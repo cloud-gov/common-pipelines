@@ -16,3 +16,4 @@ static-analysis-cmd: sh
 static-analysis-args:
   - "-c"
   - "set -e; trivy config --skip-check-update --exit-code 1 src/brokerpaks/*"
+tailoring-file: common-pipelines/container/tailor-stig.xml

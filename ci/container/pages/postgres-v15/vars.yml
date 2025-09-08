@@ -1,5 +1,7 @@
+base-image: ubuntu-hardened-stig
 image-repository: pages-postgres-v15
 oci-build-params: { CONTEXT: src/postgres/v15 }
 src-repo: cloud-gov/pages-images
 src-repo-uri: https://github.com/cloud-gov/pages-images
 src-path: [postgres/v15/*]
+tailoring-file: common-pipelines/container/tailor-stig.xml

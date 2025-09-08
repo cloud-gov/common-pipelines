@@ -1,5 +1,7 @@
+base-image: ubuntu-hardened-stig
 image-repository: pages-python-v3.11
 oci-build-params: { CONTEXT: src/python/v3.11 }
 src-repo: cloud-gov/pages-images
 src-repo-uri: https://github.com/cloud-gov/pages-images
 src-path: [python/v3.11/*]
+tailoring-file: common-pipelines/container/tailor-stig.xml

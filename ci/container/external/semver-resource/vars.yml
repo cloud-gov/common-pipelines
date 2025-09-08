@@ -1,3 +1,4 @@
+base-image: ubuntu-hardened-stig
 image-repository: semver-resource
 oci-build-params:
   DOCKERFILE: common-dockerfiles/container/dockerfiles/semver-resource/Dockerfile
@@ -14,3 +15,4 @@ build-test-params:
   TARGET: tests
   IMAGE_ARG_base_image: base-image/image.tar
   CONTEXT: src
+tailoring-file: common-pipelines/container/tailor-stig.xml

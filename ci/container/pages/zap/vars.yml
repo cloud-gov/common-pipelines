@@ -1,5 +1,7 @@
+base-image: ubuntu-hardened-stig
 image-repository: pages-zap
 oci-build-params: { CONTEXT: src/zap }
 src-repo: cloud-gov/pages-images
 src-repo-uri: https://github.com/cloud-gov/pages-images
 src-path: [zap/*]
+tailoring-file: common-pipelines/container/tailor-stig.xml

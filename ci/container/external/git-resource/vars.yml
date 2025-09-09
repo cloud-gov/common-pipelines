@@ -8,11 +8,4 @@ src-source:
   # Since src is a repo outside the cloud-gov org, don't verify commits.
 dockerfile-path: ["container/dockerfiles/git-resource/Dockerfile"]
 dockerfile-trigger: true
-build-test-cmd: build
-build-test-args: []
-build-test-params:
-  DOCKERFILE: common-dockerfiles/container/dockerfiles/git-resource/Dockerfile
-  TARGET: tests
-  IMAGE_ARG_base_image: base-image/image.tar
-  CONTEXT: src
 tailoring-file: common-pipelines/container/tailor-stig.xml

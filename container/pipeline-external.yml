@@ -45,8 +45,6 @@ jobs:
         params: ((oci-build-params)) # for available params, see https://github.com/concourse/oci-build-task#params
 
       - task: build-test
-        input_mapping:
-          base-image: stig-base-image
         privileged: true
         config:
           platform: linux

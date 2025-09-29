@@ -41,7 +41,6 @@ jobs:
               - cflinuxfs4-hardened-candidate
               - cg-csb
               - clamav-rest-candidate
-              - concourse-http-jq-resource
               - concourse-rwlock-resource
               - cron-resource
               - csb-helper

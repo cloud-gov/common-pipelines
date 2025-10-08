@@ -2,7 +2,7 @@
 
 Reusable Concourse pipelines. Reference the pipeline for your app's language, `fly set-pipeline`, and you're done.
 
-## Index 
+## Index
 
 * `ci`: Concrete pipeline instances that use templates from this repository.
 * `container`: Template pipelines for containerized software.
@@ -43,10 +43,11 @@ flowchart LR
         internal -->|sets| internal-etc["..."]:::ellipses
         internal -->|sets| s3-resource["s3-resource pipeline"]
     end
-    
+
     subgraph Pages Concourse Team
         pages -->|sets| pages-dind-v25["image-dind-v25 pipeline"]
         pages -->|sets| pages-node-v20["image-node-v20 pipeline"]
+        pages -->|sets| pages-node-v22["image-node-v22 pipeline"]
         pages -->|sets| pages-python-v3["image-python-v3.11 pipeline"]
         pages -->|sets| pages-etc["..."]:::ellipses
     end

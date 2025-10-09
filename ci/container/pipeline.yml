@@ -108,6 +108,7 @@ jobs:
             values:
               - dind
               - node-v20
+              - node-v22
               - python-v3.11
               - redis-v7.2
               - nginx-v1

@@ -40,10 +40,12 @@ jobs:
           - get: common-dockerfiles
             trigger: ((dockerfile-trigger))
 
-      - put: pull-request
+      - put: update-status-to-pending
+        resource: pull-request
         params:
           path: pull-request
           status: pending
+        get_params: { skip_download: true }
 
       - task: static-analysis
         input_mapping:
@@ -120,16 +122,20 @@ jobs:
             image: image
 
     on_failure:
-      put: pull-request
+      put: update-status-to-failure
+      resource: pull-request
       params:
         path: pull-request
         status: failure
+      get_params: { skip_download: true }
 
     on_success:
-      put: pull-request
+      put: update-status-to-success
+      resource: pull-request
       params:
         path: pull-request
         status: success
+      get_params: { skip_download: true }
 
   - name: main
     serial_groups: [container-scans]

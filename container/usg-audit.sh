@@ -21,7 +21,7 @@ apt-get -y -qq install \
   python3-pip
 
 echo "UA attaching"
-ua attach --attach-config ua-attach-config.yaml
+ua attach --attach-config ua-attach-config.yaml || true
 
 apt-get -y -qq install usg
 

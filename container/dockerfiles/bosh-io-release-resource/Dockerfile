@@ -12,7 +12,7 @@ ADD assets/ /opt/resource/
 RUN chmod +x /opt/resource/*
 ADD . /resource
 WORKDIR /resource
-RUN gem install bundler -v 2.6
+RUN gem install bundler -v 2.5
 RUN bundle install --local && bundle exec rspec
 
 FROM ${base_image} AS resource

@@ -1,7 +1,7 @@
 # Dockerfile using our hardened base image
 ARG base_image
 
-FROM golang:1.21 as builder
+FROM golang:1.25 AS builder
 
 WORKDIR /usr/src/app
 
@@ -14,7 +14,7 @@ RUN go mod download && \
     go build -o /opt/resource/in in/cmd/*.go && \
     go build -o /opt/resource/out out/cmd/*.go
 
-FROM builder as tests
+FROM builder AS tests
 RUN go version
 RUN go test ./... -v
 

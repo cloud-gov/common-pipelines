@@ -3,6 +3,7 @@ ARG base_image
 FROM ${base_image} AS tests
 RUN apt update && apt upgrade -y -o Dpkg::Options::="--force-confdef"
 RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+  build-essential \
   curl \
   ca-certificates \
   jq \

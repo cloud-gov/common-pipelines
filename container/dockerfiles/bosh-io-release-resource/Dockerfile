@@ -8,7 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
   ca-certificates \
   jq \
   wget \
-  openssl \
+  libssl-dev \
   zlib1g-dev
 
 # Install Ruby from source

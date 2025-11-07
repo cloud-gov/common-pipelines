@@ -9,10 +9,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
   jq \
   wget \
   libssl-dev \
-  zlib1g-dev
+  zlib1g-dev \
+  libyaml-dev \
 
-# Install Ruby from source
-ENV RUBY_RELEASE_VERSION=3.4.7
+  # Install Ruby from source
+  ENV RUBY_RELEASE_VERSION=3.4.7
 RUN wget -q "https://cache.ruby-lang.org/pub/ruby/3.4/ruby-${RUBY_RELEASE_VERSION}.tar.gz"
 RUN tar xaf "ruby-${RUBY_RELEASE_VERSION}.tar.gz"
 RUN cd ruby-${RUBY_RELEASE_VERSION} && \

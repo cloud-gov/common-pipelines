@@ -5,7 +5,8 @@ RUN apt update && apt upgrade -y -o Dpkg::Options::="--force-confdef"
 RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
   curl \
   ca-certificates \
-  jq
+  jq \
+  wget
 
 # Install Ruby from source
 ENV RUBY_RELEASE_VERSION=3.4.7

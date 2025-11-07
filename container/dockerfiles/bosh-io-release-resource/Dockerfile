@@ -7,7 +7,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
   curl \
   ca-certificates \
   jq \
-  wget
+  wget \
+  openssl \
+  zlib1g-dev
 
 # Install Ruby from source
 ENV RUBY_RELEASE_VERSION=3.4.7

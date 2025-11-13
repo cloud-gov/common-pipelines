@@ -15,6 +15,8 @@ jobs:
               repository: general-task
               aws_region: us-gov-west-1
               tag: latest
+          params:
+            GITHUB_TOKEN: ((cg-ci-bot-ghtoken))
           run:
             path: sh
             args:

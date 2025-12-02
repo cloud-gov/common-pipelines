@@ -38,7 +38,6 @@ jobs:
             values:
               - bosh-deployment-resource
               - cf-resource
-              - cflinuxfs4-hardened-candidate
               - cg-csb
               - clamav-rest-candidate
               - concourse-rwlock-resource
@@ -53,7 +52,6 @@ jobs:
               - oci-build-task
               - opensearch-dashboards-testing
               - opensearch-testing
-              - paketo-jammy-full-hardened-candidate
               - playwright-python
               - pulledpork
               - s3-resource

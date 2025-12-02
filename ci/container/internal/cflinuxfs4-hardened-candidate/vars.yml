@@ -1,7 +1,0 @@
-base-image: cloudfoundry-cflinuxfs4
-base-image-tag: "1.268.0"
-image-repository: cflinuxfs4-hardened-candidate
-src-repo: cloud-gov/ubuntu-hardened
-src-repo-uri: https://github.com/cloud-gov/ubuntu-hardened
-src-branch: disa-stig
-tailoring-file: common-pipelines/container/tailor-stig.xml

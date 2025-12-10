@@ -114,6 +114,9 @@ jobs:
 
           - task: scan-image
             file: common-pipelines/container/scan-image.yml
+            params:
+              IMAGENAME: ((image-repository))
+              GRYPEPATH: ((grype-path))
 
       - in_parallel:
           - task: cve-check
@@ -198,6 +201,9 @@ jobs:
 
           - task: scan-image
             file: common-pipelines/container/scan-image.yml
+            params:
+              IMAGENAME: ((image-repository))
+              GRYPEPATH: ((grype-path))
 
       - task: cve-check
         file: common-pipelines/container/cve-check.yml
@@ -258,6 +264,9 @@ jobs:
 
       - task: scan-image
         file: common-pipelines/container/scan-image.yml
+        params:
+          IMAGENAME: ((image-repository))
+          GRYPEPATH: ((grype-path))
 
       - in_parallel:
           - task: cve-check

@@ -21,3 +21,4 @@ src-branch: main
 src-trigger: false
 tailoring-file: common-pipelines/container/tailor.xml
 daily-scan-time: "0 2 * * *"
+grype-path: common-pipelines/container/grype.yaml

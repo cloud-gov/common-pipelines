@@ -1,7 +1,7 @@
 base-image: ubuntu-hardened-stig
 image-repository: pages-dind
-oci-build-params: { CONTEXT: src/dind/v27 }
+oci-build-params: { CONTEXT: src/dind/v29 }
 src-repo: cloud-gov/pages-images
 src-repo-uri: https://github.com/cloud-gov/pages-images
-src-path: [dind/v27/*]
+src-path: [dind/v29/*]
 tailoring-file: common-pipelines/container/tailor-stig.xml

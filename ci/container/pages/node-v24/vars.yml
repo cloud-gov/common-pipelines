@@ -1,0 +1,7 @@
+base-image: ubuntu-hardened-stig
+image-repository: pages-node-v24
+oci-build-params: { CONTEXT: src/node/v24 }
+src-repo: cloud-gov/pages-images
+src-repo-uri: https://github.com/cloud-gov/pages-images
+src-path: [node/v24/*]
+tailoring-file: common-pipelines/container/tailor-stig.xml

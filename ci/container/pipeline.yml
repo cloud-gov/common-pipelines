@@ -107,6 +107,7 @@ jobs:
               - dind
               - node-v20
               - node-v22
+              - node-v24
               - python-v3.11
               - redis-v7.2
               - nginx-v1

@@ -2,5 +2,5 @@ base-image: ubuntu-hardened-stig
 image-repository: zap-runner
 src-repo: cloud-gov/zap-runner
 src-repo-uri: https://github.com/cloud-gov/zap-runner
-src-branch: automation_framework_overhaul
+src-branch: 2026-03-18_update
 tailoring-file: common-pipelines/container/tailor-stig.xml

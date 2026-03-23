@@ -7,13 +7,4 @@ slack-channel-failure: "#cg-customer-success"
 src-repo: cloud-gov/csb
 src-repo-uri: https://github.com/cloud-gov/csb
 src-trigger: true
-static-analysis-cmd: sh
-# We skip check updates because trivy tries pulling an image from GHCR but
-# often gets rate limited. Trivy has config databases built into the binary
-# and we update it fairly often, whenever we rebuild general-task. Especially
-# since we do not depend on the vulnerability scanning, only the misconfig
-# checks, that is often enough.
-static-analysis-args:
-  - "-c"
-  - "set -e; trivy config --skip-check-update --exit-code 1 src/brokerpaks/*"
 tailoring-file: common-pipelines/container/tailor-stig.xml

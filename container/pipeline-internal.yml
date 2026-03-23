@@ -5,7 +5,6 @@ jobs:
           - get: pull-request
             version: every
             trigger: true
-            passed: [code-scan]
 
           - get: base-image
             trigger: true

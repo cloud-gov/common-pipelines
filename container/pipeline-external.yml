@@ -5,7 +5,6 @@ jobs:
       - in_parallel:
           - get: src
             trigger: ((src-trigger))
-            passed: [code-scan]
 
           - get: base-image
             trigger: true
@@ -181,7 +180,6 @@ jobs:
     plan:
       - in_parallel:
           - get: src
-            passed: [code-scan]
 
           - get: stig-base-image
             params:

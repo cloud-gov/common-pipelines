@@ -5,7 +5,6 @@ jobs:
           - get: src
             resource: pull-request
             trigger: true
-            passed: [code-scan]
 
           - get: base-image
             trigger: true

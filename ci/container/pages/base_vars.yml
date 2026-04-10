@@ -1,14 +1,12 @@
-base-image: ubuntu-hardened
+base-image: ubuntu-hardened-stig
 base-image-tag: latest
-stig-base-image: ubuntu-hardened-stig
-stig-base-image-tag: latest
 src-target-branch: main
 src-path: []
 src-trigger: false
 common-pipelines-trigger: false
 dockerfile-path: []
 dockerfile-trigger: false
-tailoring-file: common-pipelines/container/tailor.xml
+tailoring-file: common-pipelines/container/tailor-stig.xml
 build-test-cmd: echo
 build-test-args:
   [

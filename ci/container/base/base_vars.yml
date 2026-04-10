@@ -10,6 +10,6 @@ static-analysis-args:
     "No static analysis command configured. Set static-analysis-cmd and static-analysis-args in your pipeline configuration file to run static analysis on your source code.",
   ]
 src-branch: main
-tailoring-file: common-pipelines/container/tailor.xml
+tailoring-file: common-pipelines/container/tailor-stig.xml
 daily-scan-time: "0 1 * * *"
 grype-path: common-pipelines/container/grype.yaml

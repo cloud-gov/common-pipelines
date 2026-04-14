@@ -1,4 +1,3 @@
-base-image: ubuntu-hardened-stig
 image-repository: cloud-service-broker
 oci-build-params:
   DOCKERFILE: common-dockerfiles/container/dockerfiles/cloud-service-broker/Dockerfile
@@ -11,4 +10,3 @@ src-source:
 src-trigger: true
 dockerfile-path: ["container/dockerfiles/cloud-service-broker/Dockerfile"]
 dockerfile-trigger: true
-tailoring-file: common-pipelines/container/tailor-stig.xml

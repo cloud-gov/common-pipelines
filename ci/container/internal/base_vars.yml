@@ -1,7 +1,5 @@
-base-image: ubuntu-hardened
+base-image: ubuntu-hardened-stig
 base-image-tag: latest
-stig-base-image: ubuntu-hardened-stig
-stig-base-image-tag: latest
 oci-build-params: {}
 common-pipelines-trigger: false
 dockerfile-path: []
@@ -19,6 +17,6 @@ build-test-args:
 build-test-params: {}
 src-branch: main
 src-trigger: false
-tailoring-file: common-pipelines/container/tailor.xml
+tailoring-file: common-pipelines/container/tailor-stig.xml
 daily-scan-time: "0 2 * * *"
 grype-path: common-pipelines/container/grype.yaml

@@ -14,7 +14,7 @@ See the README in each folder for pipeline-specific details. In general, you wil
 
 ## Motivation
 
-An adage of Continuous Integration: "Treat pipelines like cattle, not like pets."
+An adage of Continuous Integration: "Treat pipelines like livestock, not pets."
 
 cloud.gov maintains a variety of software written in a handful of programming languages. Apps written in the same language should be built and deployed in the same way, and developers should not have to reinvent the wheel by writing a new pipeline every time.
 
@@ -30,10 +30,12 @@ flowchart LR
     subgraph Main Concourse Team
         container["container pipeline"]
         container -->|sets self| container
+        container -->|contains| base["set-base-pipelines job"]:::job
         container -->|contains| external["set-external-pipelines job"]:::job
         container -->|contains| internal["set-internal-pipelines job"]:::job
         container -->|contains| pages["set-pages-pipelines job"]:::job
 
+        base -->|sets| ubuntu-hardened-stig["ubuntu-hardened-stig pipeline"]
         external -->|sets| cf-cli-resource["cf-cli-resource pipeline"]
         external -->|sets| cf-resource["cf-resource pipeline"]
         external -->|sets| external-etc["..."]:::ellipses

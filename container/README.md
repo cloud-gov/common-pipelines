@@ -2,7 +2,7 @@
 
 Build, audit, and scan Open Container Initiative (OCI) images on PR, and push them to a registry on merge if they pass all audits and scans.
 
-## Usage 
+## Usage
 
 To setup a pipeline:
 
@@ -13,7 +13,7 @@ To setup a pipeline:
   * Example file for [internal repos](examples/cloud-gov-repo/ci/vars.yml)
   * Example file for [external repos](examples/external-repo/ci/vars.yml)
 * Set the values in the `vars.yml` file as needed. All values present in the example file are required.
-* The `base-image` variable should be set to our [ubuntu-hardened](https://github.com/cloud-gov/ubuntu-hardened) image.
+* The `base-image` variable should be set to our [ubuntu-hardened-stig](https://github.com/cloud-gov/ubuntu-hardened) image.
 * Some external repos require extra configuration. See the section below on [Configuring External Repositories](#configuring-external-repositories).
 * Update the relevant list of repos in the [pipeline.yml](../ci/container/pipeline.yml) file with the name of your repo.
 * Create a PR with your changes.
@@ -81,20 +81,9 @@ In some cases Pages repositories may need to be added so the pipelines can be ad
 2. Add the repository named directory and `vars.yml` file under `ci/container/pages/<the-repo-name>`.
 3. Add the repo name to the `set-pages-pipelines` task in the `ci/container/pipeline.yml`.
 
-## CIS Rule Customization/Tailoring
+## STIG Rule Customization/Tailoring
 
-We set the following CIS Rule exceptions in our `tailor.xml` file:
-
-| Rule | Name | Reason for Exception | How to Confirm |
-| ---- | ---- | -------------------- | -------------- |
-| 1.4.3 | `xccdf_org.ssgproject.content_rule_ensure_root_password_configured` | Not applicable to concourse containers | Check out documentation on [concourse internals](https://concourse-ci.org/internals.html) and [fly intercept](https://concourse-ci.org/builds.html#fly-intercept) |
-| 3.5.2.9 | `xccdf_org.ssgproject.content_rule_service_nftables_enabled` | False Positive: nftables is enabled | Run `systemctl is-enabled nftables` |
-| 3.5.2.8 | `xccdf_org.ssgproject.content_rule_nftables_ensure_default_deny_policy` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 3.5.2.10 | `xccdf_org.ssgproject.content_rule_nftables_rules_permanent`| Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 3.5.2.5 | `xccdf_org.ssgproject.content_rule_set_nftables_base_chain` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 3.5.2.6 | `xccdf_org.ssgproject.content_rule_set_nftables_loopback_traffic` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 3.5.2.4 | `xccdf_org.ssgproject.content_rule_set_nftables_table` | Not applicable to containers, needs privileged access | Run any nftables command, like `nft list ruleset` to see that the operation is not permitted |
-| 4.2.3 | `xccdf_org.ssgproject.content_rule_permissions_local_var_log` | Triggers on apt log files causing a false positive | Apt log permissions are set this way [by design](https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=285551)
+We define the STIG rules that should be audited by the usg tool in the `tailor-stig.xml` file. If we were to make any modifications to this file we would document the changes in this readme.
 
 ## Troubleshooting
 

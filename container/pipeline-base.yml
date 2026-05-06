@@ -105,7 +105,7 @@ jobs:
             params:
               format: oci
 
-          - get: weekly
+          - get: weekly-rebuild
             trigger: true
 
           - get: common-pipelines
@@ -314,10 +314,12 @@ resources:
       expression: ((daily-scan-time))
       location: "America/New_York"
 
-  - name: weekly
-    type: cron-resource
+  - name: weekly-rebuild
+    type: time
     source:
-      expression: "0 4 * * 2"
+      start: 3:00 AM
+      stop: 3:05 AM
+      days: [Tuesday]
       location: "America/New_York"
 
   - name: monthly

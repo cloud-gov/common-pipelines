@@ -127,14 +127,13 @@ jobs:
             file: common-pipelines/container/software-inventory.yml
             image: image
 
-          - put: image
+          - put: staging-image
             inputs:
               - image
               - src
             no_get: true
             params:
               image: image/image.tar
-              tag: staging
 
     on_failure:
       put: slack
@@ -355,6 +354,15 @@ resources:
       aws_secret_access_key: ((ecr_aws_secret))
       repository: ((image-repository))
       tag: latest
+      aws_region: us-gov-west-1
+
+  - name: staging-image
+    type: registry-image
+    source:
+      aws_access_key_id: ((ecr_aws_key))
+      aws_secret_access_key: ((ecr_aws_secret))
+      repository: ((image-repository))
+      tag: staging
       aws_region: us-gov-west-1
 
   - name: slack

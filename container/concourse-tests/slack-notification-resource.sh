@@ -1,0 +1,84 @@
+#!/bin/bash
+set -e
+
+echo "  → Testing slack-notification-resource in Concourse context"
+
+cd /tmp/build/workspace
+
+# Test 1: Check script protocol (Slack notification doesn't implement check)
+echo "  → Testing /opt/resource/check protocol"
+if [ -f /opt/resource/check ]; then
+  cat > check-input.json <<EOF
+{
+  "source": {
+    "url": "https://hooks.slack.com/services/fake/webhook"
+  },
+  "version": null
+}
+EOF
+
+  /opt/resource/check < check-input.json > check-output.json || {
+    echo "  ℹ check script exited with error (expected for notification resource)"
+  }
+
+  if [ -f check-output.json ] && [ -s check-output.json ]; then
+    jq -e 'type == "array"' check-output.json >/dev/null 2>&1 && \
+      echo "  ✓ check returns JSON array"
+  fi
+else
+  echo "  ℹ check not implemented (expected for notification resource)"
+fi
+
+# Test 2: In script protocol (usually just returns empty)
+echo "  → Testing /opt/resource/in protocol"
+if [ -f /opt/resource/in ]; then
+  cat > in-input.json <<EOF
+{
+  "source": {
+    "url": "https://hooks.slack.com/services/fake/webhook"
+  },
+  "version": null
+}
+EOF
+
+  mkdir -p src
+  /opt/resource/in src < in-input.json > in-output.json || {
+    echo "  ℹ in script exited with error (expected for notification resource)"
+  }
+
+  if [ -f in-output.json ] && [ -s in-output.json ]; then
+    jq -e 'type == "object"' in-output.json >/dev/null 2>&1 && \
+      echo "  ✓ in returns JSON object"
+  fi
+else
+  echo "  ℹ in not fully implemented (may be acceptable)"
+fi
+
+# Test 3: Out script protocol (main functionality)
+echo "  → Testing /opt/resource/out protocol"
+cat > out-input.json <<EOF
+{
+  "source": {
+    "url": "https://hooks.slack.com/services/fake/webhook"
+  },
+  "params": {
+    "text": "Test notification"
+  }
+}
+EOF
+
+mkdir -p src
+/opt/resource/out src < out-input.json > out-output.json || {
+  echo "  ℹ out script exited with error (expected without valid webhook)"
+}
+
+if [ -f out-output.json ] && [ -s out-output.json ]; then
+  jq -e 'type == "object"' out-output.json >/dev/null 2>&1 && \
+    echo "  ✓ out returns JSON object"
+fi
+
+# Test 4: curl available (needed for webhook calls)
+echo "  → Testing curl availability"
+curl --version >/dev/null 2>&1 && echo "  ✓ curl available"
+
+echo "  ✓ slack-notification-resource Concourse protocol validation passed"

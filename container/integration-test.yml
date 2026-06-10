@@ -1,0 +1,29 @@
+# Integration Test Task
+# Runs functional tests against the staging image
+# Includes optional Concourse context validation
+
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    aws_access_key_id: ((ecr_aws_key))
+    aws_secret_access_key: ((ecr_aws_secret))
+    repository: ((image-repository))
+    tag: staging
+    aws_region: us-gov-west-1
+
+inputs:
+  - name: common-pipelines
+  - name: src
+    optional: true
+
+params:
+  INTEGRATION_TEST_CMD: echo
+  INTEGRATION_TEST_ARGS: "No integration test configured"
+  ENABLE_CONCOURSE_VALIDATION: "false"
+  IMAGE_TYPE: generic
+  IMAGE_REPOSITORY: ((image-repository))
+
+run:
+  path: common-pipelines/container/integration-test.sh

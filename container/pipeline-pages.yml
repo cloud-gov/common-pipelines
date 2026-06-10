@@ -142,7 +142,39 @@ jobs:
           :warning: Pipeline `$BUILD_PIPELINE_NAME` STAGING build FAILED
           <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
         channel: ((slack-channel))
-        username: ((slack-username))
+        icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
+
+  - name: integration-test
+    serial_groups: [container-scans]
+    plan:
+      - in_parallel:
+          - get: src
+            trigger: true
+            passed: [staging]
+
+          - get: base-image
+            passed: [staging]
+            params:
+              format: oci
+
+          - get: common-pipelines
+            passed: [staging]
+
+      - task: integration-test
+        file: common-pipelines/container/integration-test.yml
+        params:
+          INTEGRATION_TEST_CMD: ((integration-test-cmd))
+          INTEGRATION_TEST_ARGS: ((integration-test-args))
+          ENABLE_CONCOURSE_VALIDATION: ((enable-concourse-validation))
+          IMAGE_TYPE: ((image-type))
+
+    on_failure:
+      put: slack
+      params:
+        text: |
+          :warning: Pipeline `$BUILD_PIPELINE_NAME` INTEGRATION TEST FAILED
+          <$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME|View build details>
+        channel: ((slack-channel))
         icon_url: https://avatars1.githubusercontent.com/u/7809479?v=3&s=40
 
   - name: main
@@ -151,11 +183,11 @@ jobs:
       - in_parallel:
           - get: src
             trigger: ((src-trigger))
-            passed: [staging]
+            passed: [integration-test]
 
           - get: base-image
             trigger: true
-            passed: [staging]
+            passed: [integration-test]
             params:
               format: oci
 

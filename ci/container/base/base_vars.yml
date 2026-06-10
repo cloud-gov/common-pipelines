@@ -13,3 +13,14 @@ src-branch: main
 tailoring-file: common-pipelines/container/tailor-stig.xml
 daily-scan-time: "0 1 * * *"
 grype-path: common-pipelines/container/grype.yaml
+
+# Image type for smoke tests
+image-type: generic
+
+# Integration test configuration
+integration-test-cmd: echo
+integration-test-args:
+  - "No integration test configured. Set integration-test-cmd and integration-test-args in your vars.yml to enable integration testing."
+
+# Concourse context validation
+enable-concourse-validation: "false"  # Set to "true" to enable Concourse-specific validation

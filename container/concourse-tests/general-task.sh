@@ -3,7 +3,11 @@ set -e
 
 echo "  → Testing general-task in Concourse context"
 
-cd /tmp/build/workspace
+# Scratch workspace provided by integration-test.sh; fall back to a temp dir
+# when run standalone.
+: "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
+mkdir -p "$CONCOURSE_WORKSPACE"
+cd "$CONCOURSE_WORKSPACE"
 
 # Test 1: Critical CLI tools
 echo "  → Testing critical CLI tools"
@@ -35,7 +39,7 @@ cf api --version >/dev/null 2>&1 && echo "  ✓ CF CLI works"
 
 # Test 4: Terraform
 echo "  → Testing Terraform"
-cd /tmp/build/workspace
+cd "$CONCOURSE_WORKSPACE"
 cat > src/test.tf <<EOF
 variable "test" {
   default = "value"

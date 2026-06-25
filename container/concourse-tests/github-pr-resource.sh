@@ -3,7 +3,11 @@ set -e
 
 echo "  → Testing github-pr-resource in Concourse context"
 
-cd /tmp/build/workspace
+# Scratch workspace provided by integration-test.sh; fall back to a temp dir
+# when run standalone.
+: "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
+mkdir -p "$CONCOURSE_WORKSPACE"
+cd "$CONCOURSE_WORKSPACE"
 
 # Test 1: Check script protocol
 echo "  → Testing /opt/resource/check protocol"

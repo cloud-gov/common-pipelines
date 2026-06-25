@@ -5,10 +5,26 @@ This directory contains validation scripts that test images in Concourse-like ex
 ## Purpose
 
 These tests simulate how Concourse runs containers:
-- Workspace directory structures (`/tmp/build/workspace/`)
-- Volume mounting behavior (separate input/output directories)
+- The real task working directory, where Concourse mounts each declared
+  input/output in its own subdirectory
+- A writable scratch workspace exposed via the `$CONCOURSE_WORKSPACE`
+  environment variable (set by `integration-test.sh`)
 - Resource protocol compliance (stdin/stdout JSON for resources)
 - Typical task operations (git clone, builds, deployments)
+
+## Workspace Convention
+
+`integration-test.sh` creates a real temporary directory (via `mktemp -d`),
+exports it as `CONCOURSE_WORKSPACE`, and cleans it up on exit. Each test
+script MUST use `$CONCOURSE_WORKSPACE` rather than hardcoding a path. For
+standalone runs, scripts fall back to their own `mktemp -d` if the variable is
+unset:
+
+```bash
+: "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
+mkdir -p "$CONCOURSE_WORKSPACE"
+cd "$CONCOURSE_WORKSPACE"
+```
 
 ## When Tests Run
 
@@ -34,20 +50,26 @@ set -e  # Exit on first error
 
 echo "  → Testing <image-name> in Concourse context"
 
+# Use the scratch workspace provided by integration-test.sh (fall back to a
+# temp dir when run standalone).
+: "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
+mkdir -p "$CONCOURSE_WORKSPACE"
+cd "$CONCOURSE_WORKSPACE"
+
 # Test 1: Resource-specific functionality
 # For resources: test check/in/out protocol
 # For task images: test typical operations
 
 # Example for resources:
-cat > /tmp/build/workspace/test-input.json <<EOF
+cat > "$CONCOURSE_WORKSPACE/test-input.json" <<EOF
 {"source":{},"version":{}}
 EOF
 
-/opt/resource/check < /tmp/build/workspace/test-input.json | jq -e 'type == "array"'
+/opt/resource/check < "$CONCOURSE_WORKSPACE/test-input.json" | jq -e 'type == "array"'
 echo "  ✓ Resource check returns JSON array"
 
 # Example for task images:
-git clone https://github.com/cloud-gov/example.git /tmp/build/workspace/src/repo
+git clone https://github.com/cloud-gov/example.git "$CONCOURSE_WORKSPACE/src/repo"
 echo "  ✓ Git operations work"
 
 echo "  ✓ <image-name> Concourse validation passed"
@@ -64,7 +86,6 @@ chmod +x container/concourse-tests/<image-type>.sh
 ```bash
 docker run --rm \
   -v $(pwd):/workspace \
-  -w /tmp/build/workspace \
   <image>:staging \
   /workspace/container/concourse-tests/<image-type>.sh
 ```
@@ -111,8 +132,9 @@ done
 
 ### Pattern 3: Workspace Operations
 ```bash
-# Test file operations in workspace
-cd /tmp/build/workspace
+# Test file operations in the scratch workspace
+cd "$CONCOURSE_WORKSPACE"
+mkdir -p src output
 echo "test" > src/file.txt
 cat src/file.txt > output/result.txt
 [ -f output/result.txt ] && echo "  ✓ Workspace operations work"
@@ -122,7 +144,7 @@ cat src/file.txt > output/result.txt
 
 ### Test fails locally but passes in pipeline
 - Check that you're using the `:staging` tag
-- Verify working directory matches pipeline (`/tmp/build/workspace`)
+- Ensure `$CONCOURSE_WORKSPACE` resolves (scripts fall back to `mktemp -d`)
 
 ### Test passes but real Concourse task fails
 - Check for external dependencies (network, credentials)

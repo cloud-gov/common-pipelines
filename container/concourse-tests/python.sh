@@ -3,7 +3,11 @@ set -e
 
 echo "  → Testing Python image in Concourse context"
 
-cd /tmp/build/workspace
+# Scratch workspace provided by integration-test.sh; fall back to a temp dir
+# when run standalone.
+: "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
+mkdir -p "$CONCOURSE_WORKSPACE"
+cd "$CONCOURSE_WORKSPACE"
 
 # Test 1: Python and pip versions
 echo "  → Testing Python and pip"
@@ -27,7 +31,7 @@ python3 -c "import requests; print('Module loading works')" >/dev/null 2>&1 && \
 
 # Test 4: Virtual environment (common pattern)
 echo "  → Testing virtual environment"
-cd /tmp/build/workspace/src
+cd "$CONCOURSE_WORKSPACE/src"
 python3 -m venv test-venv >/dev/null 2>&1
 . test-venv/bin/activate
 pip install --quiet requests >/dev/null 2>&1
@@ -35,8 +39,8 @@ python -c "import requests" >/dev/null 2>&1 && echo "  ✓ Virtual environment w
 deactivate
 
 # Test 5: Output artifacts
-mkdir -p /tmp/build/workspace/output
-echo "build-complete" > /tmp/build/workspace/output/result.txt
-[ -f /tmp/build/workspace/output/result.txt ] && echo "  ✓ Output artifacts work"
+mkdir -p "$CONCOURSE_WORKSPACE/output"
+echo "build-complete" > "$CONCOURSE_WORKSPACE/output/result.txt"
+[ -f "$CONCOURSE_WORKSPACE/output/result.txt" ] && echo "  ✓ Output artifacts work"
 
 echo "  ✓ Python image Concourse validation passed"

@@ -160,8 +160,11 @@ jobs:
           - get: common-pipelines
             passed: [staging]
 
+          - get: staging-image
+
       - task: integration-test
         file: common-pipelines/container/integration-test.yml
+        image: staging-image
         params:
           INTEGRATION_TEST_CMD: ((integration-test-cmd))
           INTEGRATION_TEST_ARGS: ((integration-test-args))

@@ -176,12 +176,14 @@ jobs:
               format: oci
 
           - get: weekly-rebuild
+            trigger: true
             passed: [staging]
 
           - get: common-pipelines
             passed: [staging]
 
           - get: staging-image
+            passed: [staging]
 
       - task: integration-test
         file: common-pipelines/container/integration-test.yml

@@ -213,6 +213,7 @@ jobs:
             passed: [staging]
 
           - get: base-image
+            trigger: true
             passed: [staging]
             params:
               format: oci
@@ -221,6 +222,8 @@ jobs:
             passed: [staging]
 
           - get: staging-image
+            trigger: true
+            passed: [staging]
 
       - task: integration-test
         file: common-pipelines/container/integration-test.yml

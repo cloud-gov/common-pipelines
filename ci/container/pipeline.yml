@@ -102,7 +102,6 @@ jobs:
           - var: name # repo, pipeline, and image name; all the same.
             values:
               - dind
-              - node-v20
               - node-v22
               - node-v24
               - python-v3.11

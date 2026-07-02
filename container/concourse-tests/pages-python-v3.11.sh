@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing Nginx image in Concourse context"
+echo "  → Testing pages-python-v3.11 in Concourse context"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck source=lib/runtime-helpers.sh
 . "$SCRIPT_DIR/lib/runtime-helpers.sh"
 
-run_nginx_tests
+run_python_tests

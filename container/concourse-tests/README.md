@@ -38,7 +38,52 @@ Concourse validation runs during the **integration-test job** when:
 Scripts are named after the `image-type` parameter:
 - `s3-resource.sh` → `image-type: s3-resource`
 - `general-task.sh` → `image-type: general-task`
-- `node.sh` → `image-type: node`
+- `pages-node-v20.sh` → `image-type: pages-node-v20`
+
+For base, internal, and external images the `image-type` equals the
+pipeline/repository name. For pages images the `image-type` equals the
+`image-repository` (e.g. `pages-node-v20`) so each script name is unique
+across teams.
+
+## Shared Libraries
+
+Common assertions live in `lib/` and are sourced by the per-image scripts so
+logic is written once:
+
+- `lib/resource-helpers.sh` — Concourse resource-protocol assertions
+  (`check_protocol`, `in_protocol`, `out_protocol`, `assert_resource_script`,
+  `assert_commands`). Used by all `*-resource` images.
+- `lib/service-helpers.sh` — offline binary/config smoke-test assertions
+  (`require_commands`, `report_commands`, `assert_path`, `assert_workspace_io`).
+  Used by service/task images (broker, clamav, postgres, redis, dind, zap, etc.).
+- `lib/runtime-helpers.sh` — shared language/web runtime tests
+  (`run_node_tests`, `run_python_tests`, `run_nginx_tests`). Node/Python/nginx
+  and the pages runtime wrappers delegate here.
+
+Per-image scripts resolve `lib/` relative to their own location:
+
+```bash
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+. "$SCRIPT_DIR/lib/resource-helpers.sh"
+```
+
+## Image Inventory
+
+Every image built by the base, internal, external, and pages pipelines has a
+matching test script and is wired via `image-type` + `enable-concourse-validation`
+in its `ci/container/**/vars.yml`.
+
+| Pipeline | Image-types (scripts) |
+|----------|-----------------------|
+| base | `ubuntu-hardened-stig` |
+| internal (resources) | `bosh-deployment-resource`, `cf-resource`, `concourse-rwlock-resource`, `cron-resource`, `github-pr-resource`, `github-release-resource`, `s3-resource`, `s3-simple-resource`, `slack-notification-resource` |
+| internal (task/service) | `cg-csb`, `csb-helper`, `clamav-rest-candidate`, `external-domain-broker-testing`, `general-task`, `oci-build-task`, `opensearch-testing`, `opensearch-dashboards-testing`, `playwright-python`, `pulledpork`, `zap-runner` |
+| external (resources) | `bosh-io-release-resource`, `bosh-io-stemcell-resource`, `cf-cli-resource`, `email-resource`, `git-resource`, `pool-resource`, `registry-image-resource`, `semver-resource`, `time-resource` |
+| external (service) | `cloud-service-broker`, `openresty` |
+| pages | `pages-dind`, `pages-nginx-v1`, `pages-node-v20`, `pages-node-v22`, `pages-node-v24`, `pages-postgres-v15`, `pages-python-v3.11`, `pages-redis-v7.2`, `pages-zap` |
+
+Generic `node.sh`, `python.sh`, and `nginx.sh` remain as reusable entry points
+that delegate to `lib/runtime-helpers.sh`.
 
 ## Writing a New Test Script
 
@@ -159,6 +204,8 @@ cat src/file.txt > output/result.txt
 ## Examples by Image Type
 
 See existing scripts for reference:
-- **Resources:** `s3-resource.sh`, `github-pr-resource.sh`
+- **Resources:** `s3-resource.sh`, `github-pr-resource.sh` (or the shared `lib/resource-helpers.sh` consumers like `git-resource.sh`, `time-resource.sh`)
 - **Task images:** `general-task.sh`, `node.sh`
-- **Privileged tasks:** `oci-build-task.sh`
+- **Service images (offline smoke):** `openresty.sh`, `pages-postgres-v15.sh`, `pages-redis-v7.2.sh`, `cloud-service-broker.sh`
+- **Privileged tasks:** `oci-build-task.sh`, `pages-dind.sh`
+- **Base image:** `ubuntu-hardened-stig.sh`

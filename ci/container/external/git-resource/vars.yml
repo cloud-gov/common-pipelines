@@ -7,3 +7,7 @@ src-source:
   # Since src is a repo outside the cloud-gov org, don't verify commits.
 dockerfile-path: ["container/dockerfiles/git-resource/Dockerfile"]
 dockerfile-trigger: true
+
+# Concourse context validation
+image-type: git-resource
+enable-concourse-validation: "true"

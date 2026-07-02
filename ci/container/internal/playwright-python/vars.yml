@@ -2,3 +2,7 @@ image-repository: playwright-python
 src-repo: cloud-gov/playwright-python
 src-repo-uri: https://github.com/cloud-gov/playwright-python
 src-target-branch: main
+
+# Concourse context validation
+image-type: playwright-python
+enable-concourse-validation: "true"

@@ -7,3 +7,7 @@ src-source:
   # Since src is a repo outside the cloud-gov org, don't verify commits.
 dockerfile-path: ["container/dockerfiles/openresty/Dockerfile"]
 dockerfile-trigger: true
+
+# Concourse context validation
+image-type: openresty
+enable-concourse-validation: "true"

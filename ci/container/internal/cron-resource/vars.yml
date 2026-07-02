@@ -1,3 +1,7 @@
 image-repository: cron-resource
 src-repo: cloud-gov/cron-resource
 src-repo-uri: https://github.com/cloud-gov/cron-resource
+
+# Concourse context validation
+image-type: cron-resource
+enable-concourse-validation: "true"

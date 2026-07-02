@@ -7,3 +7,7 @@ build-test-params:
   TARGET: tests
   IMAGE_ARG_base_image: base-image/image.tar
   CONTEXT: src
+
+# Concourse context validation
+image-type: bosh-deployment-resource
+enable-concourse-validation: "true"

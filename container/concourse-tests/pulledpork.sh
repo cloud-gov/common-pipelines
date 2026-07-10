@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing pulledpork in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap pulledpork service
 
 # pulledpork is a Snort/Suricata rule management tool (from cg-snort-boshrelease)
 # implemented in Python/Perl. It normally fetches rule tarballs over the network;

@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing playwright-python in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap playwright-python service
 
 # playwright-python provides Python + Playwright with browsers for end-to-end
 # testing. Verify the Python runtime and the playwright module/CLI are present.

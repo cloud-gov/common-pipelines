@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing csb-helper in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap csb-helper service
 
 # csb-helper is a small Go helper binary (default CMD "helper"). Verify it is
 # present on PATH or at /app/helper and is executable.

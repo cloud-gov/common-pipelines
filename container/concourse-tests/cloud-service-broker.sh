@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing cloud-service-broker in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap cloud-service-broker service
 
 # cloud-service-broker (csb) is an OSBAPI service broker binary at /app/csb.
 # It normally listens on :8080; we do not start it. Verify the binary is

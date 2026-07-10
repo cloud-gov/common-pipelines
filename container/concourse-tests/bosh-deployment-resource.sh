@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing bosh-deployment-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap bosh-deployment-resource resource
 
 # bosh-deployment-resource deploys/interacts with a BOSH director. Without a
 # reachable director the scripts fail; we only validate protocol compliance.

@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing external-domain-broker-testing in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap external-domain-broker-testing service
 
 # external-domain-broker-testing is a Python test/dev image (Dockerfile.dev)
 # used to run the external-domain-broker test suite. Verify the Python runtime

@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing zap-runner in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap zap-runner service
 
 # zap-runner packages OWASP ZAP (a Java DAST tool) for automated scans. ZAP
 # needs a JVM and, for real scans, a target and network. We only verify the

@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing cf-cli-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap cf-cli-resource resource
 
 # cf-cli-resource wraps the cf CLI for Cloud Foundry operations. Without a
 # reachable API the scripts fail; we validate protocol compliance and that the

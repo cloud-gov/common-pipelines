@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing opensearch-testing in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap opensearch-testing service
 
 # opensearch-testing packages OpenSearch for the cf-auth-proxy test suite.
 # OpenSearch is a JVM service that needs significant resources and network; we

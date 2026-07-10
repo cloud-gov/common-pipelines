@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing semver-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap semver-resource resource
 
 # semver-resource manages a semantic version stored in a backing driver
 # (git/s3/etc). Without a reachable backend the scripts fail; we validate

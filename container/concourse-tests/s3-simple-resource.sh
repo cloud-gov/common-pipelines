@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing s3-simple-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap s3-simple-resource resource
 
 # s3-simple-resource is a shell-based S3 resource. Without credentials/network
 # the scripts fail; we validate protocol compliance and AWS CLI availability.

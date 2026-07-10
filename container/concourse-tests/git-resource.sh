@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing git-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap git-resource resource
 
 # git-resource clones/checks git repositories. Without network access the
 # scripts fail; we validate protocol compliance and git availability.

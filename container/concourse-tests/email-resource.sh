@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing email-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap email-resource resource
 
 # email-resource is an output-only notification resource. check and in are
 # stubs (check returns a static version). out sends email via SMTP; without a

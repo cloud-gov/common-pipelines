@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing openresty in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap openresty service
 
 # openresty is an nginx distribution bundled with LuaJIT. The default CMD runs
 # `openresty -g "daemon off;"`; we do not start the server. Verify the binary,

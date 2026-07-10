@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing cg-csb in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap cg-csb service
 
 # cg-csb is cloud.gov's Cloud Service Broker build (csb binary + brokerpaks).
 # The broker normally listens on :8080; we do not start it. Verify the binary

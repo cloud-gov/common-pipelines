@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing clamav-rest-candidate in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap clamav-rest-candidate service
 
 # clamav-rest-candidate wraps clamav-rest (a REST front-end for ClamAV) behind
 # nginx. The service needs a running clamd + network; we do not start it. Verify

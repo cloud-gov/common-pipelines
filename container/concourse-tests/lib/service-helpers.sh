@@ -6,41 +6,17 @@
 # offline smoke checks: verify binaries exist and report a version, validate
 # config syntax where cheap, and confirm workspace filesystem operations. We
 # do NOT start daemons, open ports, or make network calls.
+#
+# Shared workspace/command helpers (setup_workspace, assert_commands,
+# report_commands) live in common.sh, sourced here so service scripts get
+# everything from one source.
 
-# Prepare the scratch workspace. Uses $CONCOURSE_WORKSPACE from
-# integration-test.sh, falling back to a temp dir for standalone runs.
-service_setup_workspace() {
-  : "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
-  mkdir -p "$CONCOURSE_WORKSPACE"
-  cd "$CONCOURSE_WORKSPACE"
-}
+# shellcheck source=common.sh
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 
-# Verify one or more commands are available on PATH; fail if any is missing.
-# Usage: require_commands bash apt-get
-require_commands() {
-  local cmd
-  for cmd in "$@"; do
-    if command -v "$cmd" >/dev/null 2>&1; then
-      echo "  ✓ $cmd available"
-    else
-      echo "  ✗ $cmd not found"
-      return 1
-    fi
-  done
-}
-
-# Report the presence of optional commands without failing.
-# Usage: report_commands ruby python3
-report_commands() {
-  local cmd
-  for cmd in "$@"; do
-    if command -v "$cmd" >/dev/null 2>&1; then
-      echo "  ✓ $cmd available"
-    else
-      echo "  ℹ $cmd not present (optional)"
-    fi
-  done
-}
+# Backwards-compatible aliases for the shared helpers.
+service_setup_workspace() { setup_workspace; }
+require_commands() { assert_commands "$@"; }
 
 # Assert a file exists (executable/binary or config) at an absolute path.
 # Usage: assert_path /app/csb

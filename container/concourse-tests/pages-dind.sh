@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing pages-dind in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap pages-dind service
 
 # pages-dind provides Docker-in-Docker (docker CLI + dockerd + buildx +
 # compose). Starting dockerd requires privileged mode and is exercised in the

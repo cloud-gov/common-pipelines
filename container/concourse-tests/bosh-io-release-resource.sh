@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing bosh-io-release-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap bosh-io-release-resource resource
 
 # bosh-io-release-resource fetches releases from bosh.io. It implements check
 # and in (fetch-only; no meaningful out). We avoid real network calls, so the

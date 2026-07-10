@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing cf-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap cf-resource resource
 
 # cf-resource pushes apps to a Cloud Foundry API. Without a reachable API the
 # scripts fail; we validate protocol compliance and that the cf CLI is present.

@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing pages-zap in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap pages-zap service
 
 # pages-zap packages OWASP ZAP (a Java DAST tool). ZAP needs a JVM and, for a
 # real scan, a target and network. We only verify the runtime and launcher.

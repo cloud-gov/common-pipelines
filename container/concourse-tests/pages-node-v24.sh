@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing pages-node-v24 in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/runtime-helpers.sh
-. "$SCRIPT_DIR/lib/runtime-helpers.sh"
+ct_bootstrap pages-node-v24 runtime
 
 run_node_tests

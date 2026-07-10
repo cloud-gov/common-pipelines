@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing ubuntu-hardened-stig in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap ubuntu-hardened-stig service
 
 # ubuntu-hardened-stig is the DISA STIG-hardened Ubuntu base image that other
 # cloud.gov images build FROM. It has no application entrypoint, so the test

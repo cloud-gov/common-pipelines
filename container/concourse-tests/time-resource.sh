@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing time-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap time-resource resource
 
 # time-resource emits a version on a schedule/interval. check and in evaluate
 # locally (no network), so they should succeed and return protocol-compliant

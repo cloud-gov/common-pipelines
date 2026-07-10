@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing cron-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/resource-helpers.sh
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
-
-resource_setup_workspace
+ct_bootstrap cron-resource resource
 
 # cron-resource triggers on a cron expression. It implements check and in only
 # (there is no out). check evaluates the schedule locally, so it should succeed

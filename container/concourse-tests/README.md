@@ -49,22 +49,36 @@ across teams.
 Common assertions live in `lib/` and are sourced by the per-image scripts so
 logic is written once:
 
+- `lib/common.sh` — shared bootstrap and workspace/command helpers used by
+  every script and by the other libraries (`setup_workspace`,
+  `assert_commands`, `report_commands`, and the `ct_bootstrap` entry point).
 - `lib/resource-helpers.sh` — Concourse resource-protocol assertions
-  (`check_protocol`, `in_protocol`, `out_protocol`, `assert_resource_script`,
-  `assert_commands`). Used by all `*-resource` images.
+  (`check_protocol`, `in_protocol`, `out_protocol`, `assert_resource_script`).
+  Used by all `*-resource` images. Sources `common.sh`.
 - `lib/service-helpers.sh` — offline binary/config smoke-test assertions
-  (`require_commands`, `report_commands`, `assert_path`, `assert_workspace_io`).
-  Used by service/task images (broker, clamav, postgres, redis, dind, zap, etc.).
+  (`assert_path`, `assert_workspace_io`; plus `require_commands` as an alias of
+  `assert_commands`). Used by service/task images (broker, clamav, postgres,
+  redis, dind, zap, etc.). Sources `common.sh`.
 - `lib/runtime-helpers.sh` — shared language/web runtime tests
-  (`run_node_tests`, `run_python_tests`, `run_nginx_tests`). Node/Python/nginx
-  and the pages runtime wrappers delegate here.
+  (`run_node_tests`, `run_python_tests`, `run_nginx_tests`). The pages runtime
+  wrappers delegate here. Sources `common.sh`.
 
-Per-image scripts resolve `lib/` relative to their own location:
+Most per-image scripts use the `ct_bootstrap` helper, which prints the standard
+banner, sources the requested helper library, and prepares the scratch
+workspace in one call:
 
 ```bash
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-. "$SCRIPT_DIR/lib/resource-helpers.sh"
+#!/bin/bash
+set -e
+
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
+
+ct_bootstrap <image-repository> <resource|service|runtime>
 ```
+
+Bespoke scripts that don't use a helper library (e.g. `general-task`,
+`s3-resource`) source `common.sh` directly and call `setup_workspace`.
 
 ## Image Inventory
 
@@ -81,9 +95,6 @@ in its `ci/container/**/vars.yml`.
 | external (service) | `cloud-service-broker`, `openresty` |
 | pages | `pages-dind`, `pages-nginx-v1`, `pages-node-v22`, `pages-node-v24`, `pages-postgres-v15`, `pages-python-v3.11`, `pages-redis-v7.2`, `pages-zap` |
 
-Generic `node.sh`, `python.sh`, and `nginx.sh` remain as reusable entry points
-that delegate to `lib/runtime-helpers.sh`.
-
 ## Writing a New Test Script
 
 ### 1. Create the script
@@ -92,31 +103,26 @@ that delegate to `lib/runtime-helpers.sh`.
 #!/bin/bash
 set -e  # Exit on first error
 
-echo "  → Testing <image-name> in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-# Use the scratch workspace provided by integration-test.sh (fall back to a
-# temp dir when run standalone).
-: "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
-mkdir -p "$CONCOURSE_WORKSPACE"
-cd "$CONCOURSE_WORKSPACE"
+# ct_bootstrap prints the banner, sources the helper library for this kind of
+# image (resource | service | runtime), and prepares the scratch workspace.
+ct_bootstrap <image-repository> resource
 
 # Test 1: Resource-specific functionality
 # For resources: test check/in/out protocol
 # For task images: test typical operations
 
-# Example for resources:
-cat > "$CONCOURSE_WORKSPACE/test-input.json" <<EOF
-{"source":{},"version":{}}
-EOF
+# Example for resources (helpers from lib/resource-helpers.sh):
+check_protocol '{"source":{},"version":null}'
+in_protocol    '{"source":{},"version":{}}'
 
-/opt/resource/check < "$CONCOURSE_WORKSPACE/test-input.json" | jq -e 'type == "array"'
-echo "  ✓ Resource check returns JSON array"
-
-# Example for task images:
+# Example for task images: use the scratch workspace prepared by ct_bootstrap
 git clone https://github.com/cloud-gov/example.git "$CONCOURSE_WORKSPACE/src/repo"
 echo "  ✓ Git operations work"
 
-echo "  ✓ <image-name> Concourse validation passed"
+echo "  ✓ <image-repository> Concourse validation passed"
 ```
 
 ### 2. Make it executable
@@ -204,7 +210,8 @@ cat src/file.txt > output/result.txt
 
 See existing scripts for reference:
 - **Resources:** `s3-resource.sh`, `github-pr-resource.sh` (or the shared `lib/resource-helpers.sh` consumers like `git-resource.sh`, `time-resource.sh`)
-- **Task images:** `general-task.sh`, `node.sh`
+- **Task images:** `general-task.sh`
+- **Runtime images:** `pages-node-v22.sh`, `pages-python-v3.11.sh`, `pages-nginx-v1.sh` (delegate to `lib/runtime-helpers.sh`)
 - **Service images (offline smoke):** `openresty.sh`, `pages-postgres-v15.sh`, `pages-redis-v7.2.sh`, `cloud-service-broker.sh`
 - **Privileged tasks:** `oci-build-task.sh`, `pages-dind.sh`
 - **Base image:** `ubuntu-hardened-stig.sh`

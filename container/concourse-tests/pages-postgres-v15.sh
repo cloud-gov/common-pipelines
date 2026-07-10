@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing pages-postgres-v15 in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap pages-postgres-v15 service
 
 # pages-postgres-v15 packages PostgreSQL 15. The server is started at runtime
 # with its own data dir and networking; we do not start it. Verify the server

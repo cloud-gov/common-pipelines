@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing pages-redis-v7.2 in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# shellcheck source=lib/service-helpers.sh
-. "$SCRIPT_DIR/lib/service-helpers.sh"
-
-service_setup_workspace
+ct_bootstrap pages-redis-v7.2 service
 
 # pages-redis-v7.2 packages Redis 7.2 (built from source). The server is
 # started at runtime with networking; we do not start it. Verify the server

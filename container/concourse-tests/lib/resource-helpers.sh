@@ -11,14 +11,15 @@
 # That is expected here: we only assert the scripts EXIST, are executable,
 # and (when they emit output) emit protocol-compliant JSON. We never make
 # real network calls or supply real credentials.
+#
+# Shared workspace/command helpers (setup_workspace, assert_commands) live in
+# common.sh, sourced here so resource scripts get everything from one source.
 
-# Prepare the scratch workspace. Uses $CONCOURSE_WORKSPACE from
-# integration-test.sh, falling back to a temp dir for standalone runs.
-resource_setup_workspace() {
-  : "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
-  mkdir -p "$CONCOURSE_WORKSPACE"
-  cd "$CONCOURSE_WORKSPACE"
-}
+# shellcheck source=common.sh
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
+
+# Backwards-compatible alias: older scripts call resource_setup_workspace.
+resource_setup_workspace() { setup_workspace; }
 
 # Assert an /opt/resource/<name> script exists and is executable.
 # Usage: assert_resource_script check
@@ -98,18 +99,4 @@ out_protocol() {
   else
     echo "  ℹ out produced no output (acceptable on credential failure)"
   fi
-}
-
-# Verify one or more commands are available on PATH.
-# Usage: assert_commands git jq aws
-assert_commands() {
-  local cmd
-  for cmd in "$@"; do
-    if command -v "$cmd" >/dev/null 2>&1; then
-      echo "  ✓ $cmd available"
-    else
-      echo "  ✗ $cmd not found"
-      return 1
-    fi
-  done
 }

@@ -4,18 +4,17 @@
 # Several images share a runtime (Node.js, Python, nginx/openresty). Rather
 # than duplicate test logic, each image's script sources this file and calls
 # the matching run_*_tests function. Per-image scripts exist so that the
-# image-repository -> <image-repository>.sh lookup in integration-test.sh resolves for
-# every repository name.
+# image-repository -> <image-repository>.sh lookup in integration-test.sh
+# resolves for every repository name.
 #
 # All functions follow the concourse-tests README rules: use
 # $CONCOURSE_WORKSPACE, no external credentials, no production network calls,
 # exit non-zero on failure, finish well under two minutes.
 
-runtime_setup_workspace() {
-  : "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
-  mkdir -p "$CONCOURSE_WORKSPACE"
-  cd "$CONCOURSE_WORKSPACE"
-}
+# shellcheck source=common.sh
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
+
+runtime_setup_workspace() { setup_workspace; }
 
 # Node.js: verify node/npm, a local (dependency-free) install + scripts, and
 # module execution. Avoids network by not declaring registry dependencies.

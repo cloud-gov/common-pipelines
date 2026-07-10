@@ -38,11 +38,11 @@ Concourse validation runs during the **integration-test job** when:
 Scripts are named after the `image-type` parameter:
 - `s3-resource.sh` → `image-type: s3-resource`
 - `general-task.sh` → `image-type: general-task`
-- `pages-node-v20.sh` → `image-type: pages-node-v20`
+- `pages-node-v22.sh` → `image-type: pages-node-v22`
 
 For base, internal, and external images the `image-type` equals the
 pipeline/repository name. For pages images the `image-type` equals the
-`image-repository` (e.g. `pages-node-v20`) so each script name is unique
+`image-repository` (e.g. `pages-node-v22`) so each script name is unique
 across teams.
 
 ## Shared Libraries
@@ -80,7 +80,7 @@ in its `ci/container/**/vars.yml`.
 | internal (task/service) | `cg-csb`, `csb-helper`, `clamav-rest-candidate`, `external-domain-broker-testing`, `general-task`, `oci-build-task`, `opensearch-testing`, `opensearch-dashboards-testing`, `playwright-python`, `pulledpork`, `zap-runner` |
 | external (resources) | `bosh-io-release-resource`, `bosh-io-stemcell-resource`, `cf-cli-resource`, `email-resource`, `git-resource`, `pool-resource`, `registry-image-resource`, `semver-resource`, `time-resource` |
 | external (service) | `cloud-service-broker`, `openresty` |
-| pages | `pages-dind`, `pages-nginx-v1`, `pages-node-v20`, `pages-node-v22`, `pages-node-v24`, `pages-postgres-v15`, `pages-python-v3.11`, `pages-redis-v7.2`, `pages-zap` |
+| pages | `pages-dind`, `pages-nginx-v1`, `pages-node-v22`, `pages-node-v24`, `pages-postgres-v15`, `pages-python-v3.11`, `pages-redis-v7.2`, `pages-zap` |
 
 Generic `node.sh`, `python.sh`, and `nginx.sh` remain as reusable entry points
 that delegate to `lib/runtime-helpers.sh`.

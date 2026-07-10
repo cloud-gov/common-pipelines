@@ -13,7 +13,6 @@ params:
   INTEGRATION_TEST_CMD: echo
   INTEGRATION_TEST_ARGS: "No integration test configured"
   ENABLE_CONCOURSE_VALIDATION: "false"
-  IMAGE_TYPE: generic
 
 run:
   path: common-pipelines/container/integration-test.sh

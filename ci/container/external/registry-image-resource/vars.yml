@@ -16,5 +16,4 @@ build-test-params:
   CONTEXT: src
 
 # Concourse context validation
-image-type: registry-image-resource
 enable-concourse-validation: "true"

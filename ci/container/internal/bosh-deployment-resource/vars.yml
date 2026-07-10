@@ -9,5 +9,4 @@ build-test-params:
   CONTEXT: src
 
 # Concourse context validation
-image-type: bosh-deployment-resource
 enable-concourse-validation: "true"

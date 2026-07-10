@@ -12,5 +12,4 @@ build-test-params:
   CONTEXT: src
 
 # Concourse context validation
-image-type: cf-resource
 enable-concourse-validation: "true"

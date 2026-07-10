@@ -21,9 +21,6 @@ tailoring-file: common-pipelines/container/tailor-stig.xml
 daily-scan-time: "0 2 * * *"
 grype-path: common-pipelines/container/grype.yaml
 
-# Image type for smoke tests
-image-type: generic
-
 # Integration test configuration
 integration-test-cmd: echo
 integration-test-args:

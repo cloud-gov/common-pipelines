@@ -9,5 +9,4 @@ build-test-params:
   CONTEXT: src
 
 # Concourse context validation
-image-type: github-release-resource
 enable-concourse-validation: "true"

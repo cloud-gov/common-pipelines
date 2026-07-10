@@ -4,5 +4,4 @@ src-repo: cloud-gov/slack-notification-resource
 src-repo-uri: https://github.com/cloud-gov/slack-notification-resource
 
 # Concourse context validation
-image-type: slack-notification-resource
 enable-concourse-validation: "true"

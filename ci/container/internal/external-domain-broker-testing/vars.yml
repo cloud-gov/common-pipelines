@@ -6,5 +6,4 @@ src-target-branch: main
 src-trigger: true
 
 # Concourse context validation
-image-type: external-domain-broker-testing
 enable-concourse-validation: "true"

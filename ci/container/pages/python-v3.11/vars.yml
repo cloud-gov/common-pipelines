@@ -5,5 +5,4 @@ src-repo-uri: https://github.com/cloud-gov/pages-images
 src-path: [python/v3.11/*]
 
 # Concourse context validation
-image-type: pages-python-v3.11
 enable-concourse-validation: "true"

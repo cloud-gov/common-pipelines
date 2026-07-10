@@ -3,5 +3,4 @@ src-repo: cloud-gov/concourse-rwlock-resource
 src-repo-uri: https://github.com/cloud-gov/concourse-rwlock-resource
 
 # Concourse context validation
-image-type: concourse-rwlock-resource
 enable-concourse-validation: "true"

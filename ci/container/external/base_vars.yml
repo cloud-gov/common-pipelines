@@ -15,9 +15,6 @@ daily-scan-time: "0 4 * * *"
 src-trigger: false
 grype-path: common-pipelines/container/grype.yaml
 
-# Image type for smoke tests
-image-type: generic
-
 # Integration test configuration
 integration-test-cmd: echo
 integration-test-args:

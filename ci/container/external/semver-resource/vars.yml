@@ -16,5 +16,4 @@ build-test-params:
   CONTEXT: src
 
 # Concourse context validation
-image-type: semver-resource
 enable-concourse-validation: "true"

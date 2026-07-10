@@ -5,5 +5,4 @@ src-repo-uri: https://github.com/cloud-gov/pages-images
 src-path: [redis/v7.2/*]
 
 # Concourse context validation
-image-type: pages-redis-v7.2
 enable-concourse-validation: "true"

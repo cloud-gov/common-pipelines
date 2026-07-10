@@ -3,5 +3,4 @@ src-repo: cloud-gov/github-pr-resource
 src-repo-uri: https://github.com/cloud-gov/github-pr-resource
 
 # Concourse context validation
-image-type: github-pr-resource
 enable-concourse-validation: "true"

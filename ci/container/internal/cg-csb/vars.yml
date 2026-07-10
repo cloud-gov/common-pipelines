@@ -9,5 +9,4 @@ src-repo-uri: https://github.com/cloud-gov/csb
 src-trigger: true
 
 # Concourse context validation
-image-type: cg-csb
 enable-concourse-validation: "true"

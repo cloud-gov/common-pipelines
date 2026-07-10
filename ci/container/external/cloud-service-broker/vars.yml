@@ -12,5 +12,4 @@ dockerfile-path: ["container/dockerfiles/cloud-service-broker/Dockerfile"]
 dockerfile-trigger: true
 
 # Concourse context validation
-image-type: cloud-service-broker
 enable-concourse-validation: "true"

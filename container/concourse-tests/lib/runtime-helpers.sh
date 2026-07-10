@@ -4,7 +4,7 @@
 # Several images share a runtime (Node.js, Python, nginx/openresty). Rather
 # than duplicate test logic, each image's script sources this file and calls
 # the matching run_*_tests function. Per-image scripts exist so that the
-# image-type -> <image-type>.sh lookup in integration-test.sh resolves for
+# image-repository -> <image-repository>.sh lookup in integration-test.sh resolves for
 # every repository name.
 #
 # All functions follow the concourse-tests README rules: use

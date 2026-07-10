@@ -5,5 +5,4 @@ src-repo-uri: https://github.com/cloud-gov/pages-images
 src-path: [postgres/v15/*]
 
 # Concourse context validation
-image-type: pages-postgres-v15
 enable-concourse-validation: "true"

@@ -3,5 +3,4 @@ src-repo: cloud-gov/s3-simple-resource
 src-repo-uri: https://github.com/cloud-gov/s3-simple-resource
 
 # Concourse context validation
-image-type: s3-simple-resource
 enable-concourse-validation: "true"

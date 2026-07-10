@@ -9,5 +9,4 @@ dockerfile-path: ["container/dockerfiles/openresty/Dockerfile"]
 dockerfile-trigger: true
 
 # Concourse context validation
-image-type: openresty
 enable-concourse-validation: "true"

@@ -3,5 +3,4 @@ src-repo: cloud-gov/general-task
 src-repo-uri: https://github.com/cloud-gov/general-task
 
 # Concourse context validation
-image-type: general-task
 enable-concourse-validation: "true"

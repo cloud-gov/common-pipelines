@@ -7,5 +7,4 @@ oci-build-params:
   CONTEXT: "src/helper"
 
 # Concourse context validation
-image-type: csb-helper
 enable-concourse-validation: "true"

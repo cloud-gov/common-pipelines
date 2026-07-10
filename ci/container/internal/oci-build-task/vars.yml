@@ -3,5 +3,4 @@ src-repo: cloud-gov/oci-build-task
 src-repo-uri: https://github.com/cloud-gov/oci-build-task
 
 # Concourse context validation
-image-type: oci-build-task
 enable-concourse-validation: "true"

@@ -35,14 +35,13 @@ Concourse validation runs during the **integration-test job** when:
 
 ## Test Script Naming
 
-Scripts are named after the `image-type` parameter:
-- `s3-resource.sh` → `image-type: s3-resource`
-- `general-task.sh` → `image-type: general-task`
-- `pages-node-v22.sh` → `image-type: pages-node-v22`
+Scripts are named after the `image-repository` parameter:
+- `s3-resource.sh` → `image-repository: s3-resource`
+- `general-task.sh` → `image-repository: general-task`
+- `pages-node-v22.sh` → `image-repository: pages-node-v22`
 
-For base, internal, and external images the `image-type` equals the
-pipeline/repository name. For pages images the `image-type` equals the
-`image-repository` (e.g. `pages-node-v22`) so each script name is unique
+The `image-repository` is the ECR repository name for the image. For pages
+images it is prefixed (e.g. `pages-node-v22`) so each script name is unique
 across teams.
 
 ## Shared Libraries
@@ -70,11 +69,11 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ## Image Inventory
 
 Every image built by the base, internal, external, and pages pipelines has a
-matching test script and is wired via `image-type` + `enable-concourse-validation`
+matching test script and is wired via `image-repository` + `enable-concourse-validation`
 in its `ci/container/**/vars.yml`.
 
-| Pipeline | Image-types (scripts) |
-|----------|-----------------------|
+| Pipeline | Image repositories (scripts) |
+|----------|------------------------------|
 | base | `ubuntu-hardened-stig` |
 | internal (resources) | `bosh-deployment-resource`, `cf-resource`, `concourse-rwlock-resource`, `cron-resource`, `github-pr-resource`, `github-release-resource`, `s3-resource`, `s3-simple-resource`, `slack-notification-resource` |
 | internal (task/service) | `cg-csb`, `csb-helper`, `clamav-rest-candidate`, `external-domain-broker-testing`, `general-task`, `oci-build-task`, `opensearch-testing`, `opensearch-dashboards-testing`, `playwright-python`, `pulledpork`, `zap-runner` |
@@ -123,7 +122,7 @@ echo "  ✓ <image-name> Concourse validation passed"
 ### 2. Make it executable
 
 ```bash
-chmod +x container/concourse-tests/<image-type>.sh
+chmod +x container/concourse-tests/<image-repository>.sh
 ```
 
 ### 3. Test locally (optional)
@@ -132,15 +131,15 @@ chmod +x container/concourse-tests/<image-type>.sh
 docker run --rm \
   -v $(pwd):/workspace \
   <image>:staging \
-  /workspace/container/concourse-tests/<image-type>.sh
+  /workspace/container/concourse-tests/<image-repository>.sh
 ```
 
 ### 4. Enable in pipeline
 
-Update the pipeline's `vars.yml`:
+The test script is looked up by the image's `image-repository`, which every
+`vars.yml` already sets. To turn on Concourse validation, add:
 
 ```yaml
-image-type: <image-type>
 enable-concourse-validation: "true"
 ```
 
@@ -197,7 +196,7 @@ cat src/file.txt > output/result.txt
 - Consider adding more comprehensive tests
 
 ### Script not found during integration-test
-- Verify script name matches `image-type` parameter
+- Verify script name matches `image-repository` parameter
 - Ensure script is executable: `chmod +x <script>`
 - Check script is committed to repository
 

@@ -11,5 +11,4 @@ build-test-params:
   CONTEXT: src
 
 # Concourse context validation (pilot)
-image-type: s3-resource
 enable-concourse-validation: "true"

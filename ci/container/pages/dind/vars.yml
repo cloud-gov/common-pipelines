@@ -5,5 +5,4 @@ src-repo-uri: https://github.com/cloud-gov/pages-images
 src-path: [dind/v29/*]
 
 # Concourse context validation
-image-type: pages-dind
 enable-concourse-validation: "true"

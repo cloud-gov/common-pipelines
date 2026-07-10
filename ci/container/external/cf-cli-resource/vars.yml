@@ -9,5 +9,4 @@ dockerfile-path: ["container/dockerfiles/cf-cli-resource/Dockerfile"]
 dockerfile-trigger: true
 
 # Concourse context validation
-image-type: cf-cli-resource
 enable-concourse-validation: "true"

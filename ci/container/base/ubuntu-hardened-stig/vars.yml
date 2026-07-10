@@ -5,5 +5,4 @@ src-repo: cloud-gov/ubuntu-hardened
 src-repo-uri: https://github.com/cloud-gov/ubuntu-hardened
 
 # Concourse context validation
-image-type: ubuntu-hardened-stig
 enable-concourse-validation: "true"

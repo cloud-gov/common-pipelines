@@ -2,6 +2,3 @@ image-repository: pulledpork
 oci-build-params: { DOCKERFILE: src/ci/docker/pulledpork/Dockerfile }
 src-repo: cloud-gov/cg-snort-boshrelease
 src-repo-uri: https://github.com/cloud-gov/cg-snort-boshrelease
-
-# Concourse context validation
-enable-concourse-validation: "true"

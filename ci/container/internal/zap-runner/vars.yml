@@ -2,6 +2,3 @@ image-repository: zap-runner
 src-repo: cloud-gov/zap-runner
 src-repo-uri: https://github.com/cloud-gov/zap-runner
 src-branch: 2026-03-18_update
-
-# Concourse context validation
-enable-concourse-validation: "true"

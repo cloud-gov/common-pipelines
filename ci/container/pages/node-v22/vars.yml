@@ -3,6 +3,3 @@ oci-build-params: { CONTEXT: src/node/v22 }
 src-repo: cloud-gov/pages-images
 src-repo-uri: https://github.com/cloud-gov/pages-images
 src-path: [node/v22/*]
-
-# Concourse context validation
-enable-concourse-validation: "true"

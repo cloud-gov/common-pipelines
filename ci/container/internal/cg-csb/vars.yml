@@ -7,6 +7,3 @@ slack-channel-failure: "#cg-customer-success"
 src-repo: cloud-gov/csb
 src-repo-uri: https://github.com/cloud-gov/csb
 src-trigger: true
-
-# Concourse context validation
-enable-concourse-validation: "true"

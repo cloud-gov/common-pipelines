@@ -3,6 +3,3 @@ base-image-tag: "22.04"
 image-repository: ubuntu-hardened-stig
 src-repo: cloud-gov/ubuntu-hardened
 src-repo-uri: https://github.com/cloud-gov/ubuntu-hardened
-
-# Concourse context validation
-enable-concourse-validation: "true"

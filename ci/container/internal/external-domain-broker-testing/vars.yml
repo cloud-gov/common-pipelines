@@ -4,6 +4,3 @@ src-repo: cloud-gov/external-domain-broker
 src-repo-uri: https://github.com/cloud-gov/external-domain-broker
 src-target-branch: main
 src-trigger: true
-
-# Concourse context validation
-enable-concourse-validation: "true"

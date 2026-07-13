@@ -5,6 +5,3 @@ oci-build-params:
 src-repo: cloud-gov/clamav-rest-image
 src-repo-uri: https://github.com/cloud-gov/clamav-rest-image
 src-branch: main
-
-# Concourse context validation
-enable-concourse-validation: "true"

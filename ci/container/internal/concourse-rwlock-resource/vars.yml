@@ -1,6 +1,3 @@
 image-repository: concourse-rwlock-resource
 src-repo: cloud-gov/concourse-rwlock-resource
 src-repo-uri: https://github.com/cloud-gov/concourse-rwlock-resource
-
-# Concourse context validation
-enable-concourse-validation: "true"

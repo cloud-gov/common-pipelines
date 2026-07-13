@@ -10,6 +10,3 @@ src-source:
 src-trigger: true
 dockerfile-path: ["container/dockerfiles/cloud-service-broker/Dockerfile"]
 dockerfile-trigger: true
-
-# Concourse context validation
-enable-concourse-validation: "true"

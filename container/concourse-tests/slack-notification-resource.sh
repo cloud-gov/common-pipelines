@@ -1,13 +1,11 @@
 #!/bin/bash
 set -e
 
-echo "  → Testing slack-notification-resource in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-# Scratch workspace provided by integration-test.sh; fall back to a temp dir
-# when run standalone.
-: "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
-mkdir -p "$CONCOURSE_WORKSPACE"
-cd "$CONCOURSE_WORKSPACE"
+echo "  → Testing slack-notification-resource in Concourse context"
+setup_workspace
 
 # Test 1: Check script protocol (Slack notification doesn't implement check)
 echo "  → Testing /opt/resource/check protocol"

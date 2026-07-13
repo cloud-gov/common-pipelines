@@ -259,7 +259,6 @@ jobs:
           INTEGRATION_TEST_CMD: ((integration-test-cmd))
           INTEGRATION_TEST_ARGS: ((integration-test-args))
           ENABLE_CONCOURSE_VALIDATION: ((enable-concourse-validation))
-          IMAGE_TYPE: ((image-type))
           IMAGE_REPOSITORY: ((image-repository))
 
     on_failure:

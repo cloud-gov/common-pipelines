@@ -35,10 +35,65 @@ Concourse validation runs during the **integration-test job** when:
 
 ## Test Script Naming
 
-Scripts are named after the `image-type` parameter:
-- `s3-resource.sh` → `image-type: s3-resource`
-- `general-task.sh` → `image-type: general-task`
-- `node.sh` → `image-type: node`
+Scripts are named after the `image-repository` parameter:
+- `s3-resource.sh` → `image-repository: s3-resource`
+- `general-task.sh` → `image-repository: general-task`
+- `pages-node-v22.sh` → `image-repository: pages-node-v22`
+
+The `image-repository` is the ECR repository name for the image. For pages
+images it is prefixed (e.g. `pages-node-v22`) so each script name is unique
+across teams.
+
+## Shared Libraries
+
+Common assertions live in `lib/` and are sourced by the per-image scripts so
+logic is written once:
+
+- `lib/common.sh` — shared bootstrap and workspace/command helpers used by
+  every script and by the other libraries (`setup_workspace`,
+  `assert_commands`, `report_commands`, and the `ct_bootstrap` entry point).
+- `lib/resource-helpers.sh` — Concourse resource-protocol assertions
+  (`check_protocol`, `in_protocol`, `out_protocol`, `assert_resource_script`).
+  Used by all `*-resource` images. Sources `common.sh`.
+- `lib/service-helpers.sh` — offline binary/config smoke-test assertions
+  (`assert_path`, `assert_workspace_io`; plus `require_commands` as an alias of
+  `assert_commands`). Used by service/task images (broker, clamav, postgres,
+  redis, dind, zap, etc.). Sources `common.sh`.
+- `lib/runtime-helpers.sh` — shared language/web runtime tests
+  (`run_node_tests`, `run_python_tests`, `run_nginx_tests`). The pages runtime
+  wrappers delegate here. Sources `common.sh`.
+
+Most per-image scripts use the `ct_bootstrap` helper, which prints the standard
+banner, sources the requested helper library, and prepares the scratch
+workspace in one call:
+
+```bash
+#!/bin/bash
+set -e
+
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
+
+ct_bootstrap <image-repository> <resource|service|runtime>
+```
+
+Bespoke scripts that don't use a helper library (e.g. `general-task`,
+`s3-resource`) source `common.sh` directly and call `setup_workspace`.
+
+## Image Inventory
+
+Every image built by the base, internal, external, and pages pipelines has a
+matching test script and is wired via `image-repository` + `enable-concourse-validation`
+in its `ci/container/**/vars.yml`.
+
+| Pipeline | Image repositories (scripts) |
+|----------|------------------------------|
+| base | `ubuntu-hardened-stig` |
+| internal (resources) | `bosh-deployment-resource`, `cf-resource`, `concourse-rwlock-resource`, `cron-resource`, `github-pr-resource`, `github-release-resource`, `s3-resource`, `s3-simple-resource`, `slack-notification-resource` |
+| internal (task/service) | `cg-csb`, `csb-helper`, `clamav-rest-candidate`, `external-domain-broker-testing`, `general-task`, `oci-build-task`, `opensearch-testing`, `opensearch-dashboards-testing`, `playwright-python`, `pulledpork`, `zap-runner` |
+| external (resources) | `bosh-io-release-resource`, `bosh-io-stemcell-resource`, `cf-cli-resource`, `email-resource`, `git-resource`, `pool-resource`, `registry-image-resource`, `semver-resource`, `time-resource` |
+| external (service) | `cloud-service-broker`, `openresty` |
+| pages | `pages-dind`, `pages-nginx-v1`, `pages-node-v22`, `pages-node-v24`, `pages-postgres-v15`, `pages-python-v3.11`, `pages-redis-v7.2`, `pages-zap` |
 
 ## Writing a New Test Script
 
@@ -48,37 +103,32 @@ Scripts are named after the `image-type` parameter:
 #!/bin/bash
 set -e  # Exit on first error
 
-echo "  → Testing <image-name> in Concourse context"
+# shellcheck source=lib/common.sh
+. "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-# Use the scratch workspace provided by integration-test.sh (fall back to a
-# temp dir when run standalone).
-: "${CONCOURSE_WORKSPACE:=$(mktemp -d)}"
-mkdir -p "$CONCOURSE_WORKSPACE"
-cd "$CONCOURSE_WORKSPACE"
+# ct_bootstrap prints the banner, sources the helper library for this kind of
+# image (resource | service | runtime), and prepares the scratch workspace.
+ct_bootstrap <image-repository> resource
 
 # Test 1: Resource-specific functionality
 # For resources: test check/in/out protocol
 # For task images: test typical operations
 
-# Example for resources:
-cat > "$CONCOURSE_WORKSPACE/test-input.json" <<EOF
-{"source":{},"version":{}}
-EOF
+# Example for resources (helpers from lib/resource-helpers.sh):
+check_protocol '{"source":{},"version":null}'
+in_protocol    '{"source":{},"version":{}}'
 
-/opt/resource/check < "$CONCOURSE_WORKSPACE/test-input.json" | jq -e 'type == "array"'
-echo "  ✓ Resource check returns JSON array"
-
-# Example for task images:
+# Example for task images: use the scratch workspace prepared by ct_bootstrap
 git clone https://github.com/cloud-gov/example.git "$CONCOURSE_WORKSPACE/src/repo"
 echo "  ✓ Git operations work"
 
-echo "  ✓ <image-name> Concourse validation passed"
+echo "  ✓ <image-repository> Concourse validation passed"
 ```
 
 ### 2. Make it executable
 
 ```bash
-chmod +x container/concourse-tests/<image-type>.sh
+chmod +x container/concourse-tests/<image-repository>.sh
 ```
 
 ### 3. Test locally (optional)
@@ -87,15 +137,15 @@ chmod +x container/concourse-tests/<image-type>.sh
 docker run --rm \
   -v $(pwd):/workspace \
   <image>:staging \
-  /workspace/container/concourse-tests/<image-type>.sh
+  /workspace/container/concourse-tests/<image-repository>.sh
 ```
 
 ### 4. Enable in pipeline
 
-Update the pipeline's `vars.yml`:
+The test script is looked up by the image's `image-repository`, which every
+`vars.yml` already sets. To turn on Concourse validation, add:
 
 ```yaml
-image-type: <image-type>
 enable-concourse-validation: "true"
 ```
 
@@ -152,13 +202,16 @@ cat src/file.txt > output/result.txt
 - Consider adding more comprehensive tests
 
 ### Script not found during integration-test
-- Verify script name matches `image-type` parameter
+- Verify script name matches `image-repository` parameter
 - Ensure script is executable: `chmod +x <script>`
 - Check script is committed to repository
 
 ## Examples by Image Type
 
 See existing scripts for reference:
-- **Resources:** `s3-resource.sh`, `github-pr-resource.sh`
-- **Task images:** `general-task.sh`, `node.sh`
-- **Privileged tasks:** `oci-build-task.sh`
+- **Resources:** `s3-resource.sh`, `github-pr-resource.sh` (or the shared `lib/resource-helpers.sh` consumers like `git-resource.sh`, `time-resource.sh`)
+- **Task images:** `general-task.sh`
+- **Runtime images:** `pages-node-v22.sh`, `pages-python-v3.11.sh`, `pages-nginx-v1.sh` (delegate to `lib/runtime-helpers.sh`)
+- **Service images (offline smoke):** `openresty.sh`, `pages-postgres-v15.sh`, `pages-redis-v7.2.sh`, `cloud-service-broker.sh`
+- **Privileged tasks:** `oci-build-task.sh`, `pages-dind.sh`
+- **Base image:** `ubuntu-hardened-stig.sh`

@@ -75,14 +75,14 @@ if [ "$ENABLE_CONCOURSE_VALIDATION" = "true" ]; then
   echo ""
   
   # Run image-specific Concourse tests
-  CONCOURSE_TEST_SCRIPT="$SCRIPT_DIR/concourse-tests/${IMAGE_TYPE}.sh"
+  CONCOURSE_TEST_SCRIPT="$SCRIPT_DIR/concourse-tests/${IMAGE_REPOSITORY}.sh"
   if [ -f "$CONCOURSE_TEST_SCRIPT" ]; then
-    echo "→ Running Concourse-specific tests for '${IMAGE_TYPE}'"
+    echo "→ Running Concourse-specific tests for '${IMAGE_REPOSITORY}'"
     chmod +x "$CONCOURSE_TEST_SCRIPT"
     "$CONCOURSE_TEST_SCRIPT"
     echo "  ✓ Image-specific Concourse tests passed"
   else
-    echo "→ No Concourse-specific tests found for '${IMAGE_TYPE}'"
+    echo "→ No Concourse-specific tests found for '${IMAGE_REPOSITORY}'"
     echo "  Expected: $CONCOURSE_TEST_SCRIPT"
     echo "  ℹ This is OK - image will use generic validation only"
   fi

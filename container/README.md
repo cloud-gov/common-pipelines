@@ -101,9 +101,23 @@ Did you create the ECR repository [in cg-provision](https://github.com/cloud-gov
 
 ## Design choices
 
-### Why tag with the git short hash / short_ref?
+### How are images tagged?
 
-We build a variety of docker images with a variety of versioning schemes, ranging from "none" to semantic versioning. We may expand our tagging scheme in the future, but for now, the short hash — the first seven characters of the commit SHA — is a tag that works universally and functions as a reference back to the commit the image was built from, which is useful in troubleshooting.
+On merge, the `main` job pushes each image with the following tags:
+
+* `latest` — a moving pointer to the most recently built image, configured on the `image` resource.
+* `<config-digest>` — the full sha256 hex of the image **config** digest (the `sha256:` prefix stripped). The config digest is a content hash over the image's layers, environment, entrypoint, and labels, so it changes whenever any of those change. This makes the tag **guaranteed unique for any change to the image**, while identical rebuilds reuse the same tag rather than creating a redundant one. This is the tag to use when you need to pin an exact, immutable build.
+* `<short_ref>-<short_config-digest>` — a human-readable tag combining the commit short hash (the first seven characters of the commit SHA) with the first twelve characters of the config digest. It carries traceability back to the commit the image was built from while being practically unique per build. This replaces the previous standalone `<short_ref>` tag, which was not unique per build (a `base-image` bump, the weekly rebuild, or `common-dockerfiles` changes rebuild the same commit and would overwrite it).
+
+These tags are assembled by the [`generate-tags`](generate-tags.sh) task, which reads `src/.git/short_ref` and the `image/digest` file produced by the `oci-build` task, and writes a whitespace-separated list to `tags/additional_tags`. That file is fed to the `registry-image` resource's `additional_tags` param on the `put: image` step.
+
+The `staging` job pushes each image to the `staging-image` resource (the `staging` tag) using the same `generate-tags` task, but with `tag_prefix: staging-` so the unique tags become `staging-<config-digest>` and `staging-<short_ref>-<short_config-digest>`. The prefix keeps staging artifacts clearly distinguishable in the registry from the promoted tags pushed by the `main` job.
+
+The `generate-tags` task takes a `TAG_PREFIX` param that must match the resource's `tag_prefix` (empty for `main`, `staging-` for `staging`). It uses this only to validate that the final pushed tag stays within the 128-character OCI/ECR tag limit, failing closed if a tag would be too long. With the current `sha256` config digests the longest tag is `staging-` + 64 hex = 72 characters, well within the limit; the guard protects against a future change (e.g. a longer digest algorithm) silently producing an invalid tag.
+
+Note: the config digest is **not** the same value as the registry *manifest* digest (the `repo@sha256:...` that `docker pull` reports). We tag with the config digest because `oci-build` already emits it as `image/digest` with no extra registry round-trip, and it is equally unique per build for our purpose of "a new tag whenever the image changes." If a tag matching the registry manifest digest is ever required, it would need to be computed from the image tarball (or read back from the resource's push output) instead.
+
+We build a variety of docker images with a variety of versioning schemes, ranging from "none" to semantic versioning. Semantic version tags are intentionally *not* generated automatically: most of these images have no meaningful version to bump, and SemVer encodes a human judgment about API compatibility that a trigger-driven rebuild cannot make. For the subset of images whose upstream publishes real release tags, deriving a version tag from that upstream reference (via `registry-image`'s `version` / `bump_aliases`) remains a possible future opt-in.
 
 ### Why load step params from a map instead of individually?
 

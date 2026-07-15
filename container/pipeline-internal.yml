@@ -181,6 +181,11 @@ jobs:
       - task: cve-check
         file: common-pipelines/container/cve-check.yml
 
+      - task: generate-tags
+        file: common-pipelines/container/generate-tags.yml
+        params:
+          TAG_PREFIX: staging-
+
       - in_parallel:
           - task: software-inventory
             file: common-pipelines/container/software-inventory.yml
@@ -190,9 +195,12 @@ jobs:
             inputs:
               - image
               - src
+              - tags
             no_get: true
             params:
               image: image/image.tar
+              additional_tags: tags/additional_tags
+              tag_prefix: staging-
 
     on_failure:
       put: slack
@@ -312,6 +320,9 @@ jobs:
       - task: cve-check
         file: common-pipelines/container/cve-check.yml
 
+      - task: generate-tags
+        file: common-pipelines/container/generate-tags.yml
+
       - in_parallel:
           - task: import-scan
             file: common-pipelines/container/import-scan.yml
@@ -336,10 +347,11 @@ jobs:
             inputs:
               - image
               - src
+              - tags
             no_get: true
             params:
               image: image/image.tar
-              additional_tags: src/.git/short_ref
+              additional_tags: tags/additional_tags
 
     on_failure:
       put: slack

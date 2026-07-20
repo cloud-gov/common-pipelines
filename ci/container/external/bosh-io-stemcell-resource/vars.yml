@@ -9,3 +9,4 @@ build-test-params:
   TARGET: tests
   IMAGE_ARG_base_image: base-image/image.tar
   CONTEXT: src
+enable-concourse-validation: "false"

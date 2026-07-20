@@ -4,3 +4,4 @@ src-repo: cloud-gov/opensearch-dashboards-cf-auth-proxy
 src-repo-uri: git@github.com:cloud-gov/opensearch-dashboards-cf-auth-proxy.git
 src-target-branch: main
 src-trigger: true
+enable-concourse-validation: "false"

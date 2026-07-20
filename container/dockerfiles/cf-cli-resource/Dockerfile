@@ -16,7 +16,7 @@ RUN curl -SL "https://github.com/mikefarah/yq/releases/latest/download/yq_linux_
   && chmod +x /usr/local/bin/yq \
   && yq --version
 
-ARG CF_CLI_8_VERSION=8.18.3
+ARG CF_CLI_8_VERSION=8.18.4
 RUN mkdir -p /opt/cf-cli-${CF_CLI_8_VERSION} \
   && curl -SL "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=${CF_CLI_8_VERSION}" \
   | tar -zxC /opt/cf-cli-${CF_CLI_8_VERSION} \

@@ -6,6 +6,9 @@ set -e
 
 ct_bootstrap concourse-rwlock-resource resource
 
+# rwlock resource is git-backed; ensure git never blocks on a credential prompt.
+git_noninteractive
+
 # rwlock resource manages read/write locks in a git repo. Without a reachable
 # repo the scripts fail; we validate protocol compliance and git availability.
 check_protocol '{"source":{"uri":"https://github.com/cloud-gov/example.git","branch":"main"},"version":null}'

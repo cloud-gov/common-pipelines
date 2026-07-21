@@ -6,6 +6,9 @@ set -e
 
 ct_bootstrap git-resource resource
 
+# git-resource is git-backed; ensure git never blocks on a credential prompt.
+git_noninteractive
+
 # git-resource clones/checks git repositories. Without network access the
 # scripts fail; we validate protocol compliance and git availability.
 check_protocol '{"source":{"uri":"https://github.com/cloud-gov/example.git","branch":"main"},"version":null}'

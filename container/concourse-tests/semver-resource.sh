@@ -6,6 +6,10 @@ set -e
 
 ct_bootstrap semver-resource resource
 
+# semver-resource here uses the git driver; ensure git never blocks on a
+# credential prompt.
+git_noninteractive
+
 # semver-resource manages a semantic version stored in a backing driver
 # (git/s3/etc). Without a reachable backend the scripts fail; we validate
 # protocol compliance.

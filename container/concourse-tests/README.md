@@ -77,8 +77,12 @@ set -e
 ct_bootstrap <image-repository> <resource|service|runtime>
 ```
 
-Bespoke scripts that don't use a helper library (e.g. `general-task`,
-`s3-resource`) source `common.sh` directly and call `setup_workspace`.
+Bespoke scripts that don't use a helper library (e.g. `general-task`) source
+`common.sh` directly and call `setup_workspace`. All `*-resource` scripts —
+including `s3-resource`, `github-release-resource`, and
+`slack-notification-resource` — use `ct_bootstrap ... resource` and the shared
+`check_protocol`/`in_protocol`/`out_protocol` helpers so protocol validation is
+identical across every resource image.
 
 ## Image Inventory
 
@@ -209,7 +213,7 @@ cat src/file.txt > output/result.txt
 ## Examples by Image Type
 
 See existing scripts for reference:
-- **Resources:** `s3-resource.sh`, `github-pr-resource.sh` (or the shared `lib/resource-helpers.sh` consumers like `git-resource.sh`, `time-resource.sh`)
+- **Resources:** `s3-resource.sh`, `git-resource.sh`, `time-resource.sh` (all consume the shared `lib/resource-helpers.sh`)
 - **Task images:** `general-task.sh`
 - **Runtime images:** `pages-node-v22.sh`, `pages-python-v3.11.sh`, `pages-nginx-v1.sh` (delegate to `lib/runtime-helpers.sh`)
 - **Service images (offline smoke):** `openresty.sh`, `pages-postgres-v15.sh`, `pages-redis-v7.2.sh`, `cloud-service-broker.sh`

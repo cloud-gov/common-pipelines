@@ -6,6 +6,9 @@ set -e
 
 ct_bootstrap pool-resource resource
 
+# pool-resource is git-backed; ensure git never blocks on a credential prompt.
+git_noninteractive
+
 # pool-resource manages a pool of locks stored in a git repo. Without a
 # reachable repo the scripts fail; we validate protocol compliance and git
 # availability.

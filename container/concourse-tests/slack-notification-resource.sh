@@ -4,82 +4,31 @@ set -e
 # shellcheck source=lib/common.sh
 . "$(cd "$(dirname "$0")/lib" && pwd)/common.sh"
 
-echo "  → Testing slack-notification-resource in Concourse context"
-setup_workspace
+ct_bootstrap slack-notification-resource resource
 
-# Test 1: Check script protocol (Slack notification doesn't implement check)
-echo "  → Testing /opt/resource/check protocol"
-if [ -f /opt/resource/check ]; then
-  cat > check-input.json <<EOF
-{
-  "source": {
-    "url": "https://hooks.slack.com/services/fake/webhook"
-  },
-  "version": null
-}
-EOF
+# slack-notification-resource is an out-only notification resource: check/in are
+# frequently not implemented, so we guard those and only require the out
+# protocol. The shared helpers validate protocol compliance and tolerate the
+# expected non-zero exit without a real webhook (see lib/resource-helpers.sh).
 
-  /opt/resource/check < check-input.json > check-output.json || {
-    echo "  ℹ check script exited with error (expected for notification resource)"
-  }
-
-  if [ -f check-output.json ] && [ -s check-output.json ]; then
-    jq -e 'type == "array"' check-output.json >/dev/null 2>&1 && \
-      echo "  ✓ check returns JSON array"
-  fi
+# check is optional for this resource.
+if [ -x /opt/resource/check ]; then
+  check_protocol '{"source":{"url":"https://hooks.slack.com/services/fake/webhook"},"version":null}'
 else
   echo "  ℹ check not implemented (expected for notification resource)"
 fi
 
-# Test 2: In script protocol (usually just returns empty)
-echo "  → Testing /opt/resource/in protocol"
-if [ -f /opt/resource/in ]; then
-  cat > in-input.json <<EOF
-{
-  "source": {
-    "url": "https://hooks.slack.com/services/fake/webhook"
-  },
-  "version": null
-}
-EOF
-
-  mkdir -p src
-  /opt/resource/in src < in-input.json > in-output.json || {
-    echo "  ℹ in script exited with error (expected for notification resource)"
-  }
-
-  if [ -f in-output.json ] && [ -s in-output.json ]; then
-    jq -e 'type == "object"' in-output.json >/dev/null 2>&1 && \
-      echo "  ✓ in returns JSON object"
-  fi
+# in is optional for this resource.
+if [ -x /opt/resource/in ]; then
+  in_protocol '{"source":{"url":"https://hooks.slack.com/services/fake/webhook"},"version":null}'
 else
-  echo "  ℹ in not fully implemented (may be acceptable)"
+  echo "  ℹ in not implemented (may be acceptable for notification resource)"
 fi
 
-# Test 3: Out script protocol (main functionality)
-echo "  → Testing /opt/resource/out protocol"
-cat > out-input.json <<EOF
-{
-  "source": {
-    "url": "https://hooks.slack.com/services/fake/webhook"
-  },
-  "params": {
-    "text": "Test notification"
-  }
-}
-EOF
+# out is the main functionality and must be present.
+out_protocol '{"source":{"url":"https://hooks.slack.com/services/fake/webhook"},"params":{"text":"Test notification"}}'
 
-mkdir -p src
-/opt/resource/out src < out-input.json > out-output.json || {
-  echo "  ℹ out script exited with error (expected without valid webhook)"
-}
-
-if [ -f out-output.json ] && [ -s out-output.json ]; then
-  jq -e 'type == "object"' out-output.json >/dev/null 2>&1 && \
-    echo "  ✓ out returns JSON object"
-fi
-
-# Test 4: curl available (needed for webhook calls)
+# Test: curl available (needed for webhook calls)
 echo "  → Testing curl availability"
 curl --version >/dev/null 2>&1 && echo "  ✓ curl available"
 

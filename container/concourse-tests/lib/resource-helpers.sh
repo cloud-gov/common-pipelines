@@ -21,6 +21,61 @@
 # Backwards-compatible alias: older scripts call resource_setup_workspace.
 resource_setup_workspace() { setup_workspace; }
 
+# Validate that a file contains protocol-shaped JSON.
+#
+# Some hardened resource images run the upstream resource binary on a base image
+# that does not ship jq (e.g. bosh-io-stemcell-resource, which builds the
+# upstream Dockerfile on ubuntu-hardened). Without a jq guard the "$( ) && jq"
+# chain fails whenever jq is missing, producing a FALSE protocol violation even
+# when stdout was valid JSON. This helper uses jq for a strict check when it is
+# available, and falls back to a dependency-free structural check otherwise.
+#
+# Per the Concourse resource contract, check emits a top-level JSON array on
+# success (some resources emit a JSON error object instead), while in/out emit
+# a top-level JSON object. Inspecting the first non-whitespace byte is therefore
+# sufficient to catch the real failure modes (empty output, a bare scalar, or a
+# stderr banner leaking onto stdout) without a full JSON parser.
+#
+# Usage: json_is <array|object> <file>
+json_is() {
+  local want="$1" file="$2"
+  if command -v jq >/dev/null 2>&1; then
+    case "$want" in
+      array)  jq -e 'type == "array" or (type == "object" and has("error"))' "$file" >/dev/null 2>&1 ;;
+      object) jq -e 'type == "object"' "$file" >/dev/null 2>&1 ;;
+      *) return 1 ;;
+    esac
+    return
+  fi
+
+  # jq-less fallback: inspect the first non-whitespace byte of the file.
+  local first
+  first=$(tr -d '[:space:]' < "$file" | cut -c1)
+  case "$want" in
+    array)
+      # A JSON array starts with '['. Tolerate a JSON error object as well
+      # ('{' with an "error" key), matching the jq expression above.
+      [ "$first" = "[" ] && return 0
+      { [ "$first" = "{" ] && grep -q '"error"' "$file"; } && return 0
+      return 1 ;;
+    object)
+      [ "$first" = "{" ] ;;
+    *)
+      return 1 ;;
+  esac
+}
+
+# Emit a one-time informational note when jq is unavailable so the verification
+# transcript is honest about the reduced-strictness (structural) JSON check.
+# The guard variable is set on first call to avoid repeating the note for every
+# check/in/out assertion in a single script run.
+_json_note_if_no_jq() {
+  if ! command -v jq >/dev/null 2>&1 && [ -z "${_JSON_NO_JQ_NOTED:-}" ]; then
+    echo "  ℹ jq not found; using dependency-free JSON shape check"
+    _JSON_NO_JQ_NOTED=1
+  fi
+}
+
 # Force git into non-interactive, fail-fast mode for git-backed resource tests.
 #
 # Without valid credentials/network, git's credential subsystem falls back to an
@@ -75,12 +130,11 @@ check_protocol() {
   printf '%s' "$payload" > check-input.json
   local rc=0
   /opt/resource/check < check-input.json > check-output.json 2>/dev/null || rc=$?
+  _json_note_if_no_jq
 
   if [ "$rc" -eq 0 ]; then
     # Success: stdout must be protocol-compliant JSON.
-    if [ -s check-output.json ] && jq -e \
-        'type == "array" or (type == "object" and has("error"))' \
-        check-output.json >/dev/null 2>&1; then
+    if [ -s check-output.json ] && json_is array check-output.json; then
       echo "  ✓ check emits protocol-compliant JSON"
     else
       echo "  ✗ check exited 0 but stdout is not a JSON array/error object"
@@ -90,8 +144,7 @@ check_protocol() {
     # Non-zero exit is expected without credentials/network. stdout is advisory.
     echo "  ℹ check exited non-zero (expected without credentials/network)"
     if [ -s check-output.json ]; then
-      if jq -e 'type == "array" or (type == "object" and has("error"))' \
-          check-output.json >/dev/null 2>&1; then
+      if json_is array check-output.json; then
         echo "  ✓ check still emitted protocol-compliant JSON on failure"
       else
         echo "  ℹ check wrote non-JSON diagnostics to stdout on failure (tolerated)"
@@ -113,9 +166,10 @@ in_protocol() {
   printf '%s' "$payload" > in-input.json
   local rc=0
   /opt/resource/in dest < in-input.json > in-output.json 2>/dev/null || rc=$?
+  _json_note_if_no_jq
 
   if [ "$rc" -eq 0 ]; then
-    if [ -s in-output.json ] && jq -e 'type == "object"' in-output.json >/dev/null 2>&1; then
+    if [ -s in-output.json ] && json_is object in-output.json; then
       echo "  ✓ in emits a JSON object"
     else
       echo "  ✗ in exited 0 but stdout is not a JSON object"
@@ -123,7 +177,7 @@ in_protocol() {
     fi
   else
     echo "  ℹ in exited non-zero (expected without credentials/network)"
-    if [ -s in-output.json ] && jq -e 'type == "object"' in-output.json >/dev/null 2>&1; then
+    if [ -s in-output.json ] && json_is object in-output.json; then
       echo "  ✓ in still emitted a JSON object on failure"
     else
       echo "  ℹ in produced no protocol JSON on stdout (diagnostics go to stderr; acceptable)"
@@ -142,9 +196,10 @@ out_protocol() {
   printf '%s' "$payload" > out-input.json
   local rc=0
   /opt/resource/out src < out-input.json > out-output.json 2>/dev/null || rc=$?
+  _json_note_if_no_jq
 
   if [ "$rc" -eq 0 ]; then
-    if [ -s out-output.json ] && jq -e 'type == "object"' out-output.json >/dev/null 2>&1; then
+    if [ -s out-output.json ] && json_is object out-output.json; then
       echo "  ✓ out emits a JSON object"
     else
       echo "  ✗ out exited 0 but stdout is not a JSON object"
@@ -152,7 +207,7 @@ out_protocol() {
     fi
   else
     echo "  ℹ out exited non-zero (expected without credentials/network)"
-    if [ -s out-output.json ] && jq -e 'type == "object"' out-output.json >/dev/null 2>&1; then
+    if [ -s out-output.json ] && json_is object out-output.json; then
       echo "  ✓ out still emitted a JSON object on failure"
     else
       echo "  ℹ out produced no protocol JSON on stdout (diagnostics go to stderr; acceptable)"

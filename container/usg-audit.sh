@@ -1,6 +1,19 @@
 #!/bin/bash
 set -eo pipefail
 
+retry() {
+  local n=1 max=3 delay=15
+  until "$@"; do
+    if [ $n -ge $max ]; then
+      echo "Command failed after $max attempts: $*"
+      return 1
+    fi
+    echo "Attempt $n failed, retrying in ${delay}s..."
+    sleep $delay
+    n=$((n + 1))
+  done
+}
+
 # set up dir and file
 touch audit/$IMAGENAME-audit.html
 touch audit/$IMAGENAME-audit.xml
@@ -27,7 +40,7 @@ apt-get -y -qq install usg
 
 echo "installing bs4"
 # Install the python library BeautifulSoup to parse html
-python3 -m pip install beautifulsoup4
+retry python3 -m pip install --retries 3 --timeout 60 beautifulsoup4
 
 #fix file permissions after running apt so audit passes properly
 find /var/log -perm /137 ! -name '*[bw]tmp' ! -name '*lastlog' -type f -exec chmod 640 '{}' \;

@@ -36,6 +36,7 @@ jobs:
           - var: name # repo, pipeline, and image name; all the same.
             values:
               - bosh-deployment-resource
+              - cinc-audit-oracle
               - cf-resource
               - cg-csb
               - clamav-rest-candidate

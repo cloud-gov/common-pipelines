@@ -1,9 +1,9 @@
 image-repository: cinc-audit-oracle
 src-repo: cloud-gov/cg-oracle-database-19c-stig-overlay
 src-repo-uri: https://github.com/cloud-gov/cg-oracle-database-19c-stig-overlay
-src-target-branch: main
+src-target-branch: feat/common-pipeline-fixes
 oci-build-params:
-  CONTEXT: src/runner # set OCI build context to a folder in the repository instead of the root
+  CONTEXT: src # set OCI build context to a folder in the repository instead of the root
   DOCKERFILE: src/runner/Dockerfile # specify Dockerfile location when it is not in the repository root
 
 

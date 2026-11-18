@@ -94,7 +94,7 @@ in its `ci/container/**/vars.yml`.
 |----------|------------------------------|
 | base | `ubuntu-hardened-stig` |
 | internal (resources) | `bosh-deployment-resource`, `cf-resource`, `concourse-rwlock-resource`, `cron-resource`, `github-pr-resource`, `github-release-resource`, `s3-resource`, `s3-simple-resource`, `slack-notification-resource` |
-| internal (task/service) | `cg-csb`, `csb-helper`, `clamav-rest-candidate`, `external-domain-broker-testing`, `general-task`, `oci-build-task`, `opensearch-testing`, `opensearch-dashboards-testing`, `playwright-python`, `pulledpork`, `zap-runner` |
+| internal (task/service) | `cg-csb`, `csb-helper`, `clamav-rest-candidate`, `external-domain-broker-testing`, `general-task`, `oci-build-task`, `opensearch-testing`, `opensearch-dashboards-testing`, `playwright-python`, `pulledpork` |
 | external (resources) | `bosh-io-release-resource`, `bosh-io-stemcell-resource`, `cf-cli-resource`, `email-resource`, `git-resource`, `pool-resource`, `registry-image-resource`, `semver-resource`, `time-resource` |
 | external (service) | `cloud-service-broker`, `openresty` |
 | pages | `pages-dind`, `pages-nginx-v1`, `pages-node-v22`, `pages-node-v24`, `pages-postgres-v15`, `pages-python-v3.11`, `pages-redis-v7.2`, `pages-zap` |
